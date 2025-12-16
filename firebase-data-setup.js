@@ -70,13 +70,13 @@ const playersData = [
  */
 const gamesData = [
     // Day 1 - June 15, 2023
-    { date: '2023-06-15', time: '08:00', team_name: 'Red Sox', opponent_name: 'Yankees', field_name: 'Field 1', location: 'Boston Stadium', result: 'Win' },
-    { date: '2023-06-15', time: '08:00', team_name: 'Cubs', opponent_name: 'Cardinals', field_name: 'Field 2', location: 'Chicago Park', result: 'Loss' },
-    { date: '2023-06-15', time: '08:00', team_name: 'Dodgers', opponent_name: 'Giants', field_name: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
-    { date: '2023-06-15', time: '08:00', team_name: 'Braves', opponent_name: 'Phillies', field_name: 'Field 4', location: 'Atlanta Stadium', result: 'Win' },
-    { date: '2023-06-15', time: '08:00', team_name: 'Astros', opponent_name: 'Rangers', field_name: 'Field 5', location: 'Houston Park', result: 'Loss' },
-    { date: '2023-06-15', time: '08:00', team_name: 'Mets', opponent_name: 'Nationals', field_name: 'Field 6', location: 'New York Arena', result: 'Win' },
-    { date: '2023-06-15', time: '08:00', team_name: 'White Sox', opponent_name: 'Tigers', field_name: 'Field 7', location: 'Chicago Stadium', result: 'Loss' }
+    { date: '2023-06-15', time: '08:00', team_name: 'Red Sox', opponent_name: 'Yankees', field_name: 'Field 1', location: 'Boston Stadium', result: 'Win', runs_scored: 7, runs_allowed: 3 },
+    { date: '2023-06-15', time: '08:00', team_name: 'Cubs', opponent_name: 'Cardinals', field_name: 'Field 2', location: 'Chicago Park', result: 'Loss', runs_scored: 2, runs_allowed: 5 },
+    { date: '2023-06-15', time: '08:00', team_name: 'Dodgers', opponent_name: 'Giants', field_name: 'Field 3', location: 'Los Angeles Arena', result: 'Win', runs_scored: 6, runs_allowed: 4 },
+    { date: '2023-06-15', time: '08:00', team_name: 'Braves', opponent_name: 'Phillies', field_name: 'Field 4', location: 'Atlanta Stadium', result: 'Win', runs_scored: 8, runs_allowed: 2 },
+    { date: '2023-06-15', time: '08:00', team_name: 'Astros', opponent_name: 'Rangers', field_name: 'Field 5', location: 'Houston Park', result: 'Loss', runs_scored: 3, runs_allowed: 7 },
+    { date: '2023-06-15', time: '08:00', team_name: 'Mets', opponent_name: 'Nationals', field_name: 'Field 6', location: 'New York Arena', result: 'Win', runs_scored: 5, runs_allowed: 1 },
+    { date: '2023-06-15', time: '08:00', team_name: 'White Sox', opponent_name: 'Tigers', field_name: 'Field 7', location: 'Chicago Stadium', result: 'Loss', runs_scored: 2, runs_allowed: 4 }
 ];
 
 /**

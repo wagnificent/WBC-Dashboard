@@ -275,6 +275,18 @@
                 <div class="stat-label">Win Rate:</div>
                 <div class="stat-value" id="win-rate">0%</div>
             </div>
+            <div class="stat-item">
+                <div class="stat-label">Total Runs Scored:</div>
+                <div class="stat-value" id="total-runs-scored">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Total Runs Allowed:</div>
+                <div class="stat-value" id="total-runs-allowed">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Run Differential:</div>
+                <div class="stat-value" id="run-differential">0</div>
+            </div>
         </div>
 
         <!-- Tab Content Containers -->
@@ -288,6 +300,8 @@
                         <th>Field</th>
                         <th>Location</th>
                         <th>Result</th>
+                        <th>Runs Scored</th>
+                        <th>Runs Allowed</th>
                     </tr>
                 </thead>
                 <tbody id="team-data">
@@ -313,13 +327,13 @@
         // Sample tournament data - same as main dashboard
         const tournamentData = [
             // Day 1 - June 15, 2023
-            { date: '2023-06-15', time: '08:00', team: 'Red Sox', opponent: 'Yankees', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
-            { date: '2023-06-15', time: '08:00', team: 'Cubs', opponent: 'Cardinals', field: 'Field 2', location: 'Chicago Park', result: 'Loss' },
-            { date: '2023-06-15', time: '08:00', team: 'Dodgers', opponent: 'Giants', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
-            { date: '2023-06-15', time: '08:00', team: 'Braves', opponent: 'Phillies', field: 'Field 4', location: 'Atlanta Stadium', result: 'Win' },
-            { date: '2023-06-15', time: '08:00', team: 'Astros', opponent: 'Rangers', field: 'Field 5', location: 'Houston Park', result: 'Loss' },
-            { date: '2023-06-15', time: '08:00', team: 'Mets', opponent: 'Nationals', field: 'Field 6', location: 'New York Arena', result: 'Win' },
-            { date: '2023-06-15', time: '08:00', team: 'White Sox', opponent: 'Tigers', field: 'Field 7', location: 'Chicago Stadium', result: 'Loss' },
+            { date: '2023-06-15', time: '08:00', team: 'Red Sox', opponent: 'Yankees', field: 'Field 1', location: 'Boston Stadium', result: 'Win', runs_scored: 7, runs_allowed: 3 },
+            { date: '2023-06-15', time: '08:00', team: 'Cubs', opponent: 'Cardinals', field: 'Field 2', location: 'Chicago Park', result: 'Loss', runs_scored: 2, runs_allowed: 5 },
+            { date: '2023-06-15', time: '08:00', team: 'Dodgers', opponent: 'Giants', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win', runs_scored: 6, runs_allowed: 4 },
+            { date: '2023-06-15', time: '08:00', team: 'Braves', opponent: 'Phillies', field: 'Field 4', location: 'Atlanta Stadium', result: 'Win', runs_scored: 8, runs_allowed: 2 },
+            { date: '2023-06-15', time: '08:00', team: 'Astros', opponent: 'Rangers', field: 'Field 5', location: 'Houston Park', result: 'Loss', runs_scored: 3, runs_allowed: 7 },
+            { date: '2023-06-15', time: '08:00', team: 'Mets', opponent: 'Nationals', field: 'Field 6', location: 'New York Arena', result: 'Win', runs_scored: 5, runs_allowed: 1 },
+            { date: '2023-06-15', time: '08:00', team: 'White Sox', opponent: 'Tigers', field: 'Field 7', location: 'Chicago Stadium', result: 'Loss', runs_scored: 2, runs_allowed: 4 },
 
             { date: '2023-06-15', time: '10:30', team: 'Red Sox', opponent: 'Orioles', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
             { date: '2023-06-15', time: '10:30', team: 'Cubs', opponent: 'Brewers', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
@@ -435,7 +449,7 @@
 
             if (teamGames.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="6" class="no-results">No games found for this team.</td>';
+                row.innerHTML = '<td colspan="8" class="no-results">No games found for this team.</td>';
                 teamDataContainer.appendChild(row);
                 return;
             }
@@ -450,6 +464,8 @@
                     <td>${game.field}</td>
                     <td>${game.location}</td>
                     <td>${game.result}</td>
+                    <td>${game.runs_scored || 0}</td>
+                    <td>${game.runs_allowed || 0}</td>
                 `;
                 teamDataContainer.appendChild(row);
             });
@@ -465,11 +481,19 @@
             const losses = teamGames.filter(game => game.result === 'Loss').length;
             const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
 
+            // Calculate run statistics
+            const totalRunsScored = teamGames.reduce((sum, game) => sum + (game.runs_scored || 0), 0);
+            const totalRunsAllowed = teamGames.reduce((sum, game) => sum + (game.runs_allowed || 0), 0);
+            const runDifferential = totalRunsScored - totalRunsAllowed;
+
             // Update stats display
             document.getElementById('total-games').textContent = totalGames;
             document.getElementById('total-wins').textContent = wins;
             document.getElementById('total-losses').textContent = losses;
             document.getElementById('win-rate').textContent = `${winRate}%`;
+            document.getElementById('total-runs-scored').textContent = totalRunsScored;
+            document.getElementById('total-runs-allowed').textContent = totalRunsAllowed;
+            document.getElementById('run-differential').textContent = runDifferential;
 
             // Show stats container
             document.getElementById('team-stats-container').style.display = 'flex';

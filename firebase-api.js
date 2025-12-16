@@ -204,7 +204,9 @@ class FirebaseAPI {
       opponent: game.opponent_name,
       field: game.field_name,
       location: game.location,
-      result: game.result
+      result: game.result,
+      runs_scored: game.runs_scored || 0,
+      runs_allowed: game.runs_allowed || 0
     }));
   }
 
