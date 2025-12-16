@@ -91,6 +91,122 @@
             color: #666;
             font-style: italic;
         }
+
+        /* Tab Navigation Styles */
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .tab-button.active {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Calendar View Styles */
+        .calendar-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .calendar-day {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .calendar-day-header {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .calendar-game {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: white;
+            border-radius: 4px;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .calendar-game.win {
+            border-left-color: #4CAF50;
+        }
+
+        .calendar-game.loss {
+            border-left-color: #f44336;
+        }
+
+        /* Roster View Styles */
+        .roster-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .player-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .player-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #4CAF50;
+        }
+
+        .player-position {
+            color: #666;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .player-number {
+            background-color: #4CAF50;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
         .team-stats {
             background-color: #e8f5e9;
             padding: 15px;
@@ -135,6 +251,13 @@
             <button id="back-btn" class="back-btn">Back to Main Dashboard</button>
         </div>
 
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-button active" data-tab="schedule">Schedule Table</button>
+            <button class="tab-button" data-tab="calendar">Calendar View</button>
+            <button class="tab-button" data-tab="roster">Team Roster</button>
+        </div>
+
         <div id="team-stats-container" class="team-stats" style="display: none;">
             <div class="stat-item">
                 <div class="stat-label">Total Games:</div>
@@ -154,21 +277,36 @@
             </div>
         </div>
 
-        <table id="team-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Opponent</th>
-                    <th>Field</th>
-                    <th>Location</th>
-                    <th>Result</th>
-                </tr>
-            </thead>
-            <tbody id="team-data">
-                <!-- Team data will be populated by JavaScript -->
-            </tbody>
-        </table>
+        <!-- Tab Content Containers -->
+        <div id="schedule-tab" class="tab-content active">
+            <table id="team-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Opponent</th>
+                        <th>Field</th>
+                        <th>Location</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="team-data">
+                    <!-- Team data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="calendar-tab" class="tab-content">
+            <div id="calendar-view" class="calendar-view">
+                <!-- Calendar view will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div id="roster-tab" class="tab-content">
+            <div id="roster-view" class="roster-view">
+                <!-- Roster view will be populated by JavaScript -->
+            </div>
+        </div>
     </div>
 
     <script>
@@ -343,11 +481,82 @@
             const selectedTeam = teamSelect.value;
 
             if (selectedTeam) {
-                displayTeamData(selectedTeam);
+                // Get current active tab and update its content
+                const activeTab = document.querySelector('.tab-button.active');
+                const currentTab = activeTab.getAttribute('data-tab');
+
+                if (currentTab === 'schedule') {
+                    displayTeamData(selectedTeam);
+                } else if (currentTab === 'calendar') {
+                    displayCalendarView(selectedTeam);
+                } else if (currentTab === 'roster') {
+                    displayRosterView(selectedTeam);
+                }
             } else {
                 // Clear the table and hide stats if no team is selected
                 document.getElementById('team-data').innerHTML = '';
                 document.getElementById('team-stats-container').style.display = 'none';
+                document.getElementById('calendar-view').innerHTML = '';
+                document.getElementById('roster-view').innerHTML = '';
+            }
+        }
+        // Function to handle team selection
+        function handleTeamSelection() {
+            const teamSelect = document.getElementById('team-select');
+            const selectedTeam = teamSelect.value;
+
+            if (selectedTeam) {
+                // Get current active tab and update its content
+                const activeTab = document.querySelector('.tab-button.active');
+                const currentTab = activeTab.getAttribute('data-tab');
+
+                if (currentTab === 'schedule') {
+                    displayTeamData(selectedTeam);
+                } else if (currentTab === 'calendar') {
+                    displayCalendarView(selectedTeam);
+                } else if (currentTab === 'roster') {
+                    displayRosterView(selectedTeam);
+                }
+            } else {
+                // Clear the table and hide stats if no team is selected
+                document.getElementById('team-data').innerHTML = '';
+                document.getElementById('team-stats-container').style.display = 'none';
+                document.getElementById('calendar-view').innerHTML = '';
+                document.getElementById('roster-view').innerHTML = '';
+            }
+        }
+
+        // Function to switch tabs
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // Add active class to selected tab button
+            document.querySelector(`.tab-button[data-tab="${tabName}"]`).classList.add('active');
+
+            // Get current team selection
+            const teamSelect = document.getElementById('team-select');
+            const selectedTeam = teamSelect.value;
+
+            // Update content based on tab
+            if (selectedTeam) {
+                if (tabName === 'schedule') {
+                    displayTeamData(selectedTeam);
+                } else if (tabName === 'calendar') {
+                    displayCalendarView(selectedTeam);
+                } else if (tabName === 'roster') {
+                    displayRosterView(selectedTeam);
+                }
             }
         }
 
@@ -363,6 +572,247 @@
 
             // Set up event listeners
             document.getElementById('team-select').addEventListener('change', handleTeamSelection);
+
+            // Set up tab switching
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+
+            document.getElementById('back-btn').addEventListener('click', goBackToMain);
+        });
+        // Function to display calendar view
+        function displayCalendarView(teamName) {
+            const calendarView = document.getElementById('calendar-view');
+            calendarView.innerHTML = '';
+
+            // Filter data for the selected team
+            const teamGames = tournamentData.filter(game => game.team === teamName);
+
+            if (teamGames.length === 0) {
+                calendarView.innerHTML = '<div class="no-results">No games found for this team.</div>';
+                return;
+            }
+
+            // Group games by date
+            const gamesByDate = {};
+            teamGames.forEach(game => {
+                if (!gamesByDate[game.date]) {
+                    gamesByDate[game.date] = [];
+                }
+                gamesByDate[game.date].push(game);
+            });
+
+            // Display each date with its games
+            Object.keys(gamesByDate).sort().forEach(date => {
+                const dayContainer = document.createElement('div');
+                dayContainer.className = 'calendar-day';
+
+                // Format date for display
+                const dateObj = new Date(date);
+                const formattedDate = dateObj.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                dayContainer.innerHTML = `
+                    <div class="calendar-day-header">${formattedDate}</div>
+                `;
+
+                gamesByDate[date].forEach(game => {
+                    const gameElement = document.createElement('div');
+                    gameElement.className = `calendar-game ${game.result.toLowerCase()}`;
+                    gameElement.innerHTML = `
+                        <strong>${game.time}</strong> vs ${game.opponent}<br>
+                        ${game.field} - ${game.location}<br>
+                        <strong>Result:</strong> ${game.result}
+                    `;
+                    dayContainer.appendChild(gameElement);
+                });
+
+                calendarView.appendChild(dayContainer);
+            });
+        }
+
+        // Function to display roster view
+        function displayRosterView(teamName) {
+            const rosterView = document.getElementById('roster-view');
+            rosterView.innerHTML = '';
+
+            // Sample roster data - in a real app, this would come from your database
+            const sampleRosters = {
+                'Red Sox': [
+                    { name: 'John Smith', position: 'Pitcher', number: 15 },
+                    { name: 'Mike Johnson', position: 'Catcher', number: 22 },
+                    { name: 'David Wilson', position: 'First Base', number: 8 },
+                    { name: 'Robert Brown', position: 'Second Base', number: 12 },
+                    { name: 'James Davis', position: 'Third Base', number: 18 },
+                    { name: 'Michael Miller', position: 'Shortstop', number: 7 },
+                    { name: 'William Moore', position: 'Left Field', number: 24 },
+                    { name: 'Richard Taylor', position: 'Center Field', number: 3 },
+                    { name: 'Joseph Anderson', position: 'Right Field', number: 19 },
+                    { name: 'Thomas Thomas', position: 'Designated Hitter', number: 11 }
+                ],
+                'Cubs': [
+                    { name: 'Charles Jackson', position: 'Pitcher', number: 27 },
+                    { name: 'Daniel White', position: 'Catcher', number: 5 },
+                    { name: 'Matthew Harris', position: 'First Base', number: 14 },
+                    { name: 'Anthony Martin', position: 'Second Base', number: 9 },
+                    { name: 'Mark Thompson', position: 'Third Base', number: 21 },
+                    { name: 'Donald Garcia', position: 'Shortstop', number: 2 },
+                    { name: 'Steven Martinez', position: 'Left Field', number: 17 },
+                    { name: 'Paul Robinson', position: 'Center Field', number: 28 },
+                    { name: 'Kenneth Clark', position: 'Right Field', number: 6 },
+                    { name: 'George Rodriguez', position: 'Designated Hitter', number: 25 }
+                ],
+                'Dodgers': [
+                    { name: 'Edward Lewis', position: 'Pitcher', number: 30 },
+                    { name: 'Brian Lee', position: 'Catcher', number: 4 },
+                    { name: 'Ronald Walker', position: 'First Base', number: 16 },
+                    { name: 'Timothy Hall', position: 'Second Base', number: 10 },
+                    { name: 'Jason Allen', position: 'Third Base', number: 23 },
+                    { name: 'Jeffrey Young', position: 'Shortstop', number: 1 },
+                    { name: 'Ryan Hernandez', position: 'Left Field', number: 20 },
+                    { name: 'Jacob King', position: 'Center Field', number: 13 },
+                    { name: 'Gary Wright', position: 'Right Field', number: 26 },
+                    { name: 'Nicholas Lopez', position: 'Designated Hitter', number: 31 }
+                ],
+                'Braves': [
+                    { name: 'Eric Hill', position: 'Pitcher', number: 29 },
+                    { name: 'Stephen Scott', position: 'Catcher', number: 32 },
+                    { name: 'Jonathan Green', position: 'First Base', number: 3 },
+                    { name: 'Andrew Adams', position: 'Second Base', number: 18 },
+                    { name: 'Justin Baker', position: 'Third Base', number: 7 },
+                    { name: 'Brandon Nelson', position: 'Shortstop', number: 22 },
+                    { name: 'Adam Carter', position: 'Left Field', number: 15 },
+                    { name: 'Gregory Mitchell', position: 'Center Field', number: 9 },
+                    { name: 'Christopher Perez', position: 'Right Field', number: 12 },
+                    { name: 'Patrick Roberts', position: 'Designated Hitter', number: 27 }
+                ],
+                'Astros': [
+                    { name: 'Daniel Turner', position: 'Pitcher', number: 34 },
+                    { name: 'Matthew Phillips', position: 'Catcher', number: 8 },
+                    { name: 'Andrew Campbell', position: 'First Base', number: 19 },
+                    { name: 'Joshua Parker', position: 'Second Base', number: 4 },
+                    { name: 'Kevin Evans', position: 'Third Base', number: 25 },
+                    { name: 'Thomas Edwards', position: 'Shortstop', number: 1 },
+                    { name: 'Mark Collins', position: 'Left Field', number: 14 },
+                    { name: 'Anthony Stewart', position: 'Center Field', number: 28 },
+                    { name: 'Brian Sanchez', position: 'Right Field', number: 11 },
+                    { name: 'Jason Morris', position: 'Designated Hitter', number: 30 }
+                ],
+                'Mets': [
+                    { name: 'David Rogers', position: 'Pitcher', number: 17 },
+                    { name: 'Robert Reed', position: 'Catcher', number: 6 },
+                    { name: 'Michael Cook', position: 'First Base', number: 21 },
+                    { name: 'William Morgan', position: 'Second Base', number: 3 },
+                    { name: 'Richard Bell', position: 'Third Base', number: 18 },
+                    { name: 'Joseph Murphy', position: 'Shortstop', number: 9 },
+                    { name: 'Thomas Bailey', position: 'Left Field', number: 24 },
+                    { name: 'Charles Rivera', position: 'Center Field', number: 2 },
+                    { name: 'Daniel Cooper', position: 'Right Field', number: 15 },
+                    { name: 'Matthew Richardson', position: 'Designated Hitter', number: 27 }
+                ],
+                'White Sox': [
+                    { name: 'Christopher Cox', position: 'Pitcher', number: 31 },
+                    { name: 'Joseph Howard', position: 'Catcher', number: 12 },
+                    { name: 'Brian Ward', position: 'First Base', number: 5 },
+                    { name: 'Kevin Torres', position: 'Second Base', number: 19 },
+                    { name: 'Jason Peterson', position: 'Third Base', number: 8 },
+                    { name: 'Timothy Gray', position: 'Shortstop', number: 23 },
+                    { name: 'Ryan Ramirez', position: 'Left Field', number: 16 },
+                    { name: 'Jacob James', position: 'Center Field', number: 4 },
+                    { name: 'Gary Watson', position: 'Right Field', number: 28 },
+                    { name: 'Nicholas Brooks', position: 'Designated Hitter', number: 11 }
+                ]
+            };
+
+            // Use generic roster if specific team roster not found
+            const roster = sampleRosters[teamName] || [
+                { name: 'Player 1', position: 'Pitcher', number: 1 },
+                { name: 'Player 2', position: 'Catcher', number: 2 },
+                { name: 'Player 3', position: 'First Base', number: 3 },
+                { name: 'Player 4', position: 'Second Base', number: 4 },
+                { name: 'Player 5', position: 'Third Base', number: 5 },
+                { name: 'Player 6', position: 'Shortstop', number: 6 },
+                { name: 'Player 7', position: 'Left Field', number: 7 },
+                { name: 'Player 8', position: 'Center Field', number: 8 },
+                { name: 'Player 9', position: 'Right Field', number: 9 },
+                { name: 'Player 10', position: 'Designated Hitter', number: 10 }
+            ];
+
+            // Display each player
+            roster.forEach(player => {
+                const playerCard = document.createElement('div');
+                playerCard.className = 'player-card';
+                playerCard.innerHTML = `
+                    <div class="player-number">${player.number}</div>
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-position">${player.position}</div>
+                `;
+                rosterView.appendChild(playerCard);
+            });
+        }
+
+        // Function to switch tabs
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // Add active class to selected tab button
+            document.querySelector(`.tab-button[data-tab="${tabName}"]`).classList.add('active');
+
+            // Get current team selection
+            const teamSelect = document.getElementById('team-select');
+            const selectedTeam = teamSelect.value;
+
+            // Update content based on tab
+            if (selectedTeam) {
+                if (tabName === 'schedule') {
+                    displayTeamData(selectedTeam);
+                } else if (tabName === 'calendar') {
+                    displayCalendarView(selectedTeam);
+                } else if (tabName === 'roster') {
+                    displayRosterView(selectedTeam);
+                }
+            }
+        }
+
+        // Function to go back to main dashboard
+        function goBackToMain() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize the team dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            populateTeamDropdown();
+            displayTeamData(''); // Start with empty display
+
+            // Set up event listeners
+            document.getElementById('team-select').addEventListener('change', handleTeamSelection);
+
+            // Set up tab switching
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+
             document.getElementById('back-btn').addEventListener('click', goBackToMain);
         });
     </script>
