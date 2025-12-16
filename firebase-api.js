@@ -191,6 +191,171 @@ class FirebaseAPI {
     }
   }
 
+  // ========== TEAM MANAGEMENT METHODS ==========
+
+  /**
+   * Add a new team to Firestore
+   * @param {Object} teamData - Team data to add
+   * @returns {Promise<string>} ID of the newly created team
+   */
+  async addTeam(teamData) {
+    await this.initialize();
+
+    try {
+      const docRef = await this.db.collection('teams').add(teamData);
+      console.log('Team added with ID:', docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error adding team:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update an existing team in Firestore
+   * @param {string} teamId - Team ID to update
+   * @param {Object} teamData - Team data to update
+   * @returns {Promise<void>}
+   */
+  async updateTeam(teamId, teamData) {
+    await this.initialize();
+
+    try {
+      await this.db.collection('teams').doc(teamId).update(teamData);
+      console.log('Team updated successfully:', teamId);
+    } catch (error) {
+      console.error('Error updating team:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a team from Firestore
+   * @param {string} teamId - Team ID to delete
+   * @returns {Promise<void>}
+   */
+  async deleteTeam(teamId) {
+    await this.initialize();
+
+    try {
+      await this.db.collection('teams').doc(teamId).delete();
+      console.log('Team deleted successfully:', teamId);
+    } catch (error) {
+      console.error('Error deleting team:', error);
+      throw error;
+    }
+  }
+
+  // ========== PLAYER MANAGEMENT METHODS ==========
+
+  /**
+   * Add a new player to Firestore
+   * @param {Object} playerData - Player data to add
+   * @returns {Promise<string>} ID of the newly created player
+   */
+  async addPlayer(playerData) {
+    await this.initialize();
+
+    try {
+      const docRef = await this.db.collection('players').add(playerData);
+      console.log('Player added with ID:', docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error adding player:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update an existing player in Firestore
+   * @param {string} playerId - Player ID to update
+   * @param {Object} playerData - Player data to update
+   * @returns {Promise<void>}
+   */
+  async updatePlayer(playerId, playerData) {
+    await this.initialize();
+
+    try {
+      await this.db.collection('players').doc(playerId).update(playerData);
+      console.log('Player updated successfully:', playerId);
+    } catch (error) {
+      console.error('Error updating player:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a player from Firestore
+   * @param {string} playerId - Player ID to delete
+   * @returns {Promise<void>}
+   */
+  async deletePlayer(playerId) {
+    await this.initialize();
+
+    try {
+      await this.db.collection('players').doc(playerId).delete();
+      console.log('Player deleted successfully:', playerId);
+    } catch (error) {
+      console.error('Error deleting player:', error);
+      throw error;
+    }
+  }
+
+  // ========== GAME MANAGEMENT METHODS ==========
+
+  /**
+   * Add a new game to Firestore
+   * @param {Object} gameData - Game data to add
+   * @returns {Promise<string>} ID of the newly created game
+   */
+  async addGame(gameData) {
+    await this.initialize();
+
+    try {
+      const docRef = await this.db.collection('games').add(gameData);
+      console.log('Game added with ID:', docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error adding game:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update an existing game in Firestore
+   * @param {string} gameId - Game ID to update
+   * @param {Object} gameData - Game data to update
+   * @returns {Promise<void>}
+   */
+  async updateGame(gameId, gameData) {
+    await this.initialize();
+
+    try {
+      await this.db.collection('games').doc(gameId).update(gameData);
+      console.log('Game updated successfully:', gameId);
+    } catch (error) {
+      console.error('Error updating game:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a game from Firestore
+   * @param {string} gameId - Game ID to delete
+   * @returns {Promise<void>}
+   */
+  async deleteGame(gameId) {
+    await this.initialize();
+
+    try {
+      await this.db.collection('games').doc(gameId).delete();
+      console.log('Game deleted successfully:', gameId);
+    } catch (error) {
+      console.error('Error deleting game:', error);
+      throw error;
+    }
+  }
+
   /**
    * Convert Firebase game data to dashboard format
    * @param {Array} firebaseGames - Games from Firebase
