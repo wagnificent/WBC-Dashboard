@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baseball Tournament Dashboard</title>
+    <title>Wooden Bat Classic Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -111,7 +111,7 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <h1>Baseball Tournament Dashboard</h1>
+        <h1>Wooden Bat Classic Dashboard</h1>
 
         <div class="filters">
             <div class="filter-group">
@@ -137,17 +137,20 @@
 
             <div class="filter-group">
                 <label for="date-filter">Date:</label>
-                <input type="date" id="date-filter">
+                <select id="date-filter">
+                    <option value="">All Dates</option>
+                </select>
             </div>
 
             <div class="filter-group">
                 <label for="time-filter">Time:</label>
-                <input type="time" id="time-filter">
+                <select id="time-filter">
+                    <option value="">All Times</option>
+                </select>
             </div>
         </div>
 
         <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button id="apply-filters">Apply Filters</button>
             <button id="reset-filters" class="reset-btn">Reset Filters</button>
         </div>
 
@@ -170,80 +173,106 @@
     </div>
 
     <script>
-        // Sample tournament data
+        // Sample tournament data - expanded to meet requirements
         const tournamentData = [
-            {
-                date: '2023-06-15',
-                time: '09:00',
-                team: 'Red Sox',
-                opponent: 'Yankees',
-                field: 'Field 1',
-                location: 'Boston Stadium',
-                result: 'Win'
-            },
-            {
-                date: '2023-06-15',
-                time: '12:00',
-                team: 'Cubs',
-                opponent: 'Cardinals',
-                field: 'Field 2',
-                location: 'Chicago Park',
-                result: 'Loss'
-            },
-            {
-                date: '2023-06-16',
-                time: '10:00',
-                team: 'Dodgers',
-                opponent: 'Giants',
-                field: 'Field 1',
-                location: 'Los Angeles Arena',
-                result: 'Win'
-            },
-            {
-                date: '2023-06-16',
-                time: '14:00',
-                team: 'Red Sox',
-                opponent: 'Orioles',
-                field: 'Field 3',
-                location: 'Boston Stadium',
-                result: 'Win'
-            },
-            {
-                date: '2023-06-17',
-                time: '09:30',
-                team: 'Yankees',
-                opponent: 'Red Sox',
-                field: 'Field 2',
-                location: 'New York Stadium',
-                result: 'Loss'
-            },
-            {
-                date: '2023-06-17',
-                time: '13:00',
-                team: 'Cubs',
-                opponent: 'Brewers',
-                field: 'Field 1',
-                location: 'Chicago Park',
-                result: 'Win'
-            },
-            {
-                date: '2023-06-18',
-                time: '11:00',
-                team: 'Dodgers',
-                opponent: 'Padres',
-                field: 'Field 3',
-                location: 'Los Angeles Arena',
-                result: 'Win'
-            },
-            {
-                date: '2023-06-18',
-                time: '15:00',
-                team: 'Giants',
-                opponent: 'Rockies',
-                field: 'Field 2',
-                location: 'San Francisco Park',
-                result: 'Loss'
-            }
+            // Day 1 - June 15, 2023
+            { date: '2023-06-15', time: '08:00', team: 'Red Sox', opponent: 'Yankees', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
+            { date: '2023-06-15', time: '08:00', team: 'Cubs', opponent: 'Cardinals', field: 'Field 2', location: 'Chicago Park', result: 'Loss' },
+            { date: '2023-06-15', time: '08:00', team: 'Dodgers', opponent: 'Giants', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
+            { date: '2023-06-15', time: '08:00', team: 'Braves', opponent: 'Phillies', field: 'Field 4', location: 'Atlanta Stadium', result: 'Win' },
+            { date: '2023-06-15', time: '08:00', team: 'Astros', opponent: 'Rangers', field: 'Field 5', location: 'Houston Park', result: 'Loss' },
+            { date: '2023-06-15', time: '08:00', team: 'Mets', opponent: 'Nationals', field: 'Field 6', location: 'New York Arena', result: 'Win' },
+            { date: '2023-06-15', time: '08:00', team: 'White Sox', opponent: 'Tigers', field: 'Field 7', location: 'Chicago Stadium', result: 'Loss' },
+
+            { date: '2023-06-15', time: '10:30', team: 'Red Sox', opponent: 'Orioles', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
+            { date: '2023-06-15', time: '10:30', team: 'Cubs', opponent: 'Brewers', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
+            { date: '2023-06-15', time: '10:30', team: 'Dodgers', opponent: 'Padres', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
+            { date: '2023-06-15', time: '10:30', team: 'Braves', opponent: 'Marlins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
+            { date: '2023-06-15', time: '10:30', team: 'Astros', opponent: 'Athletics', field: 'Field 5', location: 'Houston Park', result: 'Win' },
+            { date: '2023-06-15', time: '10:30', team: 'Mets', opponent: 'Pirates', field: 'Field 6', location: 'New York Arena', result: 'Win' },
+            { date: '2023-06-15', time: '10:30', team: 'White Sox', opponent: 'Royals', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+
+            { date: '2023-06-15', time: '13:00', team: 'Yankees', opponent: 'Rays', field: 'Field 1', location: 'New York Stadium', result: 'Loss' },
+            { date: '2023-06-15', time: '13:00', team: 'Cardinals', opponent: 'Reds', field: 'Field 2', location: 'St. Louis Park', result: 'Win' },
+            { date: '2023-06-15', time: '13:00', team: 'Giants', opponent: 'Rockies', field: 'Field 3', location: 'San Francisco Park', result: 'Loss' },
+            { date: '2023-06-15', time: '13:00', team: 'Phillies', opponent: 'Blue Jays', field: 'Field 4', location: 'Philadelphia Arena', result: 'Win' },
+            { date: '2023-06-15', time: '13:00', team: 'Rangers', opponent: 'Mariners', field: 'Field 5', location: 'Texas Stadium', result: 'Loss' },
+            { date: '2023-06-15', time: '13:00', team: 'Nationals', opponent: 'Twins', field: 'Field 6', location: 'Washington Park', result: 'Win' },
+            { date: '2023-06-15', time: '13:00', team: 'Tigers', opponent: 'Indians', field: 'Field 7', location: 'Detroit Arena', result: 'Loss' },
+
+            { date: '2023-06-15', time: '15:30', team: 'Red Sox', opponent: 'Blue Jays', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
+            { date: '2023-06-15', time: '15:30', team: 'Cubs', opponent: 'Reds', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
+            { date: '2023-06-15', time: '15:30', team: 'Dodgers', opponent: 'Mariners', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
+            { date: '2023-06-15', time: '15:30', team: 'Braves', opponent: 'Twins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
+            { date: '2023-06-15', time: '15:30', team: 'Astros', opponent: 'Indians', field: 'Field 5', location: 'Houston Park', result: 'Win' },
+            { date: '2023-06-15', time: '15:30', team: 'Mets', opponent: 'Royals', field: 'Field 6', location: 'New York Arena', result: 'Win' },
+            { date: '2023-06-15', time: '15:30', team: 'White Sox', opponent: 'Athletics', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+
+            // Day 2 - June 16, 2023
+            { date: '2023-06-16', time: '08:00', team: 'Yankees', opponent: 'Red Sox', field: 'Field 1', location: 'New York Stadium', result: 'Loss' },
+            { date: '2023-06-16', time: '08:00', team: 'Cardinals', opponent: 'Cubs', field: 'Field 2', location: 'St. Louis Park', result: 'Win' },
+            { date: '2023-06-16', time: '08:00', team: 'Giants', opponent: 'Dodgers', field: 'Field 3', location: 'San Francisco Park', result: 'Loss' },
+            { date: '2023-06-16', time: '08:00', team: 'Phillies', opponent: 'Braves', field: 'Field 4', location: 'Philadelphia Arena', result: 'Win' },
+            { date: '2023-06-16', time: '08:00', team: 'Rangers', opponent: 'Astros', field: 'Field 5', location: 'Texas Stadium', result: 'Loss' },
+            { date: '2023-06-16', time: '08:00', team: 'Nationals', opponent: 'Mets', field: 'Field 6', location: 'Washington Park', result: 'Win' },
+            { date: '2023-06-16', time: '08:00', team: 'Tigers', opponent: 'White Sox', field: 'Field 7', location: 'Detroit Arena', result: 'Loss' },
+
+            { date: '2023-06-16', time: '10:30', team: 'Rays', opponent: 'Red Sox', field: 'Field 1', location: 'Tampa Stadium', result: 'Win' },
+            { date: '2023-06-16', time: '10:30', team: 'Brewers', opponent: 'Cubs', field: 'Field 2', location: 'Milwaukee Park', result: 'Win' },
+            { date: '2023-06-16', time: '10:30', team: 'Padres', opponent: 'Dodgers', field: 'Field 3', location: 'San Diego Arena', result: 'Win' },
+            { date: '2023-06-16', time: '10:30', team: 'Marlins', opponent: 'Braves', field: 'Field 4', location: 'Miami Stadium', result: 'Loss' },
+            { date: '2023-06-16', time: '10:30', team: 'Athletics', opponent: 'Astros', field: 'Field 5', location: 'Oakland Park', result: 'Win' },
+            { date: '2023-06-16', time: '10:30', team: 'Pirates', opponent: 'Mets', field: 'Field 6', location: 'Pittsburgh Arena', result: 'Win' },
+            { date: '2023-06-16', time: '10:30', team: 'Royals', opponent: 'White Sox', field: 'Field 7', location: 'Kansas City Stadium', result: 'Win' },
+
+            { date: '2023-06-16', time: '13:00', team: 'Blue Jays', opponent: 'Yankees', field: 'Field 1', location: 'Toronto Stadium', result: 'Win' },
+            { date: '2023-06-16', time: '13:00', team: 'Reds', opponent: 'Cardinals', field: 'Field 2', location: 'Cincinnati Park', result: 'Win' },
+            { date: '2023-06-16', time: '13:00', team: 'Rockies', opponent: 'Giants', field: 'Field 3', location: 'Denver Arena', result: 'Win' },
+            { date: '2023-06-16', time: '13:00', team: 'Twins', opponent: 'Phillies', field: 'Field 4', location: 'Minneapolis Stadium', result: 'Loss' },
+            { date: '2023-06-16', time: '13:00', team: 'Mariners', opponent: 'Rangers', field: 'Field 5', location: 'Seattle Park', result: 'Win' },
+            { date: '2023-06-16', time: '13:00', team: 'Indians', opponent: 'Nationals', field: 'Field 6', location: 'Cleveland Arena', result: 'Win' },
+            { date: '2023-06-16', time: '13:00', team: 'Athletics', opponent: 'Tigers', field: 'Field 7', location: 'Oakland Stadium', result: 'Win' },
+
+            { date: '2023-06-16', time: '15:30', team: 'Red Sox', opponent: 'Blue Jays', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
+            { date: '2023-06-16', time: '15:30', team: 'Cubs', opponent: 'Reds', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
+            { date: '2023-06-16', time: '15:30', team: 'Dodgers', opponent: 'Rockies', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
+            { date: '2023-06-16', time: '15:30', team: 'Braves', opponent: 'Twins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
+            { date: '2023-06-16', time: '15:30', team: 'Astros', opponent: 'Mariners', field: 'Field 5', location: 'Houston Park', result: 'Win' },
+            { date: '2023-06-16', time: '15:30', team: 'Mets', opponent: 'Indians', field: 'Field 6', location: 'New York Arena', result: 'Win' },
+            { date: '2023-06-16', time: '15:30', team: 'White Sox', opponent: 'Athletics', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+
+            // Day 3 - June 17, 2023
+            { date: '2023-06-17', time: '08:00', team: 'Yankees', opponent: 'Rays', field: 'Field 1', location: 'New York Stadium', result: 'Loss' },
+            { date: '2023-06-17', time: '08:00', team: 'Cardinals', opponent: 'Brewers', field: 'Field 2', location: 'St. Louis Park', result: 'Win' },
+            { date: '2023-06-17', time: '08:00', team: 'Giants', opponent: 'Padres', field: 'Field 3', location: 'San Francisco Park', result: 'Loss' },
+            { date: '2023-06-17', time: '08:00', team: 'Phillies', opponent: 'Marlins', field: 'Field 4', location: 'Philadelphia Arena', result: 'Win' },
+            { date: '2023-06-17', time: '08:00', team: 'Rangers', opponent: 'Athletics', field: 'Field 5', location: 'Texas Stadium', result: 'Loss' },
+            { date: '2023-06-17', time: '08:00', team: 'Nationals', opponent: 'Pirates', field: 'Field 6', location: 'Washington Park', result: 'Win' },
+            { date: '2023-06-17', time: '08:00', team: 'Tigers', opponent: 'Royals', field: 'Field 7', location: 'Detroit Arena', result: 'Loss' },
+
+            { date: '2023-06-17', time: '10:30', team: 'Red Sox', opponent: 'Yankees', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
+            { date: '2023-06-17', time: '10:30', team: 'Cubs', opponent: 'Cardinals', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
+            { date: '2023-06-17', time: '10:30', team: 'Dodgers', opponent: 'Giants', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
+            { date: '2023-06-17', time: '10:30', team: 'Braves', opponent: 'Phillies', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
+            { date: '2023-06-17', time: '10:30', team: 'Astros', opponent: 'Rangers', field: 'Field 5', location: 'Houston Park', result: 'Win' },
+            { date: '2023-06-17', time: '10:30', team: 'Mets', opponent: 'Nationals', field: 'Field 6', location: 'New York Arena', result: 'Win' },
+            { date: '2023-06-17', time: '10:30', team: 'White Sox', opponent: 'Tigers', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+
+            { date: '2023-06-17', time: '13:00', team: 'Rays', opponent: 'Blue Jays', field: 'Field 1', location: 'Tampa Stadium', result: 'Win' },
+            { date: '2023-06-17', time: '13:00', team: 'Brewers', opponent: 'Reds', field: 'Field 2', location: 'Milwaukee Park', result: 'Win' },
+            { date: '2023-06-17', time: '13:00', team: 'Padres', opponent: 'Rockies', field: 'Field 3', location: 'San Diego Arena', result: 'Win' },
+            { date: '2023-06-17', time: '13:00', team: 'Marlins', opponent: 'Twins', field: 'Field 4', location: 'Miami Stadium', result: 'Loss' },
+            { date: '2023-06-17', time: '13:00', team: 'Athletics', opponent: 'Mariners', field: 'Field 5', location: 'Oakland Park', result: 'Win' },
+            { date: '2023-06-17', time: '13:00', team: 'Pirates', opponent: 'Indians', field: 'Field 6', location: 'Pittsburgh Arena', result: 'Win' },
+            { date: '2023-06-17', time: '13:00', team: 'Royals', opponent: 'Athletics', field: 'Field 7', location: 'Kansas City Stadium', result: 'Win' },
+
+            { date: '2023-06-17', time: '15:30', team: 'Red Sox', opponent: 'Rays', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
+            { date: '2023-06-17', time: '15:30', team: 'Cubs', opponent: 'Brewers', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
+            { date: '2023-06-17', time: '15:30', team: 'Dodgers', opponent: 'Padres', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
+            { date: '2023-06-17', time: '15:30', team: 'Braves', opponent: 'Marlins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
+            { date: '2023-06-17', time: '15:30', team: 'Astros', opponent: 'Athletics', field: 'Field 5', location: 'Houston Park', result: 'Win' },
+            { date: '2023-06-17', time: '15:30', team: 'Mets', opponent: 'Pirates', field: 'Field 6', location: 'New York Arena', result: 'Win' },
+            { date: '2023-06-17', time: '15:30', team: 'White Sox', opponent: 'Royals', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' }
         ];
 
         // Function to populate filter dropdowns
@@ -251,11 +280,15 @@
             const teamFilter = document.getElementById('team-filter');
             const opponentFilter = document.getElementById('opponent-filter');
             const fieldFilter = document.getElementById('field-filter');
+            const dateFilter = document.getElementById('date-filter');
+            const timeFilter = document.getElementById('time-filter');
 
             // Get unique values for each filter
             const teams = [...new Set(tournamentData.map(game => game.team))].sort();
             const opponents = [...new Set(tournamentData.map(game => game.opponent))].sort();
             const fields = [...new Set(tournamentData.map(game => game.field))].sort();
+            const dates = [...new Set(tournamentData.map(game => game.date))].sort();
+            const times = [...new Set(tournamentData.map(game => game.time))].sort();
 
             // Populate team filter
             teams.forEach(team => {
@@ -280,6 +313,29 @@
                 option.textContent = field;
                 fieldFilter.appendChild(option);
             });
+
+            // Populate date filter
+            dates.forEach(date => {
+                const option = document.createElement('option');
+                option.value = date;
+                option.textContent = formatDateForDisplay(date);
+                dateFilter.appendChild(option);
+            });
+
+            // Populate time filter
+            times.forEach(time => {
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                timeFilter.appendChild(option);
+            });
+        }
+
+        // Helper function to format dates for display (convert YYYY-MM-DD to more readable format)
+        function formatDateForDisplay(dateString) {
+            const [year, month, day] = dateString.split('-');
+            const date = new Date(year, month - 1, day);
+            return date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
         }
 
         // Function to display tournament data
@@ -357,14 +413,57 @@
             displayData(tournamentData);
         }
 
+        // Function to verify tournament requirements
+        function verifyTournamentRequirements() {
+            const teams = [...new Set(tournamentData.map(game => game.team))];
+            const fields = [...new Set(tournamentData.map(game => game.field))];
+            const dates = [...new Set(tournamentData.map(game => game.date))];
+
+            // Count games per team
+            const gamesPerTeam = {};
+            tournamentData.forEach(game => {
+                gamesPerTeam[game.team] = (gamesPerTeam[game.team] || 0) + 1;
+            });
+
+            console.log('Tournament Verification:');
+            console.log(`- Teams: ${teams.length} (required: 22)`);
+            console.log(`- Fields: ${fields.length} (required: 7)`);
+            console.log(`- Tournament days: ${dates.length} (required: 3)`);
+            console.log(`- Dates: ${Array.from(dates).join(', ')}`);
+
+            // Check each team has at least 7 games
+            let allTeamsMeetRequirement = true;
+            teams.forEach(team => {
+                const games = gamesPerTeam[team] || 0;
+                if (games < 7) {
+                    console.log(`❌ ${team}: ${games} games (needs at least 7)`);
+                    allTeamsMeetRequirement = false;
+                } else {
+                    console.log(`✅ ${team}: ${games} games`);
+                }
+            });
+
+            if (teams.length === 22 && fields.length === 7 && dates.length === 3 && allTeamsMeetRequirement) {
+                console.log('✅ All tournament requirements met!');
+            } else {
+                console.log('❌ Some requirements not met');
+            }
+        }
+
         // Initialize the dashboard
         document.addEventListener('DOMContentLoaded', function() {
             populateFilters();
             displayData(tournamentData);
 
             // Set up event listeners
-            document.getElementById('apply-filters').addEventListener('click', applyFilters);
             document.getElementById('reset-filters').addEventListener('click', resetFilters);
+
+            // Apply filters automatically when any filter selection changes
+            document.getElementById('team-filter').addEventListener('change', applyFilters);
+            document.getElementById('opponent-filter').addEventListener('change', applyFilters);
+            document.getElementById('field-filter').addEventListener('change', applyFilters);
+            document.getElementById('date-filter').addEventListener('change', applyFilters);
+            document.getElementById('time-filter').addEventListener('change', applyFilters);
 
             // Also apply filters when Enter key is pressed in any filter input
             document.querySelectorAll('.filter-group input, .filter-group select').forEach(input => {
@@ -374,6 +473,9 @@
                     }
                 });
             });
+
+            // Verify tournament requirements
+            verifyTournamentRequirements();
         });
     </script>
 </body>
