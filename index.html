@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseball Tournament Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 6px;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .filter-group input[type="date"],
+        .filter-group input[type="time"] {
+            padding: 7px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .reset-btn {
+            background-color: #f44336;
+        }
+        .reset-btn:hover {
+            background-color: #d32f2f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+            }
+            .filter-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Baseball Tournament Dashboard</h1>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="team-filter">Team:</label>
+                <select id="team-filter">
+                    <option value="">All Teams</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="opponent-filter">Opponent:</label>
+                <select id="opponent-filter">
+                    <option value="">All Opponents</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="field-filter">Field:</label>
+                <select id="field-filter">
+                    <option value="">All Fields</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="date-filter">Date:</label>
+                <input type="date" id="date-filter">
+            </div>
+
+            <div class="filter-group">
+                <label for="time-filter">Time:</label>
+                <input type="time" id="time-filter">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button id="apply-filters">Apply Filters</button>
+            <button id="reset-filters" class="reset-btn">Reset Filters</button>
+        </div>
+
+        <table id="tournament-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Team</th>
+                    <th>Opponent</th>
+                    <th>Field</th>
+                    <th>Location</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody id="tournament-data">
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Sample tournament data
+        const tournamentData = [
+            {
+                date: '2023-06-15',
+                time: '09:00',
+                team: 'Red Sox',
+                opponent: 'Yankees',
+                field: 'Field 1',
+                location: 'Boston Stadium',
+                result: 'Win'
+            },
+            {
+                date: '2023-06-15',
+                time: '12:00',
+                team: 'Cubs',
+                opponent: 'Cardinals',
+                field: 'Field 2',
+                location: 'Chicago Park',
+                result: 'Loss'
+            },
+            {
+                date: '2023-06-16',
+                time: '10:00',
+                team: 'Dodgers',
+                opponent: 'Giants',
+                field: 'Field 1',
+                location: 'Los Angeles Arena',
+                result: 'Win'
+            },
+            {
+                date: '2023-06-16',
+                time: '14:00',
+                team: 'Red Sox',
+                opponent: 'Orioles',
+                field: 'Field 3',
+                location: 'Boston Stadium',
+                result: 'Win'
+            },
+            {
+                date: '2023-06-17',
+                time: '09:30',
+                team: 'Yankees',
+                opponent: 'Red Sox',
+                field: 'Field 2',
+                location: 'New York Stadium',
+                result: 'Loss'
+            },
+            {
+                date: '2023-06-17',
+                time: '13:00',
+                team: 'Cubs',
+                opponent: 'Brewers',
+                field: 'Field 1',
+                location: 'Chicago Park',
+                result: 'Win'
+            },
+            {
+                date: '2023-06-18',
+                time: '11:00',
+                team: 'Dodgers',
+                opponent: 'Padres',
+                field: 'Field 3',
+                location: 'Los Angeles Arena',
+                result: 'Win'
+            },
+            {
+                date: '2023-06-18',
+                time: '15:00',
+                team: 'Giants',
+                opponent: 'Rockies',
+                field: 'Field 2',
+                location: 'San Francisco Park',
+                result: 'Loss'
+            }
+        ];
+
+        // Function to populate filter dropdowns
+        function populateFilters() {
+            const teamFilter = document.getElementById('team-filter');
+            const opponentFilter = document.getElementById('opponent-filter');
+            const fieldFilter = document.getElementById('field-filter');
+
+            // Get unique values for each filter
+            const teams = [...new Set(tournamentData.map(game => game.team))].sort();
+            const opponents = [...new Set(tournamentData.map(game => game.opponent))].sort();
+            const fields = [...new Set(tournamentData.map(game => game.field))].sort();
+
+            // Populate team filter
+            teams.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team;
+                option.textContent = team;
+                teamFilter.appendChild(option);
+            });
+
+            // Populate opponent filter
+            opponents.forEach(opponent => {
+                const option = document.createElement('option');
+                option.value = opponent;
+                option.textContent = opponent;
+                opponentFilter.appendChild(option);
+            });
+
+            // Populate field filter
+            fields.forEach(field => {
+                const option = document.createElement('option');
+                option.value = field;
+                option.textContent = field;
+                fieldFilter.appendChild(option);
+            });
+        }
+
+        // Function to display tournament data
+        function displayData(data) {
+            const tableBody = document.getElementById('tournament-data');
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="7" class="no-results">No games found matching the filters.</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+
+            data.forEach(game => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${game.date}</td>
+                    <td>${game.time}</td>
+                    <td>${game.team}</td>
+                    <td>${game.opponent}</td>
+                    <td>${game.field}</td>
+                    <td>${game.location}</td>
+                    <td>${game.result}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to apply filters
+        function applyFilters() {
+            const teamFilter = document.getElementById('team-filter').value;
+            const opponentFilter = document.getElementById('opponent-filter').value;
+            const fieldFilter = document.getElementById('field-filter').value;
+            const dateFilter = document.getElementById('date-filter').value;
+            const timeFilter = document.getElementById('time-filter').value;
+
+            let filteredData = tournamentData;
+
+            // Apply team filter
+            if (teamFilter) {
+                filteredData = filteredData.filter(game => game.team === teamFilter);
+            }
+
+            // Apply opponent filter
+            if (opponentFilter) {
+                filteredData = filteredData.filter(game => game.opponent === opponentFilter);
+            }
+
+            // Apply field filter
+            if (fieldFilter) {
+                filteredData = filteredData.filter(game => game.field === fieldFilter);
+            }
+
+            // Apply date filter
+            if (dateFilter) {
+                filteredData = filteredData.filter(game => game.date === dateFilter);
+            }
+
+            // Apply time filter
+            if (timeFilter) {
+                filteredData = filteredData.filter(game => game.time === timeFilter);
+            }
+
+            displayData(filteredData);
+        }
+
+        // Function to reset filters
+        function resetFilters() {
+            document.getElementById('team-filter').value = '';
+            document.getElementById('opponent-filter').value = '';
+            document.getElementById('field-filter').value = '';
+            document.getElementById('date-filter').value = '';
+            document.getElementById('time-filter').value = '';
+            displayData(tournamentData);
+        }
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            populateFilters();
+            displayData(tournamentData);
+
+            // Set up event listeners
+            document.getElementById('apply-filters').addEventListener('click', applyFilters);
+            document.getElementById('reset-filters').addEventListener('click', resetFilters);
+
+            // Also apply filters when Enter key is pressed in any filter input
+            document.querySelectorAll('.filter-group input, .filter-group select').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        applyFilters();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
