@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBC Tournament - Schedule View</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 30px; font-size: 28px; }
+        .navigation { text-align: center; margin: 20px 0; }
+        .nav-btn { background-color: #2ecc71; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin: 0 10px; text-decoration: none; display: inline-block; }
+        .nav-btn:hover { background-color: #27ae60; }
+        .print-btn { background-color: #3498db; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 20px auto; display: block; }
+        .print-btn:hover { background-color: #2980b9; }
+        .day-schedule { margin-bottom: 30px; }
+        .day-header { background-color: #3498db; color: white; padding: 15px; border-radius: 5px; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+        .game-card { background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .game-info { flex: 1; }
+        .game-time { font-weight: bold; color: #e74c3c; font-size: 18px; }
+        .game-teams { font-size: 18px; margin: 5px 0; }
+        .game-stadium { color: #666; font-size: 14px; }
+        .game-score { font-weight: bold; font-size: 16px; }
+        .completed { color: #27ae60; }
+        .upcoming { color: #e67e22; }
+        .last-updated { text-align: center; color: #666; font-size: 14px; margin-top: 20px; }
+        @media print {
+            .print-btn, .navigation { display: none; }
+            .game-card { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📅 WBC Tournament - Game Schedule</h1>
+
+        <div class="navigation">
+            <a href="teams-view.html" class="nav-btn">👥 Teams</a>
+            <a href="schedule-view.html" class="nav-btn">📅 Schedule</a>
+            <a href="standings-view.html" class="nav-btn">🏅 Standings</a>
+            <a href="players-view.html" class="nav-btn">👤 Players</a>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">🖨️ Print Schedule</button>
+
+        <div id="schedule-container">
+            <div class="day-schedule">
+                <div class="day-header">Monday Games</div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">08:00 AM</div>
+                        <div class="game-teams">Red Sox vs Cubs</div>
+                        <div class="game-stadium">Field 1</div>
+                    </div>
+                    <div class="game-score completed">5-3</div>
+                </div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">10:00 AM</div>
+                        <div class="game-teams">Dodgers vs Braves</div>
+                        <div class="game-stadium">Field 2</div>
+                    </div>
+                    <div class="game-score completed">4-2</div>
+                </div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">12:00 PM</div>
+                        <div class="game-teams">Astros vs Mets</div>
+                        <div class="game-stadium">Field 1</div>
+                    </div>
+                    <div class="game-score completed">6-1</div>
+                </div>
+            </div>
+
+            <div class="day-schedule">
+                <div class="day-header">Tuesday Games</div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">08:00 AM</div>
+                        <div class="game-teams">Cubs vs Dodgers</div>
+                        <div class="game-stadium">Field 1</div>
+                    </div>
+                    <div class="game-score completed">3-5</div>
+                </div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">10:00 AM</div>
+                        <div class="game-teams">Braves vs Astros</div>
+                        <div class="game-stadium">Field 2</div>
+                    </div>
+                    <div class="game-score completed">2-4</div>
+                </div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">12:00 PM</div>
+                        <div class="game-teams">Mets vs Red Sox</div>
+                        <div class="game-stadium">Field 1</div>
+                    </div>
+                    <div class="game-score completed">1-7</div>
+                </div>
+            </div>
+
+            <div class="day-schedule">
+                <div class="day-header">Wednesday Games</div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">08:00 AM</div>
+                        <div class="game-teams">Red Sox vs Braves</div>
+                        <div class="game-stadium">Field 1</div>
+                    </div>
+                    <div class="game-score completed">4-3</div>
+                </div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">10:00 AM</div>
+                        <div class="game-teams">Cubs vs Mets</div>
+                        <div class="game-stadium">Field 2</div>
+                    </div>
+                    <div class="game-score completed">5-2</div>
+                </div>
+                <div class="game-card">
+                    <div class="game-info">
+                        <div class="game-time">12:00 PM</div>
+                        <div class="game-teams">Dodgers vs Astros</div>
+                        <div class="game-stadium">Field 1</div>
+                    </div>
+                    <div class="game-score completed">3-1</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated">
+            Last updated: <span id="last-updated-time"></span>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('last-updated-time').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>

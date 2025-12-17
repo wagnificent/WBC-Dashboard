@@ -1,0 +1,10 @@
+Day of Week,Time,Stadium Name,Home Team,Visiting Team,Home Score,Visiting Score,Game Complete
+Monday,08:00,Field 1,Red Sox,Cubs,5,3,TRUE
+Monday,10:00,Field 2,Dodgers,Braves,4,2,TRUE
+Monday,12:00,Field 1,Astros,Mets,6,1,TRUE
+Tuesday,08:00,Field 1,Cubs,Dodgers,3,5,TRUE
+Tuesday,10:00,Field 2,Braves,Astros,2,4,TRUE
+Tuesday,12:00,Field 1,Mets,Red Sox,1,7,TRUE
+Wednesday,08:00,Field 1,Red Sox,Braves,4,3,TRUE
+Wednesday,10:00,Field 2,Cubs,Mets,5,2,TRUE
+Wednesday,12:00,Field 1,Dodgers,Astros,3,1,TRUE

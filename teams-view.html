@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBC Tournament - Teams View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .team-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .team-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .win-percentage {
+            font-size: 20px;
+            font-weight: bold;
+            color: #27ae60;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .print-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        .print-btn:hover {
+            background-color: #2980b9;
+        }
+        .last-updated {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .navigation {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .nav-btn {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        .nav-btn:hover {
+            background-color: #27ae60;
+        }
+        @media print {
+            .print-btn, .navigation {
+                display: none;
+            }
+            .team-card {
+                page-break-inside: avoid;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 WBC Tournament - Team Information</h1>
+
+        <div class="navigation">
+            <a href="teams-view.html" class="nav-btn">👥 Teams</a>
+            <a href="schedule-view.html" class="nav-btn">📅 Schedule</a>
+            <a href="standings-view.html" class="nav-btn">🏅 Standings</a>
+            <a href="players-view.html" class="nav-btn">👤 Players</a>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">🖨️ Print Team Information</button>
+
+        <!-- Team cards will be populated here -->
+        <div id="teams-container">
+            <!-- Teams will be added dynamically -->
+            <div class="team-card">
+                <div class="team-name">Red Sox</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Wins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Losses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                </div>
+                <div class="win-percentage">Win %: 0.000</div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-name">Cubs</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Wins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Losses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                </div>
+                <div class="win-percentage">Win %: 0.000</div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-name">Dodgers</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Wins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Losses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                </div>
+                <div class="win-percentage">Win %: 0.000</div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-name">Braves</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Wins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Losses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                </div>
+                <div class="win-percentage">Win %: 0.000</div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-name">Astros</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Wins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Losses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                </div>
+                <div class="win-percentage">Win %: 0.000</div>
+            </div>
+
+            <div class="team-card">
+                <div class="team-name">Mets</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Wins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Losses</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                </div>
+                <div class="win-percentage">Win %: 0.000</div>
+            </div>
+        </div>
+
+        <div class="last-updated">
+            Last updated: <span id="last-updated-time"></span>
+        </div>
+    </div>
+
+    <script>
+        // Set last updated time
+        document.getElementById('last-updated-time').textContent = new Date().toLocaleString();
+
+        // Simple data update simulation (in real implementation, this would fetch from Airtable)
+        function updateTeamStats() {
+            // This would be replaced with actual Airtable API calls
+            console.log('Team stats would be updated from Airtable here');
+        }
+
+        // Auto-refresh every 5 minutes (300,000 ms)
+        setInterval(updateTeamStats, 300000);
+    </script>
+</body>
+</html>

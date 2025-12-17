@@ -67,6 +67,11 @@ class FirebaseAPI {
         teams.push({
           team_id: doc.id,
           team_name: doc.data().team_name,
+          wins: doc.data().wins || 0,
+          losses: doc.data().losses || 0,
+          runs_scored: doc.data().runs_scored || 0,
+          runs_allowed: doc.data().runs_allowed || 0,
+          players_count: doc.data().players_count || 0,
           ...doc.data()
         });
       });

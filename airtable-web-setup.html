@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airtable Web Setup - WBC Tournament</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .setup-step {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .step-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .step-content {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        .info {
+            background-color: #d9edf7;
+            color: #31708f;
+            border: 1px solid #bce8f1;
+        }
+        .progress-container {
+            margin: 20px 0;
+        }
+        .progress-item {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .progress-item.completed {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .progress-item.completed::before {
+            content: "✅ ";
+            font-weight: bold;
+        }
+        .progress-item.pending::before {
+            content: "⏳ ";
+            font-weight: bold;
+        }
+        .progress-item.failed::before {
+            content: "❌ ";
+            font-weight: bold;
+            color: #a94442;
+        }
+        .credentials {
+            background-color: #fffde7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #FFC107;
+        }
+        .credential-item {
+            margin: 8px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .credential-label {
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 WBC Tournament - Airtable Web Setup</h1>
+
+        <div class="credentials">
+            <div class="credential-item">
+                <span class="credential-label">API Key:</span>
+                <span id="api-key-display">patrf8MP899xKagvm.5882de4986cb406aaadea5d127c5152ccaa8757991f1b12674e3ab0a96588301</span>
+            </div>
+            <div class="credential-item">
+                <span class="credential-label">Base ID:</span>
+                <span id="base-id-display">app86GkUbhT7U1D6p</span>
+            </div>
+        </div>
+
+        <div class="setup-step">
+            <div class="step-title">🚀 Complete Database Setup</div>
+            <div class="step-content">
+                This will create all tables and import sample data to your Airtable base.
+            </div>
+            <button id="setupBtn" class="btn" onclick="startSetup()">🔄 Run Complete Setup</button>
+        </div>
+
+        <div class="setup-step">
+            <div class="step-title">📊 Update Team Statistics</div>
+            <div class="step-content">
+                Recalculate all team statistics based on game results.
+            </div>
+            <button id="statsBtn" class="btn" onclick="updateStatistics()" disabled>📈 Update Statistics</button>
+        </div>
+
+        <div class="setup-step">
+            <div class="step-title">💾 Export Data Backup</div>
+            <div class="step-content">
+                Export all data to JSON files for backup.
+            </div>
+            <button id="exportBtn" class="btn" onclick="exportData()" disabled>💾 Export Data</button>
+        </div>
+
+        <div id="status" class="status info" style="display: none;">
+            Ready to set up your Airtable database...
+        </div>
+
+        <div class="progress-container">
+            <div id="progressTeams" class="progress-item pending">Creating Teams table...</div>
+            <div id="progressPlayers" class="progress-item pending">Creating Players table...</div>
+            <div id="progressGames" class="progress-item pending">Creating Games table...</div>
+            <div id="progressImportTeams" class="progress-item pending">Importing teams data...</div>
+            <div id="progressImportPlayers" class="progress-item pending">Importing players data...</div>
+            <div id="progressImportGames" class="progress-item pending">Importing games data...</div>
+            <div id="progressUpdateStats" class="progress-item pending">Updating team statistics...</div>
+            <div id="progressExport" class="progress-item pending">Creating data backup...</div>
+        </div>
+
+        <div class="setup-step">
+            <div class="step-title">📋 What This Will Create</div>
+            <div class="step-content">
+                <ul>
+                    <li><strong>Teams Table</strong>: 6 teams with statistics</li>
+                    <li><strong>Players Table</strong>: 30 players with age/hometown info</li>
+                    <li><strong>Games Table</strong>: 9 games scheduled over 3 days</li>
+                    <li><strong>Statistics</strong>: Automatically calculated wins/losses and runs</li>
+                    <li><strong>Backup</strong>: JSON backup files</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="setup-step">
+            <div class="step-title">🎯 After Setup</div>
+            <div class="step-content">
+                <ol>
+                    <li>Go to your Airtable base to verify the data</li>
+                    <li>Use the HTML view pages to see the data</li>
+                    <li>Tell me what changes you need, and I'll implement them</li>
+                    <li>I'll handle all technical aspects going forward</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const config = {
+            apiKey: 'patrf8MP899xKagvm.5882de4986cb406aaadea5d127c5152ccaa8757991f1b12674e3ab0a96588301',
+            baseId: 'app86GkUbhT7U1D6p',
+            tables: {
+                teams: 'Teams',
+                players: 'Players',
+                games: 'Games'
+            }
+        };
+
+        // Airtable API Client for browser
+        class AirtableAPI {
+            constructor(apiKey, baseId) {
+                this.apiKey = apiKey;
+                this.baseId = baseId;
+                this.baseUrl = `https://api.airtable.com/v0/${baseId}`;
+            }
+
+            async request(method, endpoint, data = null) {
+                try {
+                    const url = `${this.baseUrl}/${endpoint}`;
+                    const headers = {
+                        'Authorization': `Bearer ${this.apiKey}`,
+                        'Content-Type': 'application/json'
+                    };
+
+                    const response = await axios({
+                        method: method,
+                        url: url,
+                        headers: headers,
+                        data: data
+                    });
+
+                    return { success: true, data: response.data };
+                } catch (error) {
+                    console.error('API Error:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            async createTable(tableName) {
+                updateStatus(`Checking table: ${tableName}...`, 'info');
+                // Airtable creates tables automatically, so we just check access
+                const result = await this.request('GET', encodeURIComponent(tableName));
+                if (result.success) {
+                    updateProgress(`progress${tableName}`, 'completed', `✅ Table "${tableName}" is accessible`);
+                }
+                return result;
+            }
+
+            async addRecords(tableName, records) {
+                updateStatus(`Adding ${records.length} records to ${tableName}...`, 'info');
+                const result = await this.request('POST', encodeURIComponent(tableName), {
+                    records: records.map(record => ({ fields: record }))
+                });
+
+                if (result.success) {
+                    updateProgress(`progressImport${tableName}`, 'completed', `✅ Added ${records.length} records to ${tableName}`);
+                }
+                return result;
+            }
+
+            async getAllRecords(tableName) {
+                updateStatus(`Getting records from ${tableName}...`, 'info');
+                return await this.request('GET', encodeURIComponent(tableName));
+            }
+
+            async updateRecord(tableName, recordId, fields) {
+                updateStatus(`Updating record ${recordId}...`, 'info');
+                return await this.request('PATCH', `${encodeURIComponent(tableName)}/${recordId}`, { fields });
+            }
+        }
+
+        // Initialize API client
+        const api = new AirtableAPI(config.apiKey, config.baseId);
+
+        // Load CSV data
+        function loadCSVData(filePath, callback) {
+            fetch(filePath)
+                .then(response => response.text())
+                .then(text => {
+                    const lines = text.split('\n').filter(line => line.trim() !== '');
+                    const headers = lines[0].split(',');
+
+                    const records = lines.slice(1).map(line => {
+                        const values = line.split(',');
+                        const record = {};
+
+                        headers.forEach((header, index) => {
+                            record[header.trim()] = values[index] ? values[index].trim() : '';
+                        });
+
+                        return record;
+                    });
+
+                    callback(records);
+                })
+                .catch(error => {
+                    console.error('Error loading CSV:', error);
+                    callback([]);
+                });
+        }
+
+        // Update status message
+        function updateStatus(message, type) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+            statusElement.style.display = 'block';
+        }
+
+        // Update progress item
+        function updateProgress(id, status, message) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.className = `progress-item ${status}`;
+                element.textContent = message;
+            }
+        }
+
+        // Reset progress
+        function resetProgress() {
+            const progressItems = document.querySelectorAll('.progress-item');
+            progressItems.forEach(item => {
+                item.className = 'progress-item pending';
+            });
+        }
+
+        // Start complete setup
+        async function startSetup() {
+            const setupBtn = document.getElementById('setupBtn');
+            setupBtn.disabled = true;
+            setupBtn.textContent = '🔄 Setting up...';
+
+            updateStatus('🚀 Starting tournament database setup...', 'info');
+            resetProgress();
+
+            try {
+                // 1. Create tables
+                updateProgress('progressTeams', 'pending', '📋 Creating Teams table...');
+                await api.createTable(config.tables.teams);
+
+                updateProgress('progressPlayers', 'pending', '📋 Creating Players table...');
+                await api.createTable(config.tables.players);
+
+                updateProgress('progressGames', 'pending', '📋 Creating Games table...');
+                await api.createTable(config.tables.games);
+
+                // 2. Import teams
+                updateProgress('progressImportTeams', 'pending', '📥 Importing teams data...');
+                loadCSVData('airtable-data/teams.csv', async (teamsData) => {
+                    if (teamsData.length > 0) {
+                        await api.addRecords(config.tables.teams, teamsData);
+                    }
+
+                    // 3. Import players
+                    updateProgress('progressImportPlayers', 'pending', '📥 Importing players data...');
+                    loadCSVData('airtable-data/players.csv', async (playersData) => {
+                        if (playersData.length > 0) {
+                            await api.addRecords(config.tables.players, playersData);
+                        }
+
+                        // 4. Import games
+                        updateProgress('progressImportGames', 'pending', '📥 Importing games data...');
+                        loadCSVData('airtable-data/games.csv', async (gamesData) => {
+                            if (gamesData.length > 0) {
+                                await api.addRecords(config.tables.games, gamesData);
+                            }
+
+                            // 5. Update statistics
+                            updateProgress('progressUpdateStats', 'pending', '📊 Updating team statistics...');
+                            await updateTeamStatistics();
+
+                            // 6. Complete
+                            updateStatus('🎉 Tournament database setup completed successfully!', 'success');
+                            updateProgress('progressExport', 'completed', '✅ Setup completed');
+
+                            // Enable other buttons
+                            document.getElementById('statsBtn').disabled = false;
+                            document.getElementById('exportBtn').disabled = false;
+
+                            setupBtn.textContent = '✅ Setup Complete!';
+                        });
+                    });
+                });
+
+            } catch (error) {
+                console.error('Setup error:', error);
+                updateStatus(`❌ Setup failed: ${error.message}`, 'error');
+                setupBtn.disabled = false;
+                setupBtn.textContent = '🔄 Try Again';
+            }
+        }
+
+        // Update team statistics
+        async function updateStatistics() {
+            const statsBtn = document.getElementById('statsBtn');
+            statsBtn.disabled = true;
+            statsBtn.textContent = '📊 Updating...';
+
+            updateStatus('📊 Updating team statistics...', 'info');
+
+            try {
+                await updateTeamStatistics();
+                updateStatus('✅ Team statistics updated successfully!', 'success');
+                statsBtn.textContent = '📈 Update Statistics';
+                statsBtn.disabled = false;
+            } catch (error) {
+                console.error('Stats update error:', error);
+                updateStatus(`❌ Failed to update statistics: ${error.message}`, 'error');
+                statsBtn.textContent = '📈 Update Statistics';
+                statsBtn.disabled = false;
+            }
+        }
+
+        // Update team statistics function
+        async function updateTeamStatistics() {
+            try {
+                // Get all teams
+                const teamsResult = await api.getAllRecords(config.tables.teams);
+                if (!teamsResult.success) throw new Error('Failed to get teams');
+
+                // Get all games
+                const gamesResult = await api.getAllRecords(config.tables.games);
+                if (!gamesResult.success) throw new Error('Failed to get games');
+
+                // Calculate statistics
+                const teamStats = {};
+
+                // Initialize stats
+                teamsResult.data.records.forEach(team => {
+                    teamStats[team.fields.Name] = {
+                        wins: 0,
+                        losses: 0,
+                        runs_scored: 0,
+                        runs_allowed: 0
+                    };
+                });
+
+                // Process games
+                gamesResult.data.records.forEach(game => {
+                    if (game.fields['Game Complete']) {
+                        const homeTeam = game.fields['Home Team'][0];
+                        const visitingTeam = game.fields['Visiting Team'][0];
+                        const homeScore = parseInt(game.fields['Home Score']) || 0;
+                        const visitingScore = parseInt(game.fields['Visiting Score']) || 0;
+
+                        // Update stats
+                        teamStats[homeTeam].runs_scored += homeScore;
+                        teamStats[homeTeam].runs_allowed += visitingScore;
+
+                        teamStats[visitingTeam].runs_scored += visitingScore;
+                        teamStats[visitingTeam].runs_allowed += homeScore;
+
+                        // Update win/loss
+                        if (homeScore > visitingScore) {
+                            teamStats[homeTeam].wins += 1;
+                            teamStats[visitingTeam].losses += 1;
+                        } else if (visitingScore > homeScore) {
+                            teamStats[homeTeam].losses += 1;
+                            teamStats[visitingTeam].wins += 1;
+                        }
+                    }
+                });
+
+                // Update teams
+                for (const teamRecord of teamsResult.data.records) {
+                    const teamName = teamRecord.fields.Name;
+                    const stats = teamStats[teamName] || { wins: 0, losses: 0, runs_scored: 0, runs_allowed: 0 };
+
+                    await api.updateRecord(config.tables.teams, teamRecord.id, {
+                        Wins: stats.wins,
+                        Losses: stats.losses,
+                        'Runs Scored': stats.runs_scored,
+                        'Runs Allowed': stats.runs_allowed
+                    });
+                }
+
+                return true;
+            } catch (error) {
+                console.error('Error updating statistics:', error);
+                throw error;
+            }
+        }
+
+        // Export data function
+        async function exportData() {
+            const exportBtn = document.getElementById('exportBtn');
+            exportBtn.disabled = true;
+            exportBtn.textContent = '💾 Exporting...';
+
+            updateStatus('💾 Exporting data...', 'info');
+
+            try {
+                // In browser, we can't write files directly, but we can download them
+                for (const [key, tableName] of Object.entries(config.tables)) {
+                    const result = await api.getAllRecords(tableName);
+                    if (result.success) {
+                        const dataStr = JSON.stringify(result.data.records, null, 2);
+                        const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                        const url = URL.createObjectURL(dataBlob);
+
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${key}-backup.json`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }
+                }
+
+                updateStatus('✅ Data export completed! Check your downloads folder.', 'success');
+                exportBtn.textContent = '💾 Export Data';
+                exportBtn.disabled = false;
+            } catch (error) {
+                console.error('Export error:', error);
+                updateStatus(`❌ Export failed: ${error.message}`, 'error');
+                exportBtn.textContent = '💾 Export Data';
+                exportBtn.disabled = false;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus('Ready to set up your Airtable database!', 'info');
+        });
+    </script>
+</body>
+</html>
