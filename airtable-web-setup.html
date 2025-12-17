@@ -131,11 +131,15 @@
         <div class="credentials">
             <div class="credential-item">
                 <span class="credential-label">API Key:</span>
-                <span id="api-key-display">patrf8MP899xKagvm.5882de4986cb406aaadea5d127c5152ccaa8757991f1b12674e3ab0a96588301</span>
+                <span id="api-key-display">[YOUR_AIRTABLE_API_KEY]</span>
             </div>
             <div class="credential-item">
                 <span class="credential-label">Base ID:</span>
-                <span id="base-id-display">app86GkUbhT7U1D6p</span>
+                <span id="base-id-display">[YOUR_AIRTABLE_BASE_ID]</span>
+            </div>
+            <div class="credential-item">
+                <span class="credential-label">Note:</span>
+                <span>For security, configure your API key and Base ID in environment variables. See .env.example for setup instructions.</span>
             </div>
         </div>
 
@@ -205,16 +209,31 @@
     </div>
 
     <script>
-        // Configuration
+        // Configuration - should be loaded from environment variables
         const config = {
-            apiKey: 'patrf8MP899xKagvm.5882de4986cb406aaadea5d127c5152ccaa8757991f1b12674e3ab0a96588301',
-            baseId: 'app86GkUbhT7U1D6p',
+            apiKey: '', // Set this from environment variables
+            baseId: '', // Set this from environment variables
             tables: {
                 teams: 'Teams',
                 players: 'Players',
                 games: 'Games'
             }
         };
+
+        // Load configuration from environment or prompt user
+        function loadConfiguration() {
+            // In a real implementation, you would load these from environment variables
+            // For this demo, we'll use placeholders
+            config.apiKey = prompt('Please enter your Airtable API Key:', '[YOUR_AIRTABLE_API_KEY]') || '';
+            config.baseId = prompt('Please enter your Airtable Base ID:', '[YOUR_AIRTABLE_BASE_ID]') || '';
+
+            if (!config.apiKey || !config.baseId) {
+                alert('❌ Please configure your Airtable credentials in environment variables. See .env.example for setup instructions.');
+                return false;
+            }
+
+            return true;
+        }
 
         // Airtable API Client for browser
         class AirtableAPI {

@@ -5,15 +5,15 @@
  * for the dashboard application.
  */
 
-// Firebase configuration
+// Firebase configuration - should be loaded from environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyD6NjwGVYq45kd_cruPhamOxXRClPIHFd4",
-  authDomain: "wbc-dashboard.firebaseapp.com",
-  projectId: "wbc-dashboard",
-  storageBucket: "wbc-dashboard.firebasestorage.app",
-  messagingSenderId: "594611335380",
-  appId: "1:594611335380:web:7e162a0f9dc25c7f8f0b41",
-  measurementId: "G-1TNPWMGH2F"
+  apiKey: process.env.FIREBASE_API_KEY || "",
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN || "",
+  projectId: process.env.FIREBASE_PROJECT_ID || "",
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "",
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "",
+  appId: process.env.FIREBASE_APP_ID || "",
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID || ""
 };
 
 // Initialize Firebase

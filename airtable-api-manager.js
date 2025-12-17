@@ -9,10 +9,10 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-// Configuration - these would be set via environment variables in production
+// Configuration - these should be set via environment variables
 const config = {
-    apiKey: process.env.AIRTABLE_API_KEY || 'patrf8MP899xKagvm.5882de4986cb406aaadea5d127c5152ccaa8757991f1b12674e3ab0a96588301',
-    baseId: process.env.AIRTABLE_BASE_ID || 'app86GkUbhT7U1D6p',
+    apiKey: process.env.AIRTABLE_API_KEY || '',
+    baseId: process.env.AIRTABLE_BASE_ID || '',
     tables: {
         teams: 'Teams',
         players: 'Players',
