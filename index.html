@@ -503,10 +503,8 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Wins</th>
-                                <th>Losses</th>
-                                <th>Runs Scored</th>
-                                <th>Runs Allowed</th>
+                                <th>W-L</th>
+                                <th>Runs</th>
                             </tr>
                         </thead>
                         <tbody id="teams-data">
@@ -611,7 +609,7 @@
 
             if (teams.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="5" class="no-data">No teams found in the database.</td>';
+                row.innerHTML = '<td colspan="3" class="no-data">No teams found in the database.</td>';
                 tableBody.appendChild(row);
                 return;
             }
@@ -620,10 +618,8 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${team.name || ''}</td>
-                    <td>${team.wins || 0}</td>
-                    <td>${team.losses || 0}</td>
-                    <td>${team.runs_scored || 0}</td>
-                    <td>${team.runs_allowed || 0}</td>
+                    <td>${team.wins || 0}-${team.losses || 0}</td>
+                    <td>${team.runs_scored || 0}-${team.runs_allowed || 0}</td>
                 `;
                 tableBody.appendChild(row);
             });
