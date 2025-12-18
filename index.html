@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wooden Bat Classic Dashboard</title>
+    <title>WBC Database Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@
             background-color: #f5f5f5;
         }
         .dashboard-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background-color: white;
             padding: 20px;
@@ -24,63 +24,74 @@
             color: #333;
             margin-bottom: 30px;
         }
-        .filters {
+
+        /* Tab Navigation Styles */
+        .tab-navigation {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+            border-bottom: 2px solid #ddd;
             margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f0f0f0;
-            border-radius: 6px;
+            overflow-x: auto;
         }
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-        .filter-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        .filter-group select,
-        .filter-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .filter-group input[type="date"],
-        .filter-group input[type="time"] {
-            padding: 7px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
+
+        .tab-button {
+            padding: 12px 24px;
+            background-color: #f5f5f5;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 5px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
         }
-        button:hover {
-            background-color: #45a049;
+
+        .tab-button:hover {
+            background-color: #e0e0e0;
         }
-        .reset-btn {
-            background-color: #f44336;
+
+        .tab-button.active {
+            background-color: white;
+            color: #4CAF50;
+            border-bottom-color: #4CAF50;
         }
-        .reset-btn:hover {
-            background-color: #d32f2f;
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .data-panel {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            background-color: #fff;
+        }
+        .panel-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         th, td {
-            padding: 12px;
+            padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -93,344 +104,447 @@
         tr:hover {
             background-color: #f5f5f5;
         }
-        .no-results {
+        .error-message {
             text-align: center;
             padding: 20px;
-            color: #666;
+            color: #d32f2f;
+            font-weight: bold;
+            background-color: #ffebee;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .loading-message {
+            text-align: center;
+            padding: 20px;
+            color: #4CAF50;
             font-style: italic;
         }
+        .no-data {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+            font-style: italic;
+            background-color: #f5f5f5;
+        }
+
+        /* Calendar View Styles */
+        .schedule-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .day-section {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .day-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-header::before {
+            content: "📅";
+            font-size: 20px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .game-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            background-color: #fff;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .game-card:hover {
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            border-color: #4CAF50;
+        }
+
+        .game-time {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 8px;
+        }
+
+        .game-matchup {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .game-location {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .game-location::before {
+            content: "📍";
+        }
+
+        .game-score {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            background-color: #f5f5f5;
+            padding: 6px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
         @media (max-width: 768px) {
-            .filters {
-                flex-direction: column;
+            .games-grid {
+                grid-template-columns: 1fr;
             }
-            .filter-group {
-                min-width: 100%;
+        }
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 10px;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
-        <h1>Wooden Bat Classic Dashboard</h1>
+        <h1>Wooden Bat Classic Database Viewer</h1>
 
-        <div class="filters">
-            <div class="filter-group">
-                <label for="team-filter">Team:</label>
-                <select id="team-filter">
-                    <option value="">All Teams</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="opponent-filter">Opponent:</label>
-                <select id="opponent-filter">
-                    <option value="">All Opponents</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="field-filter">Field:</label>
-                <select id="field-filter">
-                    <option value="">All Fields</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="date-filter">Date:</label>
-                <select id="date-filter">
-                    <option value="">All Dates</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="time-filter">Time:</label>
-                <select id="time-filter">
-                    <option value="">All Times</option>
-                </select>
-            </div>
+        <div id="error-container" class="error-message" style="display: none;">
+            Failed to connect to the database. Please check your connection and try again.
         </div>
 
-        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button id="reset-filters" class="reset-btn">Reset Filters</button>
-            <button id="team-view-btn" style="background-color: #2196F3;">Team View</button>
+        <div id="loading-container" class="loading-message">
+            Loading data from database...
         </div>
 
-        <table id="tournament-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Team</th>
-                    <th>Opponent</th>
-                    <th>Field</th>
-                    <th>Location</th>
-                    <th>Result</th>
-                    <th>Runs Scored</th>
-                    <th>Runs Allowed</th>
-                </tr>
-            </thead>
-            <tbody id="tournament-data">
-                <!-- Data will be populated by JavaScript -->
-            </tbody>
-        </table>
+        <div id="data-container" style="display: none;">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" data-tab="teams">Teams</button>
+                <button class="tab-button" data-tab="players">Players</button>
+                <button class="tab-button" data-tab="schedule">Schedule</button>
+            </div>
+
+            <!-- Teams Tab Content -->
+            <div id="teams-tab" class="tab-content active">
+                <div class="data-panel">
+                    <div class="panel-title">Teams</div>
+                    <table id="teams-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Wins</th>
+                                <th>Losses</th>
+                                <th>Runs Scored</th>
+                                <th>Runs Allowed</th>
+                                <th>Players Count</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teams-data">
+                            <!-- Teams data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Players Tab Content -->
+            <div id="players-tab" class="tab-content">
+                <div class="data-panel">
+                    <div class="panel-title">Players</div>
+                    <table id="players-table">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Age</th>
+                                <th>Hometown</th>
+                                <th>Team Name</th>
+                                <th>Tournaments Played</th>
+                            </tr>
+                        </thead>
+                        <tbody id="players-data">
+                            <!-- Players data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Schedule Tab Content -->
+            <div id="schedule-tab" class="tab-content">
+                <div class="data-panel">
+                    <div class="panel-title">Tournament Schedule</div>
+                    <div id="schedule-container" class="schedule-container">
+                        <!-- Schedule content will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Supabase API -->
-    <script src="supabase-api-manager.js"></script>
+    <!-- Browser-compatible Supabase API -->
+    <script src="browser-supabase-api.js"></script>
 
     <script>
-        // Initialize Supabase API
-        const supabaseManager = new SupabaseManager();
-        let tournamentData = [];
+        // Initialize browser-compatible Supabase API
+        const supabaseManager = new BrowserSupabaseManager();
 
         // Load data from Supabase
-        async function loadTournamentData() {
+        async function loadDatabaseData() {
             try {
-                const games = await supabaseManager.getGames();
+                // Show loading message
+                document.getElementById('loading-container').style.display = 'block';
+                document.getElementById('error-container').style.display = 'none';
+                document.getElementById('data-container').style.display = 'none';
 
-                // Convert Supabase games to dashboard format
-                tournamentData = supabaseManager.convertGamesToDashboardFormat(games);
+                // Fetch all data from the three tables
+                const [teams, players, games] = await Promise.all([
+                    supabaseManager.getTeams(),
+                    supabaseManager.getAllPlayers(),
+                    supabaseManager.getGames()
+                ]);
 
-                // Initialize dashboard after data is loaded
-                initializeDashboard();
+                // Hide loading message and show data
+                document.getElementById('loading-container').style.display = 'none';
+                document.getElementById('data-container').style.display = 'block';
+
+                // Display the data
+                displayTeams(teams);
+                displayPlayers(players);
+                displaySchedule(games);
+
+                // Initialize tab functionality
+                setupTabs();
+
             } catch (error) {
-                console.error('Error loading tournament data:', error);
-                // Fallback to sample data if Supabase fails
-                tournamentData = [
-                    // Day 1 - June 15, 2023
-                    { date: '2023-06-15', time: '08:00', team: 'Red Sox', opponent: 'Cubs', field: 'Field 1', location: 'Main Stadium', result: 'Win', runs_scored: 5, runs_allowed: 3 },
-                    { date: '2023-06-15', time: '10:00', team: 'Dodgers', opponent: 'Braves', field: 'Field 2', location: 'North Park', result: 'Win', runs_scored: 4, runs_allowed: 2 },
-                    { date: '2023-06-15', time: '12:00', team: 'Astros', opponent: 'Mets', field: 'Field 1', location: 'Main Stadium', result: 'Win', runs_scored: 6, runs_allowed: 1 },
+                console.error('Error loading database data:', error);
 
-                    // Day 2 - June 16, 2023
-                    { date: '2023-06-16', time: '08:00', team: 'Cubs', opponent: 'Dodgers', field: 'Field 1', location: 'Main Stadium', result: 'Loss', runs_scored: 3, runs_allowed: 5 },
-                    { date: '2023-06-16', time: '10:00', team: 'Braves', opponent: 'Astros', field: 'Field 2', location: 'North Park', result: 'Loss', runs_scored: 2, runs_allowed: 4 },
-                    { date: '2023-06-16', time: '12:00', team: 'Mets', opponent: 'Red Sox', field: 'Field 1', location: 'Main Stadium', result: 'Loss', runs_scored: 1, runs_allowed: 7 },
-
-                    // Day 3 - June 17, 2023
-                    { date: '2023-06-17', time: '08:00', team: 'Red Sox', opponent: 'Braves', field: 'Field 1', location: 'Main Stadium', result: 'Win', runs_scored: 4, runs_allowed: 3 },
-                    { date: '2023-06-17', time: '10:00', team: 'Cubs', opponent: 'Mets', field: 'Field 2', location: 'North Park', result: 'Win', runs_scored: 5, runs_allowed: 2 },
-                    { date: '2023-06-17', time: '12:00', team: 'Dodgers', opponent: 'Astros', field: 'Field 1', location: 'Main Stadium', result: 'Win', runs_scored: 3, runs_allowed: 1 }
-                ];
-
-                console.warn('Using fallback data. Supabase connection failed.');
-                initializeDashboard();
+                // Hide loading and show error message only
+                document.getElementById('loading-container').style.display = 'none';
+                document.getElementById('error-container').style.display = 'block';
+                document.getElementById('data-container').style.display = 'none';
             }
         }
 
-        // Function to populate filter dropdowns
-        function populateFilters() {
-            const teamFilter = document.getElementById('team-filter');
-            const opponentFilter = document.getElementById('opponent-filter');
-            const fieldFilter = document.getElementById('field-filter');
-            const dateFilter = document.getElementById('date-filter');
-            const timeFilter = document.getElementById('time-filter');
+        // Setup tab functionality
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-            // Get unique values for each filter
-            const teams = [...new Set(tournamentData.map(game => game.team))].sort();
-            const opponents = [...new Set(tournamentData.map(game => game.opponent))].sort();
-            const fields = [...new Set(tournamentData.map(game => game.field))].sort();
-            const dates = [...new Set(tournamentData.map(game => game.date))].sort();
-            const times = [...new Set(tournamentData.map(game => game.time))].sort();
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
 
-            // Populate team filter
-            teams.forEach(team => {
-                const option = document.createElement('option');
-                option.value = team;
-                option.textContent = team;
-                teamFilter.appendChild(option);
-            });
-
-            // Populate opponent filter
-            opponents.forEach(opponent => {
-                const option = document.createElement('option');
-                option.value = opponent;
-                option.textContent = opponent;
-                opponentFilter.appendChild(option);
-            });
-
-            // Populate field filter
-            fields.forEach(field => {
-                const option = document.createElement('option');
-                option.value = field;
-                option.textContent = field;
-                fieldFilter.appendChild(option);
-            });
-
-            // Populate date filter
-            dates.forEach(date => {
-                const option = document.createElement('option');
-                option.value = date;
-                option.textContent = formatDateForDisplay(date);
-                dateFilter.appendChild(option);
-            });
-
-            // Populate time filter
-            times.forEach(time => {
-                const option = document.createElement('option');
-                option.value = time;
-                option.textContent = time;
-                timeFilter.appendChild(option);
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
             });
         }
 
-        // Helper function to format dates for display (convert YYYY-MM-DD to more readable format)
-        function formatDateForDisplay(dateString) {
-            const [year, month, day] = dateString.split('-');
-            const date = new Date(year, month - 1, day);
-            return date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-        }
-
-        // Function to display tournament data
-        function displayData(data) {
-            const tableBody = document.getElementById('tournament-data');
+        // Display teams data
+        function displayTeams(teams) {
+            const tableBody = document.getElementById('teams-data');
             tableBody.innerHTML = '';
 
-            if (data.length === 0) {
+            if (teams.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="9" class="no-results">No games found matching the filters.</td>';
+                row.innerHTML = '<td colspan="6" class="no-data">No teams found in the database.</td>';
                 tableBody.appendChild(row);
                 return;
             }
 
-            data.forEach(game => {
+            teams.forEach(team => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${game.date}</td>
-                    <td>${game.time}</td>
-                    <td>${game.team}</td>
-                    <td>${game.opponent}</td>
-                    <td>${game.field}</td>
-                    <td>${game.location}</td>
-                    <td>${game.result}</td>
-                    <td>${game.runs_scored || 0}</td>
-                    <td>${game.runs_allowed || 0}</td>
+                    <td>${team.name || ''}</td>
+                    <td>${team.wins || 0}</td>
+                    <td>${team.losses || 0}</td>
+                    <td>${team.runs_scored || 0}</td>
+                    <td>${team.runs_allowed || 0}</td>
+                    <td>${team.players_count || 0}</td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
-        // Function to apply filters
-        function applyFilters() {
-            const teamFilter = document.getElementById('team-filter').value;
-            const opponentFilter = document.getElementById('opponent-filter').value;
-            const fieldFilter = document.getElementById('field-filter').value;
-            const dateFilter = document.getElementById('date-filter').value;
-            const timeFilter = document.getElementById('time-filter').value;
+        // Display players data
+        function displayPlayers(players) {
+            const tableBody = document.getElementById('players-data');
+            tableBody.innerHTML = '';
 
-            let filteredData = tournamentData;
-
-            // Apply team filter
-            if (teamFilter) {
-                filteredData = filteredData.filter(game => game.team === teamFilter);
+            if (players.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="6" class="no-data">No players found in the database.</td>';
+                tableBody.appendChild(row);
+                return;
             }
 
-            // Apply opponent filter
-            if (opponentFilter) {
-                filteredData = filteredData.filter(game => game.opponent === opponentFilter);
-            }
-
-            // Apply field filter
-            if (fieldFilter) {
-                filteredData = filteredData.filter(game => game.field === fieldFilter);
-            }
-
-            // Apply date filter
-            if (dateFilter) {
-                filteredData = filteredData.filter(game => game.date === dateFilter);
-            }
-
-            // Apply time filter
-            if (timeFilter) {
-                filteredData = filteredData.filter(game => game.time === timeFilter);
-            }
-
-            displayData(filteredData);
+            players.forEach(player => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${player.first_name || ''}</td>
+                    <td>${player.last_name || ''}</td>
+                    <td>${player.age || ''}</td>
+                    <td>${player.hometown || ''}</td>
+                    <td>${player.team_name || ''}</td>
+                    <td>${player.tournaments_played || 0}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
 
-        // Function to reset filters
-        function resetFilters() {
-            document.getElementById('team-filter').value = '';
-            document.getElementById('opponent-filter').value = '';
-            document.getElementById('field-filter').value = '';
-            document.getElementById('date-filter').value = '';
-            document.getElementById('time-filter').value = '';
-            displayData(tournamentData);
-        }
+        // Display schedule data in calendar view
+        function displaySchedule(games) {
+            const scheduleContainer = document.getElementById('schedule-container');
+            scheduleContainer.innerHTML = '';
 
-        // Function to verify tournament requirements
-        function verifyTournamentRequirements() {
-            const teams = [...new Set(tournamentData.map(game => game.team))];
-            const fields = [...new Set(tournamentData.map(game => game.field))];
-            const dates = [...new Set(tournamentData.map(game => game.date))];
+            if (games.length === 0) {
+                const noDataDiv = document.createElement('div');
+                noDataDiv.className = 'no-data';
+                noDataDiv.textContent = 'No games found in the database.';
+                scheduleContainer.appendChild(noDataDiv);
+                return;
+            }
 
-            // Count games per team
-            const gamesPerTeam = {};
-            tournamentData.forEach(game => {
-                gamesPerTeam[game.team] = (gamesPerTeam[game.team] || 0) + 1;
+            // Group games by day of week
+            const gamesByDay = {};
+            games.forEach(game => {
+                if (!gamesByDay[game.day_of_week]) {
+                    gamesByDay[game.day_of_week] = [];
+                }
+                gamesByDay[game.day_of_week].push(game);
             });
 
-            console.log('Tournament Verification:');
-            console.log(`- Teams: ${teams.length} (required: 22)`);
-            console.log(`- Fields: ${fields.length} (required: 7)`);
-            console.log(`- Tournament days: ${dates.length} (required: 3)`);
-            console.log(`- Dates: ${Array.from(dates).join(', ')}`);
+            // Get all unique days from the data and sort them chronologically
+            const allDays = Object.keys(gamesByDay);
+            const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-            // Check each team has at least 7 games
-            let allTeamsMeetRequirement = true;
-            teams.forEach(team => {
-                const games = gamesPerTeam[team] || 0;
-                if (games < 7) {
-                    console.log(`❌ ${team}: ${games} games (needs at least 7)`);
-                    allTeamsMeetRequirement = false;
-                } else {
-                    console.log(`✅ ${team}: ${games} games`);
+            // Sort days chronologically
+            allDays.sort((a, b) => {
+                return dayOrder.indexOf(a) - dayOrder.indexOf(b);
+            });
+
+            // Create day sections for all days that have games
+            allDays.forEach(day => {
+                if (gamesByDay[day] && gamesByDay[day].length > 0) {
+                    // Create day section
+                    const daySection = document.createElement('div');
+                    daySection.className = 'day-section';
+
+                    // Create day header
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'day-header';
+                    dayHeader.textContent = day;
+
+                    // Create games grid
+                    const gamesGrid = document.createElement('div');
+                    gamesGrid.className = 'games-grid';
+
+                    // Add games to grid
+                    gamesByDay[day].forEach(game => {
+                        const gameCard = document.createElement('div');
+                        gameCard.className = 'game-card';
+
+                        const gameTime = document.createElement('div');
+                        gameTime.className = 'game-time';
+                        gameTime.textContent = game.time;
+
+                        const gameMatchup = document.createElement('div');
+                        gameMatchup.className = 'game-matchup';
+                        gameMatchup.textContent = `${game.home_team_name} vs ${game.visiting_team_name}`;
+
+                        const gameLocation = document.createElement('div');
+                        gameLocation.className = 'game-location';
+                        gameLocation.textContent = game.stadium_name;
+
+                        const gameScore = document.createElement('div');
+                        gameScore.className = 'game-score';
+                        gameScore.textContent = `${game.home_score} - ${game.visiting_score}`;
+
+                        gameCard.appendChild(gameTime);
+                        gameCard.appendChild(gameMatchup);
+                        gameCard.appendChild(gameLocation);
+                        gameCard.appendChild(gameScore);
+
+                        gamesGrid.appendChild(gameCard);
+                    });
+
+                    daySection.appendChild(dayHeader);
+                    daySection.appendChild(gamesGrid);
+                    scheduleContainer.appendChild(daySection);
                 }
             });
-
-            if (teams.length === 22 && fields.length === 7 && dates.length === 3 && allTeamsMeetRequirement) {
-                console.log('✅ All tournament requirements met!');
-            } else {
-                console.log('❌ Some requirements not met');
-            }
         }
 
-        // Initialize the dashboard
-        function initializeDashboard() {
-            populateFilters();
-            displayData(tournamentData);
+        // Display games data (kept for backward compatibility)
+        function displayGames(games) {
+            const tableBody = document.getElementById('games-data');
+            if (tableBody) {
+                tableBody.innerHTML = '';
 
-            // Set up event listeners
-            document.getElementById('reset-filters').addEventListener('click', resetFilters);
-            document.getElementById('team-view-btn').addEventListener('click', function() {
-                window.location.href = 'team-page.html';
-            });
+                if (games.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="7" class="no-data">No games found in the database.</td>';
+                    tableBody.appendChild(row);
+                    return;
+                }
 
-            // Apply filters automatically when any filter selection changes
-            document.getElementById('team-filter').addEventListener('change', applyFilters);
-            document.getElementById('opponent-filter').addEventListener('change', applyFilters);
-            document.getElementById('field-filter').addEventListener('change', applyFilters);
-            document.getElementById('date-filter').addEventListener('change', applyFilters);
-            document.getElementById('time-filter').addEventListener('change', applyFilters);
-
-            // Also apply filters when Enter key is pressed in any filter input
-            document.querySelectorAll('.filter-group input, .filter-group select').forEach(input => {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        applyFilters();
-                    }
+                games.forEach(game => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${game.day_of_week || ''}</td>
+                        <td>${game.time || ''}</td>
+                        <td>${game.stadium_name || ''}</td>
+                        <td>${game.home_team_name || ''}</td>
+                        <td>${game.visiting_team_name || ''}</td>
+                        <td>${game.home_score || ''}</td>
+                        <td>${game.visiting_score || ''}</td>
+                    `;
+                    tableBody.appendChild(row);
                 });
-            });
-
-            // Verify tournament requirements
-            verifyTournamentRequirements();
+            }
         }
 
         // Start the application
-        document.addEventListener('DOMContentLoaded', loadTournamentData);
+        document.addEventListener('DOMContentLoaded', loadDatabaseData);
     </script>
 </body>
 </html>

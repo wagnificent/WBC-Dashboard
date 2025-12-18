@@ -126,6 +126,102 @@
             font-style: italic;
             background-color: #f5f5f5;
         }
+
+        /* Calendar View Styles */
+        .schedule-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .day-section {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .day-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-header::before {
+            content: "📅";
+            font-size: 20px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .game-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            background-color: #fff;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .game-card:hover {
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            border-color: #4CAF50;
+        }
+
+        .game-time {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 8px;
+        }
+
+        .game-matchup {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .game-location {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .game-location::before {
+            content: "📍";
+        }
+
+        .game-score {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            background-color: #f5f5f5;
+            padding: 6px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
         @media (max-width: 768px) {
             .dashboard-container {
                 padding: 10px;
@@ -158,7 +254,7 @@
             <div class="tab-navigation">
                 <button class="tab-button active" data-tab="teams">Teams</button>
                 <button class="tab-button" data-tab="players">Players</button>
-                <button class="tab-button" data-tab="games">Games</button>
+                <button class="tab-button" data-tab="schedule">Schedule</button>
             </div>
 
             <!-- Teams Tab Content -->
@@ -205,26 +301,13 @@
                 </div>
             </div>
 
-            <!-- Games Tab Content -->
-            <div id="games-tab" class="tab-content">
+            <!-- Schedule Tab Content -->
+            <div id="schedule-tab" class="tab-content">
                 <div class="data-panel">
-                    <div class="panel-title">Games</div>
-                    <table id="games-table">
-                        <thead>
-                            <tr>
-                                <th>Day of Week</th>
-                                <th>Time</th>
-                                <th>Stadium</th>
-                                <th>Home Team</th>
-                                <th>Visiting Team</th>
-                                <th>Home Score</th>
-                                <th>Visiting Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="games-data">
-                            <!-- Games data will be populated here -->
-                        </tbody>
-                    </table>
+                    <div class="panel-title">Tournament Schedule</div>
+                    <div id="schedule-container" class="schedule-container">
+                        <!-- Schedule content will be populated here -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -262,7 +345,7 @@
                 // Display the data
                 displayTeams(teams);
                 displayPlayers(players);
-                displayGames(games);
+                displaySchedule(games);
 
                 // Initialize tab functionality
                 setupTabs();
@@ -348,31 +431,116 @@
             });
         }
 
-        // Display games data
-        function displayGames(games) {
-            const tableBody = document.getElementById('games-data');
-            tableBody.innerHTML = '';
+        // Display schedule data in calendar view
+        function displaySchedule(games) {
+            const scheduleContainer = document.getElementById('schedule-container');
+            scheduleContainer.innerHTML = '';
 
             if (games.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="7" class="no-data">No games found in the database.</td>';
-                tableBody.appendChild(row);
+                const noDataDiv = document.createElement('div');
+                noDataDiv.className = 'no-data';
+                noDataDiv.textContent = 'No games found in the database.';
+                scheduleContainer.appendChild(noDataDiv);
                 return;
             }
 
+            // Group games by day of week
+            const gamesByDay = {};
             games.forEach(game => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${game.day_of_week || ''}</td>
-                    <td>${game.time || ''}</td>
-                    <td>${game.stadium_name || ''}</td>
-                    <td>${game.home_team_name || ''}</td>
-                    <td>${game.visiting_team_name || ''}</td>
-                    <td>${game.home_score || ''}</td>
-                    <td>${game.visiting_score || ''}</td>
-                `;
-                tableBody.appendChild(row);
+                if (!gamesByDay[game.day_of_week]) {
+                    gamesByDay[game.day_of_week] = [];
+                }
+                gamesByDay[game.day_of_week].push(game);
             });
+
+            // Get all unique days from the data and sort them chronologically
+            const allDays = Object.keys(gamesByDay);
+            const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+            // Sort days chronologically
+            allDays.sort((a, b) => {
+                return dayOrder.indexOf(a) - dayOrder.indexOf(b);
+            });
+
+            // Create day sections for all days that have games
+            allDays.forEach(day => {
+                if (gamesByDay[day] && gamesByDay[day].length > 0) {
+                    // Create day section
+                    const daySection = document.createElement('div');
+                    daySection.className = 'day-section';
+
+                    // Create day header
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'day-header';
+                    dayHeader.textContent = day;
+
+                    // Create games grid
+                    const gamesGrid = document.createElement('div');
+                    gamesGrid.className = 'games-grid';
+
+                    // Add games to grid
+                    gamesByDay[day].forEach(game => {
+                        const gameCard = document.createElement('div');
+                        gameCard.className = 'game-card';
+
+                        const gameTime = document.createElement('div');
+                        gameTime.className = 'game-time';
+                        gameTime.textContent = game.time;
+
+                        const gameMatchup = document.createElement('div');
+                        gameMatchup.className = 'game-matchup';
+                        gameMatchup.textContent = `${game.home_team_name} vs ${game.visiting_team_name}`;
+
+                        const gameLocation = document.createElement('div');
+                        gameLocation.className = 'game-location';
+                        gameLocation.textContent = game.stadium_name;
+
+                        const gameScore = document.createElement('div');
+                        gameScore.className = 'game-score';
+                        gameScore.textContent = `${game.home_score} - ${game.visiting_score}`;
+
+                        gameCard.appendChild(gameTime);
+                        gameCard.appendChild(gameMatchup);
+                        gameCard.appendChild(gameLocation);
+                        gameCard.appendChild(gameScore);
+
+                        gamesGrid.appendChild(gameCard);
+                    });
+
+                    daySection.appendChild(dayHeader);
+                    daySection.appendChild(gamesGrid);
+                    scheduleContainer.appendChild(daySection);
+                }
+            });
+        }
+
+        // Display games data (kept for backward compatibility)
+        function displayGames(games) {
+            const tableBody = document.getElementById('games-data');
+            if (tableBody) {
+                tableBody.innerHTML = '';
+
+                if (games.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="7" class="no-data">No games found in the database.</td>';
+                    tableBody.appendChild(row);
+                    return;
+                }
+
+                games.forEach(game => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${game.day_of_week || ''}</td>
+                        <td>${game.time || ''}</td>
+                        <td>${game.stadium_name || ''}</td>
+                        <td>${game.home_team_name || ''}</td>
+                        <td>${game.visiting_team_name || ''}</td>
+                        <td>${game.home_score || ''}</td>
+                        <td>${game.visiting_score || ''}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
         }
 
         // Start the application
