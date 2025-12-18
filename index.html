@@ -222,13 +222,181 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Player Cards Grid Styles */
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .player-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            border-color: #4CAF50;
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .player-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .player-team {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .player-details {
+            margin-bottom: 12px;
+        }
+
+        .player-detail-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .player-detail-row::before {
+            content: "•";
+            color: #4CAF50;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .player-tournaments {
+            background-color: #f5f5f5;
+            color: #4CAF50;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .player-tournaments::before {
+            content: "🏆 ";
+        }
+
+        /* Age Group Color Coding */
+        .age-group-30-39 {
+            background-color: #e8f5e9;
+            border-color: #c8e6c9;
+        }
+        .age-group-30-39 .player-name,
+        .age-group-30-39 .player-detail-row,
+        .age-group-30-39 .player-tournaments {
+            color: #2e7d32;
+        }
+        .age-group-30-39 .player-team {
+            background-color: #2e7d32;
+        }
+
+        .age-group-40-49 {
+            background-color: #e3f2fd;
+            border-color: #bbdefb;
+        }
+        .age-group-40-49 .player-name,
+        .age-group-40-49 .player-detail-row,
+        .age-group-40-49 .player-tournaments {
+            color: #1565c0;
+        }
+        .age-group-40-49 .player-team {
+            background-color: #1565c0;
+        }
+
+        .age-group-50-59 {
+            background-color: #f3e5f5;
+            border-color: #e1bee7;
+        }
+        .age-group-50-59 .player-name,
+        .age-group-50-59 .player-detail-row,
+        .age-group-50-59 .player-tournaments {
+            color: #4a148c;
+        }
+        .age-group-50-59 .player-team {
+            background-color: #4a148c;
+        }
+
+        .age-group-60-67 {
+            background-color: #fff3e0;
+            border-color: #ffe0b2;
+        }
+        .age-group-60-67 .player-name,
+        .age-group-60-67 .player-detail-row,
+        .age-group-60-67 .player-tournaments {
+            color: #e65100;
+        }
+        .age-group-60-67 .player-team {
+            background-color: #e65100;
+        }
+
+        .age-group-68-plus {
+            background-color: #efebe9;
+            border-color: #d7ccc8;
+        }
+        .age-group-68-plus .player-name,
+        .age-group-68-plus .player-detail-row,
+        .age-group-68-plus .player-tournaments {
+            color: #3e2723;
+        }
+        .age-group-68-plus .player-team {
+            background-color: #3e2723;
+        }
+
+        /* Age group badge */
+        .age-group-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
         @media (max-width: 768px) {
             .dashboard-container {
                 padding: 10px;
             }
-            th, td {
-                padding: 8px;
-                font-size: 14px;
+            .players-grid {
+                grid-template-columns: 1fr;
             }
             .tab-button {
                 padding: 10px 16px;
@@ -283,21 +451,9 @@
             <div id="players-tab" class="tab-content">
                 <div class="data-panel">
                     <div class="panel-title">Players</div>
-                    <table id="players-table">
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Age</th>
-                                <th>Hometown</th>
-                                <th>Team Name</th>
-                                <th>Tournaments Played</th>
-                            </tr>
-                        </thead>
-                        <tbody id="players-data">
-                            <!-- Players data will be populated here -->
-                        </tbody>
-                    </table>
+                    <div id="players-grid" class="players-grid">
+                        <!-- Player cards will be populated here -->
+                    </div>
                 </div>
             </div>
 
@@ -405,29 +561,118 @@
             });
         }
 
-        // Display players data
+        // Helper function to determine age group and get appropriate CSS class
+        function getAgeGroupClass(age) {
+            if (!age) return '';
+
+            const ageNum = parseInt(age);
+            if (isNaN(ageNum)) return '';
+
+            if (ageNum >= 30 && ageNum <= 39) return 'age-group-30-39';
+            if (ageNum >= 40 && ageNum <= 49) return 'age-group-40-49';
+            if (ageNum >= 50 && ageNum <= 59) return 'age-group-50-59';
+            if (ageNum >= 60 && ageNum <= 67) return 'age-group-60-67';
+            if (ageNum >= 68) return 'age-group-68-plus';
+
+            return '';
+        }
+
+        // Helper function to get age group label
+        function getAgeGroupLabel(age) {
+            if (!age) return '';
+
+            const ageNum = parseInt(age);
+            if (isNaN(ageNum)) return '';
+
+            if (ageNum >= 30 && ageNum <= 39) return '30-39';
+            if (ageNum >= 40 && ageNum <= 49) return '40-49';
+            if (ageNum >= 50 && ageNum <= 59) return '50-59';
+            if (ageNum >= 60 && ageNum <= 67) return '60-67';
+            if (ageNum >= 68) return '68+';
+
+            return '';
+        }
+
+        // Display players data as cards
         function displayPlayers(players) {
-            const tableBody = document.getElementById('players-data');
-            tableBody.innerHTML = '';
+            const playersGrid = document.getElementById('players-grid');
+            playersGrid.innerHTML = '';
 
             if (players.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="6" class="no-data">No players found in the database.</td>';
-                tableBody.appendChild(row);
+                const noDataDiv = document.createElement('div');
+                noDataDiv.className = 'no-data';
+                noDataDiv.textContent = 'No players found in the database.';
+                playersGrid.appendChild(noDataDiv);
                 return;
             }
 
             players.forEach(player => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${player.first_name || ''}</td>
-                    <td>${player.last_name || ''}</td>
-                    <td>${player.age || ''}</td>
-                    <td>${player.hometown || ''}</td>
-                    <td>${player.team_name || ''}</td>
-                    <td>${player.tournaments_played || 0}</td>
-                `;
-                tableBody.appendChild(row);
+                // Create player card container
+                const playerCard = document.createElement('div');
+                playerCard.className = 'player-card';
+
+                // Determine age group and apply appropriate CSS class
+                const ageGroupClass = getAgeGroupClass(player.age);
+                if (ageGroupClass) {
+                    playerCard.classList.add(ageGroupClass);
+                }
+
+                // Create player header with name and team
+                const playerHeader = document.createElement('div');
+                playerHeader.className = 'player-header';
+
+                const playerName = document.createElement('div');
+                playerName.className = 'player-name';
+                playerName.textContent = `${player.first_name || ''} ${player.last_name || ''}`;
+
+                const playerTeam = document.createElement('div');
+                playerTeam.className = 'player-team';
+                playerTeam.textContent = player.team_name || 'Unknown Team';
+
+                playerHeader.appendChild(playerName);
+                playerHeader.appendChild(playerTeam);
+
+                // Create player details section
+                const playerDetails = document.createElement('div');
+                playerDetails.className = 'player-details';
+
+                // Add age detail
+                if (player.age) {
+                    const ageRow = document.createElement('div');
+                    ageRow.className = 'player-detail-row';
+                    ageRow.textContent = `Age: ${player.age}`;
+                    playerDetails.appendChild(ageRow);
+                }
+
+                // Add hometown detail
+                if (player.hometown) {
+                    const hometownRow = document.createElement('div');
+                    hometownRow.className = 'player-detail-row';
+                    hometownRow.textContent = `Hometown: ${player.hometown}`;
+                    playerDetails.appendChild(hometownRow);
+                }
+
+                // Add tournaments played badge
+                const tournamentsBadge = document.createElement('div');
+                tournamentsBadge.className = 'player-tournaments';
+                tournamentsBadge.textContent = `${player.tournaments_played || 0} tournaments played`;
+
+                // Add age group badge if age is available
+                const ageGroupLabel = getAgeGroupLabel(player.age);
+                if (ageGroupLabel) {
+                    const ageGroupBadge = document.createElement('div');
+                    ageGroupBadge.className = 'age-group-badge';
+                    ageGroupBadge.textContent = ageGroupLabel;
+                    playerCard.appendChild(ageGroupBadge);
+                }
+
+                // Assemble the player card
+                playerCard.appendChild(playerHeader);
+                playerCard.appendChild(playerDetails);
+                playerCard.appendChild(tournamentsBadge);
+
+                // Add the completed player card to the grid
+                playersGrid.appendChild(playerCard);
             });
         }
 

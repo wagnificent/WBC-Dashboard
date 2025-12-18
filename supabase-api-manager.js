@@ -558,17 +558,23 @@ class SupabaseManager {
      * @param {number} teamId - Team ID
      * @returns {Promise<Array>} Array of game objects
      */
-    async getTeamGames(teamId) {
+    async getTeamGames(teamName) {
         try {
-            const { data, error } = await supabase
+            // Get all games first, then filter by team name (actual schema)
+            const { data: allGames, error } = await supabase
                 .from('games')
                 .select('*')
-                .or(`home_team_id.eq.${teamId},visiting_team_id.eq.${teamId}`)
                 .order('day_of_week')
                 .order('time');
 
             if (error) throw error;
-            return data || [];
+
+            // Filter games where the team is either home or visiting team
+            const teamGames = allGames.filter(game =>
+                game.home_team_name === teamName || game.visiting_team_name === teamName
+            );
+
+            return teamGames || [];
         } catch (error) {
             console.error('Error fetching team games:', error);
             return [];
@@ -772,15 +778,15 @@ class SupabaseManager {
      */
     convertGamesToDashboardFormat(supabaseGames) {
         return supabaseGames.map(game => {
-            // Get team names based on IDs
-            const homeTeam = this.getTeamById(game.home_team_id);
-            const visitingTeam = this.getTeamById(game.visiting_team_id);
+            // Use team names directly from game data (actual schema)
+            const homeTeamName = game.home_team_name || `Team ${game.home_team_id}`;
+            const visitingTeamName = game.visiting_team_name || `Team ${game.visiting_team_id}`;
 
             return {
                 date: this._getDateFromDayOfWeek(game.day_of_week),
                 time: game.time,
-                team: homeTeam?.name || `Team ${game.home_team_id}`,
-                opponent: visitingTeam?.name || `Team ${game.visiting_team_id}`,
+                team: homeTeamName,
+                opponent: visitingTeamName,
                 field: game.stadium_name,
                 location: this._getLocationFromField(game.stadium_name),
                 result: game.home_score > game.visiting_score ? 'Win' : game.home_score < game.visiting_score ? 'Loss' : 'Tie',
