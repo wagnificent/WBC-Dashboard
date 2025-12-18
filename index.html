@@ -407,6 +407,46 @@
             background-color: #3e2723;
         }
 
+        /* Team Filter Styles */
+        .team-filter-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .team-filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 16px;
+        }
+
+        .team-filter-select {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .team-filter-select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        .team-filter-select:hover {
+            border-color: #4CAF50;
+        }
+
         @media (max-width: 768px) {
             .games-grid {
                 grid-template-columns: 1fr;
@@ -429,6 +469,15 @@
 <body>
     <div class="dashboard-container">
         <h1>Wooden Bat Classic</h1>
+
+        <!-- Team Filter -->
+        <div class="team-filter-container">
+            <label class="team-filter-label">Filter by Team:</label>
+            <select id="team-filter" class="team-filter-select">
+                <option value="all">All Teams</option>
+                <!-- Team options will be populated dynamically -->
+            </select>
+        </div>
 
         <div id="error-container" class="error-message" style="display: none;">
             Failed to connect to the database. Please check your connection and try again.
@@ -809,6 +858,101 @@
                     `;
                     tableBody.appendChild(row);
                 });
+            }
+        }
+
+        // Global variables to store all data
+        let allTeams = [];
+        let allPlayers = [];
+        let allGames = [];
+        let currentTeamFilter = 'all';
+
+        // Function to populate team filter dropdown
+        function populateTeamFilter(teams) {
+            const teamFilter = document.getElementById('team-filter');
+            teamFilter.innerHTML = '<option value="all">All Teams</option>';
+
+            // Add team options
+            teams.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team.name;
+                option.textContent = team.name;
+                teamFilter.appendChild(option);
+            });
+
+            // Add event listener for team filter changes
+            teamFilter.addEventListener('change', function() {
+                currentTeamFilter = this.value;
+                applyTeamFilter();
+            });
+        }
+
+        // Function to apply team filter to all data
+        function applyTeamFilter() {
+            if (currentTeamFilter === 'all') {
+                // Show all data
+                displayTeams(allTeams);
+                displayPlayers(allPlayers);
+                displaySchedule(allGames);
+            } else {
+                // Filter teams
+                const filteredTeams = allTeams.filter(team => team.name === currentTeamFilter);
+                displayTeams(filteredTeams);
+
+                // Filter players
+                const filteredPlayers = allPlayers.filter(player => player.team_name === currentTeamFilter);
+                displayPlayers(filteredPlayers);
+
+                // Filter games
+                const filteredGames = allGames.filter(game =>
+                    game.home_team_name === currentTeamFilter || game.visiting_team_name === currentTeamFilter
+                );
+                displaySchedule(filteredGames);
+            }
+        }
+
+        // Modified loadDatabaseData function to store all data and populate filter
+        async function loadDatabaseData() {
+            try {
+                // Show loading message
+                document.getElementById('loading-container').style.display = 'block';
+                document.getElementById('error-container').style.display = 'none';
+                document.getElementById('data-container').style.display = 'none';
+
+                // Fetch all data from the three tables
+                const [teams, players, games] = await Promise.all([
+                    supabaseManager.getTeams(),
+                    supabaseManager.getAllPlayers(),
+                    supabaseManager.getGames()
+                ]);
+
+                // Store all data in global variables
+                allTeams = teams;
+                allPlayers = players;
+                allGames = games;
+
+                // Populate team filter dropdown
+                populateTeamFilter(teams);
+
+                // Hide loading message and show data
+                document.getElementById('loading-container').style.display = 'none';
+                document.getElementById('data-container').style.display = 'block';
+
+                // Display the data
+                displayTeams(teams);
+                displayPlayers(players);
+                displaySchedule(games);
+
+                // Initialize tab functionality
+                setupTabs();
+
+            } catch (error) {
+                console.error('Error loading database data:', error);
+
+                // Hide loading and show error message only
+                document.getElementById('loading-container').style.display = 'none';
+                document.getElementById('error-container').style.display = 'block';
+                document.getElementById('data-container').style.display = 'none';
             }
         }
 
