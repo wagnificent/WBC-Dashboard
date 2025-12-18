@@ -292,7 +292,7 @@
         }
 
         .player-tournaments {
-            background-color: #f5f5f5;
+            background-color: transparent;
             color: #4CAF50;
             padding: 8px 12px;
             border-radius: 6px;
@@ -304,6 +304,11 @@
 
         .player-tournaments::before {
             content: "🏆 ";
+        }
+
+        /* Rookie players don't get trophy emoji */
+        .rookie::before {
+            content: "";
         }
 
         /* Age Group Color Coding */
@@ -372,18 +377,34 @@
             background-color: #3e2723;
         }
 
-        /* Age group badge */
+        /* Age group badge - positioned in bottom right */
         .age-group-badge {
             position: absolute;
-            top: 10px;
+            bottom: 10px;
             right: 10px;
-            background-color: rgba(0,0,0,0.7);
             color: white;
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: bold;
             z-index: 1;
+        }
+
+        /* Age group badges with matching team colors */
+        .age-group-30-39 .age-group-badge {
+            background-color: #2e7d32;
+        }
+        .age-group-40-49 .age-group-badge {
+            background-color: #1565c0;
+        }
+        .age-group-50-59 .age-group-badge {
+            background-color: #4a148c;
+        }
+        .age-group-60-67 .age-group-badge {
+            background-color: #e65100;
+        }
+        .age-group-68-plus .age-group-badge {
+            background-color: #3e2723;
         }
 
         @media (max-width: 768px) {
@@ -407,7 +428,7 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <h1>Wooden Bat Classic Database Viewer</h1>
+        <h1>Wooden Bat Classic</h1>
 
         <div id="error-container" class="error-message" style="display: none;">
             Failed to connect to the database. Please check your connection and try again.
@@ -420,8 +441,8 @@
         <div id="data-container" style="display: none;">
             <!-- Tab Navigation -->
             <div class="tab-navigation">
-                <button class="tab-button active" data-tab="teams">Teams</button>
-                <button class="tab-button" data-tab="players">Players</button>
+                <button class="tab-button active" data-tab="teams">Standings</button>
+                <button class="tab-button" data-tab="players">Roster</button>
                 <button class="tab-button" data-tab="schedule">Schedule</button>
             </div>
 
@@ -437,7 +458,6 @@
                                 <th>Losses</th>
                                 <th>Runs Scored</th>
                                 <th>Runs Allowed</th>
-                                <th>Players Count</th>
                             </tr>
                         </thead>
                         <tbody id="teams-data">
@@ -542,7 +562,7 @@
 
             if (teams.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="6" class="no-data">No teams found in the database.</td>';
+                row.innerHTML = '<td colspan="5" class="no-data">No teams found in the database.</td>';
                 tableBody.appendChild(row);
                 return;
             }
@@ -555,7 +575,6 @@
                     <td>${team.losses || 0}</td>
                     <td>${team.runs_scored || 0}</td>
                     <td>${team.runs_allowed || 0}</td>
-                    <td>${team.players_count || 0}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -654,8 +673,18 @@
 
                 // Add tournaments played badge
                 const tournamentsBadge = document.createElement('div');
-                tournamentsBadge.className = 'player-tournaments';
-                tournamentsBadge.textContent = `${player.tournaments_played || 0} tournaments played`;
+                if (player.tournaments_played === 1) {
+                    tournamentsBadge.className = 'player-tournaments rookie';
+                    tournamentsBadge.textContent = 'Rookie';
+                } else {
+                    tournamentsBadge.className = 'player-tournaments';
+                    tournamentsBadge.textContent = `${player.tournaments_played || 0} tournaments played`;
+                }
+
+                // Assemble the player card
+                playerCard.appendChild(playerHeader);
+                playerCard.appendChild(playerDetails);
+                playerCard.appendChild(tournamentsBadge);
 
                 // Add age group badge if age is available
                 const ageGroupLabel = getAgeGroupLabel(player.age);
@@ -665,11 +694,6 @@
                     ageGroupBadge.textContent = ageGroupLabel;
                     playerCard.appendChild(ageGroupBadge);
                 }
-
-                // Assemble the player card
-                playerCard.appendChild(playerHeader);
-                playerCard.appendChild(playerDetails);
-                playerCard.appendChild(tournamentsBadge);
 
                 // Add the completed player card to the grid
                 playersGrid.appendChild(playerCard);
