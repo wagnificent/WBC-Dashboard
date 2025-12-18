@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Page Connection Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.88.0"></script>
+</head>
+<body>
+    <h1>Testing Supabase Connection</h1>
+    <div id="results"></div>
+
+    <script>
+        // Initialize Supabase client
+        const supabaseUrl = 'https://xdexdvknggkhxxpakuys.supabase.co';
+        const supabaseKey = 'sb_secret_KjvTeoie8DO9ccO8LWCbkg_qRDeFFvk';
+        const { createClient } = supabase;
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+        async function testConnection() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing connection...</p>';
+
+            try {
+                // Test teams table
+                resultsDiv.innerHTML += '<p>Testing teams table...</p>';
+                const { data: teams, error: teamsError } = await supabaseClient
+                    .from('teams')
+                    .select('*');
+
+                if (teamsError) {
+                    resultsDiv.innerHTML += `<p style="color: red;">Teams error: ${teamsError.message}</p>`;
+                } else {
+                    resultsDiv.innerHTML += `<p style="color: green;">Teams found: ${teams.length}</p>`;
+                    if (teams.length > 0) {
+                        resultsDiv.innerHTML += '<ul>';
+                        teams.forEach(team => {
+                            resultsDiv.innerHTML += `<li>${team.name} (ID: ${team.id})</li>`;
+                        });
+                        resultsDiv.innerHTML += '</ul>';
+                    }
+                }
+
+                // Test games table
+                resultsDiv.innerHTML += '<p>Testing games table...</p>';
+                const { data: games, error: gamesError } = await supabaseClient
+                    .from('games')
+                    .select('*');
+
+                if (gamesError) {
+                    resultsDiv.innerHTML += `<p style="color: red;">Games error: ${gamesError.message}</p>`;
+                } else {
+                    resultsDiv.innerHTML += `<p style="color: green;">Games found: ${games.length}</p>`;
+                }
+
+                // Test players table
+                resultsDiv.innerHTML += '<p>Testing players table...</p>';
+                const { data: players, error: playersError } = await supabaseClient
+                    .from('players')
+                    .select('*');
+
+                if (playersError) {
+                    resultsDiv.innerHTML += `<p style="color: red;">Players error: ${playersError.message}</p>`;
+                } else {
+                    resultsDiv.innerHTML += `<p style="color: green;">Players found: ${players.length}</p>`;
+                }
+
+            } catch (error) {
+                resultsDiv.innerHTML += `<p style="color: red;">Connection error: ${error.message}</p>`;
+                console.error('Full error:', error);
+            }
+        }
+
+        // Run test when page loads
+        document.addEventListener('DOMContentLoaded', testConnection);
+    </script>
+</body>
+</html>

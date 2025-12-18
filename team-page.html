@@ -323,155 +323,221 @@
         </div>
     </div>
 
+    <!-- Add Supabase client library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.88.0"></script>
+
     <script>
-        // Sample tournament data - same as main dashboard
-        const tournamentData = [
-            // Day 1 - June 15, 2023
-            { date: '2023-06-15', time: '08:00', team: 'Red Sox', opponent: 'Yankees', field: 'Field 1', location: 'Boston Stadium', result: 'Win', runs_scored: 7, runs_allowed: 3 },
-            { date: '2023-06-15', time: '08:00', team: 'Cubs', opponent: 'Cardinals', field: 'Field 2', location: 'Chicago Park', result: 'Loss', runs_scored: 2, runs_allowed: 5 },
-            { date: '2023-06-15', time: '08:00', team: 'Dodgers', opponent: 'Giants', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win', runs_scored: 6, runs_allowed: 4 },
-            { date: '2023-06-15', time: '08:00', team: 'Braves', opponent: 'Phillies', field: 'Field 4', location: 'Atlanta Stadium', result: 'Win', runs_scored: 8, runs_allowed: 2 },
-            { date: '2023-06-15', time: '08:00', team: 'Astros', opponent: 'Rangers', field: 'Field 5', location: 'Houston Park', result: 'Loss', runs_scored: 3, runs_allowed: 7 },
-            { date: '2023-06-15', time: '08:00', team: 'Mets', opponent: 'Nationals', field: 'Field 6', location: 'New York Arena', result: 'Win', runs_scored: 5, runs_allowed: 1 },
-            { date: '2023-06-15', time: '08:00', team: 'White Sox', opponent: 'Tigers', field: 'Field 7', location: 'Chicago Stadium', result: 'Loss', runs_scored: 2, runs_allowed: 4 },
+        // Initialize Supabase client
+        const supabaseUrl = 'https://xdexdvknggkhxxpakuys.supabase.co';
+        const supabaseKey = 'sb_secret_KjvTeoie8DO9ccO8LWCbkg_qRDeFFvk';
+        const { createClient } = supabase;
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
-            { date: '2023-06-15', time: '10:30', team: 'Red Sox', opponent: 'Orioles', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
-            { date: '2023-06-15', time: '10:30', team: 'Cubs', opponent: 'Brewers', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
-            { date: '2023-06-15', time: '10:30', team: 'Dodgers', opponent: 'Padres', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
-            { date: '2023-06-15', time: '10:30', team: 'Braves', opponent: 'Marlins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
-            { date: '2023-06-15', time: '10:30', team: 'Astros', opponent: 'Athletics', field: 'Field 5', location: 'Houston Park', result: 'Win' },
-            { date: '2023-06-15', time: '10:30', team: 'Mets', opponent: 'Pirates', field: 'Field 6', location: 'New York Arena', result: 'Win' },
-            { date: '2023-06-15', time: '10:30', team: 'White Sox', opponent: 'Royals', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+        // Database Manager class for Supabase operations
+        class DatabaseManager {
+            // Get all teams from database
+            async getTeams() {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('teams')
+                        .select('*')
+                        .order('name', { ascending: true });
 
-            { date: '2023-06-15', time: '13:00', team: 'Yankees', opponent: 'Rays', field: 'Field 1', location: 'New York Stadium', result: 'Loss' },
-            { date: '2023-06-15', time: '13:00', team: 'Cardinals', opponent: 'Reds', field: 'Field 2', location: 'St. Louis Park', result: 'Win' },
-            { date: '2023-06-15', time: '13:00', team: 'Giants', opponent: 'Rockies', field: 'Field 3', location: 'San Francisco Park', result: 'Loss' },
-            { date: '2023-06-15', time: '13:00', team: 'Phillies', opponent: 'Blue Jays', field: 'Field 4', location: 'Philadelphia Arena', result: 'Win' },
-            { date: '2023-06-15', time: '13:00', team: 'Rangers', opponent: 'Mariners', field: 'Field 5', location: 'Texas Stadium', result: 'Loss' },
-            { date: '2023-06-15', time: '13:00', team: 'Nationals', opponent: 'Twins', field: 'Field 6', location: 'Washington Park', result: 'Win' },
-            { date: '2023-06-15', time: '13:00', team: 'Tigers', opponent: 'Indians', field: 'Field 7', location: 'Detroit Arena', result: 'Loss' },
+                    if (error) throw error;
+                    return data || [];
+                } catch (error) {
+                    console.error('Error fetching teams:', error);
+                    return [];
+                }
+            }
 
-            { date: '2023-06-15', time: '15:30', team: 'Red Sox', opponent: 'Blue Jays', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
-            { date: '2023-06-15', time: '15:30', team: 'Cubs', opponent: 'Reds', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
-            { date: '2023-06-15', time: '15:30', team: 'Dodgers', opponent: 'Mariners', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
-            { date: '2023-06-15', time: '15:30', team: 'Braves', opponent: 'Twins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
-            { date: '2023-06-15', time: '15:30', team: 'Astros', opponent: 'Indians', field: 'Field 5', location: 'Houston Park', result: 'Win' },
-            { date: '2023-06-15', time: '15:30', team: 'Mets', opponent: 'Royals', field: 'Field 6', location: 'New York Arena', result: 'Win' },
-            { date: '2023-06-15', time: '15:30', team: 'White Sox', opponent: 'Athletics', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+            // Get games for a specific team by name
+            async getTeamGames(teamName) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('games')
+                        .select('*')
+                        .or(`home_team_name.eq.${teamName},visiting_team_name.eq.${teamName}`)
+                        .order('day_of_week')
+                        .order('time');
 
-            // Day 2 - June 16, 2023
-            { date: '2023-06-16', time: '08:00', team: 'Yankees', opponent: 'Red Sox', field: 'Field 1', location: 'New York Stadium', result: 'Loss' },
-            { date: '2023-06-16', time: '08:00', team: 'Cardinals', opponent: 'Cubs', field: 'Field 2', location: 'St. Louis Park', result: 'Win' },
-            { date: '2023-06-16', time: '08:00', team: 'Giants', opponent: 'Dodgers', field: 'Field 3', location: 'San Francisco Park', result: 'Loss' },
-            { date: '2023-06-16', time: '08:00', team: 'Phillies', opponent: 'Braves', field: 'Field 4', location: 'Philadelphia Arena', result: 'Win' },
-            { date: '2023-06-16', time: '08:00', team: 'Rangers', opponent: 'Astros', field: 'Field 5', location: 'Texas Stadium', result: 'Loss' },
-            { date: '2023-06-16', time: '08:00', team: 'Nationals', opponent: 'Mets', field: 'Field 6', location: 'Washington Park', result: 'Win' },
-            { date: '2023-06-16', time: '08:00', team: 'Tigers', opponent: 'White Sox', field: 'Field 7', location: 'Detroit Arena', result: 'Loss' },
+                    if (error) throw error;
+                    return data || [];
+                } catch (error) {
+                    console.error('Error fetching team games:', error);
+                    return [];
+                }
+            }
 
-            { date: '2023-06-16', time: '10:30', team: 'Rays', opponent: 'Red Sox', field: 'Field 1', location: 'Tampa Stadium', result: 'Win' },
-            { date: '2023-06-16', time: '10:30', team: 'Brewers', opponent: 'Cubs', field: 'Field 2', location: 'Milwaukee Park', result: 'Win' },
-            { date: '2023-06-16', time: '10:30', team: 'Padres', opponent: 'Dodgers', field: 'Field 3', location: 'San Diego Arena', result: 'Win' },
-            { date: '2023-06-16', time: '10:30', team: 'Marlins', opponent: 'Braves', field: 'Field 4', location: 'Miami Stadium', result: 'Loss' },
-            { date: '2023-06-16', time: '10:30', team: 'Athletics', opponent: 'Astros', field: 'Field 5', location: 'Oakland Park', result: 'Win' },
-            { date: '2023-06-16', time: '10:30', team: 'Pirates', opponent: 'Mets', field: 'Field 6', location: 'Pittsburgh Arena', result: 'Win' },
-            { date: '2023-06-16', time: '10:30', team: 'Royals', opponent: 'White Sox', field: 'Field 7', location: 'Kansas City Stadium', result: 'Win' },
+            // Get players for a specific team by name
+            async getTeamPlayers(teamName) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('players')
+                        .select('*')
+                        .eq('team_name', teamName)
+                        .order('last_name')
+                        .order('first_name');
 
-            { date: '2023-06-16', time: '13:00', team: 'Blue Jays', opponent: 'Yankees', field: 'Field 1', location: 'Toronto Stadium', result: 'Win' },
-            { date: '2023-06-16', time: '13:00', team: 'Reds', opponent: 'Cardinals', field: 'Field 2', location: 'Cincinnati Park', result: 'Win' },
-            { date: '2023-06-16', time: '13:00', team: 'Rockies', opponent: 'Giants', field: 'Field 3', location: 'Denver Arena', result: 'Win' },
-            { date: '2023-06-16', time: '13:00', team: 'Twins', opponent: 'Phillies', field: 'Field 4', location: 'Minneapolis Stadium', result: 'Loss' },
-            { date: '2023-06-16', time: '13:00', team: 'Mariners', opponent: 'Rangers', field: 'Field 5', location: 'Seattle Park', result: 'Win' },
-            { date: '2023-06-16', time: '13:00', team: 'Indians', opponent: 'Nationals', field: 'Field 6', location: 'Cleveland Arena', result: 'Win' },
-            { date: '2023-06-16', time: '13:00', team: 'Athletics', opponent: 'Tigers', field: 'Field 7', location: 'Oakland Stadium', result: 'Win' },
+                    if (error) throw error;
+                    return data || [];
+                } catch (error) {
+                    console.error('Error fetching team players:', error);
+                    return [];
+                }
+            }
 
-            { date: '2023-06-16', time: '15:30', team: 'Red Sox', opponent: 'Blue Jays', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
-            { date: '2023-06-16', time: '15:30', team: 'Cubs', opponent: 'Reds', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
-            { date: '2023-06-16', time: '15:30', team: 'Dodgers', opponent: 'Rockies', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
-            { date: '2023-06-16', time: '15:30', team: 'Braves', opponent: 'Twins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
-            { date: '2023-06-16', time: '15:30', team: 'Astros', opponent: 'Mariners', field: 'Field 5', location: 'Houston Park', result: 'Win' },
-            { date: '2023-06-16', time: '15:30', team: 'Mets', opponent: 'Indians', field: 'Field 6', location: 'New York Arena', result: 'Win' },
-            { date: '2023-06-16', time: '15:30', team: 'White Sox', opponent: 'Athletics', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+            // Get team by name (no longer needed with new structure, but kept for compatibility)
+            async getTeamByName(teamName) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('teams')
+                        .select('*')
+                        .eq('name', teamName)
+                        .single();
 
-            // Day 3 - June 17, 2023
-            { date: '2023-06-17', time: '08:00', team: 'Yankees', opponent: 'Rays', field: 'Field 1', location: 'New York Stadium', result: 'Loss' },
-            { date: '2023-06-17', time: '08:00', team: 'Cardinals', opponent: 'Brewers', field: 'Field 2', location: 'St. Louis Park', result: 'Win' },
-            { date: '2023-06-17', time: '08:00', team: 'Giants', opponent: 'Padres', field: 'Field 3', location: 'San Francisco Park', result: 'Loss' },
-            { date: '2023-06-17', time: '08:00', team: 'Phillies', opponent: 'Marlins', field: 'Field 4', location: 'Philadelphia Arena', result: 'Win' },
-            { date: '2023-06-17', time: '08:00', team: 'Rangers', opponent: 'Athletics', field: 'Field 5', location: 'Texas Stadium', result: 'Loss' },
-            { date: '2023-06-17', time: '08:00', team: 'Nationals', opponent: 'Pirates', field: 'Field 6', location: 'Washington Park', result: 'Win' },
-            { date: '2023-06-17', time: '08:00', team: 'Tigers', opponent: 'Royals', field: 'Field 7', location: 'Detroit Arena', result: 'Loss' },
+                    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+                        console.error('Error fetching team:', error);
+                    }
+                    return data || null;
+                } catch (error) {
+                    console.error('Error fetching team:', error);
+                    return null;
+                }
+            }
 
-            { date: '2023-06-17', time: '10:30', team: 'Red Sox', opponent: 'Yankees', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
-            { date: '2023-06-17', time: '10:30', team: 'Cubs', opponent: 'Cardinals', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
-            { date: '2023-06-17', time: '10:30', team: 'Dodgers', opponent: 'Giants', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
-            { date: '2023-06-17', time: '10:30', team: 'Braves', opponent: 'Phillies', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
-            { date: '2023-06-17', time: '10:30', team: 'Astros', opponent: 'Rangers', field: 'Field 5', location: 'Houston Park', result: 'Win' },
-            { date: '2023-06-17', time: '10:30', team: 'Mets', opponent: 'Nationals', field: 'Field 6', location: 'New York Arena', result: 'Win' },
-            { date: '2023-06-17', time: '10:30', team: 'White Sox', opponent: 'Tigers', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' },
+            // Convert Supabase game data to dashboard format (simplified for team names)
+            async convertGamesToDashboardFormat(supabaseGames, teamName) {
+                const games = [];
 
-            { date: '2023-06-17', time: '13:00', team: 'Rays', opponent: 'Blue Jays', field: 'Field 1', location: 'Tampa Stadium', result: 'Win' },
-            { date: '2023-06-17', time: '13:00', team: 'Brewers', opponent: 'Reds', field: 'Field 2', location: 'Milwaukee Park', result: 'Win' },
-            { date: '2023-06-17', time: '13:00', team: 'Padres', opponent: 'Rockies', field: 'Field 3', location: 'San Diego Arena', result: 'Win' },
-            { date: '2023-06-17', time: '13:00', team: 'Marlins', opponent: 'Twins', field: 'Field 4', location: 'Miami Stadium', result: 'Loss' },
-            { date: '2023-06-17', time: '13:00', team: 'Athletics', opponent: 'Mariners', field: 'Field 5', location: 'Oakland Park', result: 'Win' },
-            { date: '2023-06-17', time: '13:00', team: 'Pirates', opponent: 'Indians', field: 'Field 6', location: 'Pittsburgh Arena', result: 'Win' },
-            { date: '2023-06-17', time: '13:00', team: 'Royals', opponent: 'Athletics', field: 'Field 7', location: 'Kansas City Stadium', result: 'Win' },
+                for (const game of supabaseGames) {
+                    // Determine if this game is for the selected team
+                    const isHomeTeam = game.home_team_name === teamName;
+                    const opponentName = isHomeTeam ? game.visiting_team_name : game.home_team_name;
+                    const runsScored = isHomeTeam ? game.home_score : game.visiting_score;
+                    const runsAllowed = isHomeTeam ? game.visiting_score : game.home_score;
 
-            { date: '2023-06-17', time: '15:30', team: 'Red Sox', opponent: 'Rays', field: 'Field 1', location: 'Boston Stadium', result: 'Win' },
-            { date: '2023-06-17', time: '15:30', team: 'Cubs', opponent: 'Brewers', field: 'Field 2', location: 'Chicago Park', result: 'Win' },
-            { date: '2023-06-17', time: '15:30', team: 'Dodgers', opponent: 'Padres', field: 'Field 3', location: 'Los Angeles Arena', result: 'Win' },
-            { date: '2023-06-17', time: '15:30', team: 'Braves', opponent: 'Marlins', field: 'Field 4', location: 'Atlanta Stadium', result: 'Loss' },
-            { date: '2023-06-17', time: '15:30', team: 'Astros', opponent: 'Athletics', field: 'Field 5', location: 'Houston Park', result: 'Win' },
-            { date: '2023-06-17', time: '15:30', team: 'Mets', opponent: 'Pirates', field: 'Field 6', location: 'New York Arena', result: 'Win' },
-            { date: '2023-06-17', time: '15:30', team: 'White Sox', opponent: 'Royals', field: 'Field 7', location: 'Chicago Stadium', result: 'Win' }
-        ];
+                    // Determine result
+                    let result;
+                    if (runsScored > runsAllowed) {
+                        result = 'Win';
+                    } else if (runsScored < runsAllowed) {
+                        result = 'Loss';
+                    } else {
+                        result = 'Tie';
+                    }
+
+                    games.push({
+                        date: this._getDateFromDayOfWeek(game.day_of_week),
+                        time: game.time,
+                        team: teamName,
+                        opponent: opponentName || `Opponent`,
+                        field: game.stadium_name,
+                        location: this._getLocationFromField(game.stadium_name),
+                        result: result,
+                        runs_scored: runsScored || 0,
+                        runs_allowed: runsAllowed || 0
+                    });
+                }
+
+                return games;
+            }
+
+            // Get location from field name
+            _getLocationFromField(fieldName) {
+                const fieldLocations = {
+                    'Field 1': 'Main Stadium',
+                    'Field 2': 'North Park',
+                    'Field 3': 'South Park',
+                    'Field 4': 'East Stadium',
+                    'Field 5': 'West Park',
+                    'Field 6': 'Central Arena',
+                    'Field 7': 'Training Field'
+                };
+                return fieldLocations[fieldName] || 'Tournament Complex';
+            }
+
+            // Get date from day of week (for dashboard display)
+            _getDateFromDayOfWeek(dayOfWeek) {
+                const dates = {
+                    'Monday': '2023-06-15',
+                    'Tuesday': '2023-06-16',
+                    'Wednesday': '2023-06-17'
+                };
+                return dates[dayOfWeek] || '2023-06-15';
+            }
+        }
+
+        // Initialize database manager
+        const dbManager = new DatabaseManager();
 
         // Function to populate team dropdown
-        function populateTeamDropdown() {
+        async function populateTeamDropdown() {
             const teamSelect = document.getElementById('team-select');
-            const teams = [...new Set(tournamentData.map(game => game.team))].sort();
 
-            teams.forEach(team => {
+            try {
+                const teams = await dbManager.getTeams();
+
+                teams.forEach(team => {
+                    const option = document.createElement('option');
+                    option.value = team.name;
+                    option.textContent = team.name;
+                    // No longer need to store team ID since we're using team names directly
+                    teamSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error populating team dropdown:', error);
                 const option = document.createElement('option');
-                option.value = team;
-                option.textContent = team;
+                option.value = '';
+                option.textContent = 'Error loading teams';
                 teamSelect.appendChild(option);
-            });
+            }
         }
 
         // Function to display team data
-        function displayTeamData(teamName) {
+        async function displayTeamData(teamName) {
             const teamDataContainer = document.getElementById('team-data');
             teamDataContainer.innerHTML = '';
 
-            // Filter data for the selected team
-            const teamGames = tournamentData.filter(game => game.team === teamName);
+            // Show loading state
+            const loadingRow = document.createElement('tr');
+            loadingRow.innerHTML = '<td colspan="8" class="no-results">Loading games...</td>';
+            teamDataContainer.appendChild(loadingRow);
 
-            if (teamGames.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="8" class="no-results">No games found for this team.</td>';
-                teamDataContainer.appendChild(row);
-                return;
+            try {
+                // Get games from database using team name directly
+                const supabaseGames = await dbManager.getTeamGames(teamName);
+
+                if (supabaseGames.length === 0) {
+                    teamDataContainer.innerHTML = '<tr><td colspan="8" class="no-results">No games found for this team.</td></tr>';
+                    return;
+                }
+
+                // Convert to dashboard format using team name
+                const teamGames = await dbManager.convertGamesToDashboardFormat(supabaseGames, teamName);
+
+                // Display each game for the team
+                teamGames.forEach(game => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${game.date}</td>
+                        <td>${game.time}</td>
+                        <td>${game.opponent}</td>
+                        <td>${game.field}</td>
+                        <td>${game.location}</td>
+                        <td>${game.result}</td>
+                        <td>${game.runs_scored || 0}</td>
+                        <td>${game.runs_allowed || 0}</td>
+                    `;
+                    teamDataContainer.appendChild(row);
+                });
+
+                // Calculate and display team statistics
+                calculateTeamStats(teamGames);
+            } catch (error) {
+                console.error('Error displaying team data:', error);
+                teamDataContainer.innerHTML = `<tr><td colspan="8" class="no-results">Error loading games: ${error.message}</td></tr>`;
             }
-
-            // Display each game for the team
-            teamGames.forEach(game => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${game.date}</td>
-                    <td>${game.time}</td>
-                    <td>${game.opponent}</td>
-                    <td>${game.field}</td>
-                    <td>${game.location}</td>
-                    <td>${game.result}</td>
-                    <td>${game.runs_scored || 0}</td>
-                    <td>${game.runs_allowed || 0}</td>
-                `;
-                teamDataContainer.appendChild(row);
-            });
-
-            // Calculate and display team statistics
-            calculateTeamStats(teamGames);
         }
 
         // Function to calculate team statistics
@@ -499,31 +565,6 @@
             document.getElementById('team-stats-container').style.display = 'flex';
         }
 
-        // Function to handle team selection
-        function handleTeamSelection() {
-            const teamSelect = document.getElementById('team-select');
-            const selectedTeam = teamSelect.value;
-
-            if (selectedTeam) {
-                // Get current active tab and update its content
-                const activeTab = document.querySelector('.tab-button.active');
-                const currentTab = activeTab.getAttribute('data-tab');
-
-                if (currentTab === 'schedule') {
-                    displayTeamData(selectedTeam);
-                } else if (currentTab === 'calendar') {
-                    displayCalendarView(selectedTeam);
-                } else if (currentTab === 'roster') {
-                    displayRosterView(selectedTeam);
-                }
-            } else {
-                // Clear the table and hide stats if no team is selected
-                document.getElementById('team-data').innerHTML = '';
-                document.getElementById('team-stats-container').style.display = 'none';
-                document.getElementById('calendar-view').innerHTML = '';
-                document.getElementById('roster-view').innerHTML = '';
-            }
-        }
         // Function to handle team selection
         function handleTeamSelection() {
             const teamSelect = document.getElementById('team-select');
@@ -608,178 +649,102 @@
             document.getElementById('back-btn').addEventListener('click', goBackToMain);
         });
         // Function to display calendar view
-        function displayCalendarView(teamName) {
+        async function displayCalendarView(teamName) {
             const calendarView = document.getElementById('calendar-view');
-            calendarView.innerHTML = '';
+            calendarView.innerHTML = '<div class="no-results">Loading calendar...</div>';
 
-            // Filter data for the selected team
-            const teamGames = tournamentData.filter(game => game.team === teamName);
+            try {
+                // Get games from database using team name directly
+                const supabaseGames = await dbManager.getTeamGames(teamName);
 
-            if (teamGames.length === 0) {
-                calendarView.innerHTML = '<div class="no-results">No games found for this team.</div>';
-                return;
-            }
-
-            // Group games by date
-            const gamesByDate = {};
-            teamGames.forEach(game => {
-                if (!gamesByDate[game.date]) {
-                    gamesByDate[game.date] = [];
+                if (supabaseGames.length === 0) {
+                    calendarView.innerHTML = '<div class="no-results">No games found for this team.</div>';
+                    return;
                 }
-                gamesByDate[game.date].push(game);
-            });
 
-            // Display each date with its games
-            Object.keys(gamesByDate).sort().forEach(date => {
-                const dayContainer = document.createElement('div');
-                dayContainer.className = 'calendar-day';
+                // Convert to dashboard format using team name
+                const teamGames = await dbManager.convertGamesToDashboardFormat(supabaseGames, teamName);
 
-                // Format date for display
-                const dateObj = new Date(date);
-                const formattedDate = dateObj.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
+                // Group games by date
+                const gamesByDate = {};
+                teamGames.forEach(game => {
+                    if (!gamesByDate[game.date]) {
+                        gamesByDate[game.date] = [];
+                    }
+                    gamesByDate[game.date].push(game);
                 });
 
-                dayContainer.innerHTML = `
-                    <div class="calendar-day-header">${formattedDate}</div>
-                `;
+                // Display each date with its games
+                Object.keys(gamesByDate).sort().forEach(date => {
+                    const dayContainer = document.createElement('div');
+                    dayContainer.className = 'calendar-day';
 
-                gamesByDate[date].forEach(game => {
-                    const gameElement = document.createElement('div');
-                    gameElement.className = `calendar-game ${game.result.toLowerCase()}`;
-                    gameElement.innerHTML = `
-                        <strong>${game.time}</strong> vs ${game.opponent}<br>
-                        ${game.field} - ${game.location}<br>
-                        <strong>Result:</strong> ${game.result}
+                    // Format date for display
+                    const dateObj = new Date(date);
+                    const formattedDate = dateObj.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    dayContainer.innerHTML = `
+                        <div class="calendar-day-header">${formattedDate}</div>
                     `;
-                    dayContainer.appendChild(gameElement);
-                });
 
-                calendarView.appendChild(dayContainer);
-            });
+                    gamesByDate[date].forEach(game => {
+                        const gameElement = document.createElement('div');
+                        gameElement.className = `calendar-game ${game.result.toLowerCase()}`;
+                        gameElement.innerHTML = `
+                            <strong>${game.time}</strong> vs ${game.opponent}<br>
+                            ${game.field} - ${game.location}<br>
+                            <strong>Result:</strong> ${game.result}
+                        `;
+                        dayContainer.appendChild(gameElement);
+                    });
+
+                    calendarView.appendChild(dayContainer);
+                });
+            } catch (error) {
+                console.error('Error displaying calendar view:', error);
+                calendarView.innerHTML = `<div class="no-results">Error loading calendar: ${error.message}</div>`;
+            }
         }
 
         // Function to display roster view
-        function displayRosterView(teamName) {
+        async function displayRosterView(teamName) {
             const rosterView = document.getElementById('roster-view');
-            rosterView.innerHTML = '';
+            rosterView.innerHTML = '<div class="no-results">Loading roster...</div>';
 
-            // Sample roster data - in a real app, this would come from your database
-            const sampleRosters = {
-                'Red Sox': [
-                    { name: 'John Smith', position: 'Pitcher', number: 15 },
-                    { name: 'Mike Johnson', position: 'Catcher', number: 22 },
-                    { name: 'David Wilson', position: 'First Base', number: 8 },
-                    { name: 'Robert Brown', position: 'Second Base', number: 12 },
-                    { name: 'James Davis', position: 'Third Base', number: 18 },
-                    { name: 'Michael Miller', position: 'Shortstop', number: 7 },
-                    { name: 'William Moore', position: 'Left Field', number: 24 },
-                    { name: 'Richard Taylor', position: 'Center Field', number: 3 },
-                    { name: 'Joseph Anderson', position: 'Right Field', number: 19 },
-                    { name: 'Thomas Thomas', position: 'Designated Hitter', number: 11 }
-                ],
-                'Cubs': [
-                    { name: 'Charles Jackson', position: 'Pitcher', number: 27 },
-                    { name: 'Daniel White', position: 'Catcher', number: 5 },
-                    { name: 'Matthew Harris', position: 'First Base', number: 14 },
-                    { name: 'Anthony Martin', position: 'Second Base', number: 9 },
-                    { name: 'Mark Thompson', position: 'Third Base', number: 21 },
-                    { name: 'Donald Garcia', position: 'Shortstop', number: 2 },
-                    { name: 'Steven Martinez', position: 'Left Field', number: 17 },
-                    { name: 'Paul Robinson', position: 'Center Field', number: 28 },
-                    { name: 'Kenneth Clark', position: 'Right Field', number: 6 },
-                    { name: 'George Rodriguez', position: 'Designated Hitter', number: 25 }
-                ],
-                'Dodgers': [
-                    { name: 'Edward Lewis', position: 'Pitcher', number: 30 },
-                    { name: 'Brian Lee', position: 'Catcher', number: 4 },
-                    { name: 'Ronald Walker', position: 'First Base', number: 16 },
-                    { name: 'Timothy Hall', position: 'Second Base', number: 10 },
-                    { name: 'Jason Allen', position: 'Third Base', number: 23 },
-                    { name: 'Jeffrey Young', position: 'Shortstop', number: 1 },
-                    { name: 'Ryan Hernandez', position: 'Left Field', number: 20 },
-                    { name: 'Jacob King', position: 'Center Field', number: 13 },
-                    { name: 'Gary Wright', position: 'Right Field', number: 26 },
-                    { name: 'Nicholas Lopez', position: 'Designated Hitter', number: 31 }
-                ],
-                'Braves': [
-                    { name: 'Eric Hill', position: 'Pitcher', number: 29 },
-                    { name: 'Stephen Scott', position: 'Catcher', number: 32 },
-                    { name: 'Jonathan Green', position: 'First Base', number: 3 },
-                    { name: 'Andrew Adams', position: 'Second Base', number: 18 },
-                    { name: 'Justin Baker', position: 'Third Base', number: 7 },
-                    { name: 'Brandon Nelson', position: 'Shortstop', number: 22 },
-                    { name: 'Adam Carter', position: 'Left Field', number: 15 },
-                    { name: 'Gregory Mitchell', position: 'Center Field', number: 9 },
-                    { name: 'Christopher Perez', position: 'Right Field', number: 12 },
-                    { name: 'Patrick Roberts', position: 'Designated Hitter', number: 27 }
-                ],
-                'Astros': [
-                    { name: 'Daniel Turner', position: 'Pitcher', number: 34 },
-                    { name: 'Matthew Phillips', position: 'Catcher', number: 8 },
-                    { name: 'Andrew Campbell', position: 'First Base', number: 19 },
-                    { name: 'Joshua Parker', position: 'Second Base', number: 4 },
-                    { name: 'Kevin Evans', position: 'Third Base', number: 25 },
-                    { name: 'Thomas Edwards', position: 'Shortstop', number: 1 },
-                    { name: 'Mark Collins', position: 'Left Field', number: 14 },
-                    { name: 'Anthony Stewart', position: 'Center Field', number: 28 },
-                    { name: 'Brian Sanchez', position: 'Right Field', number: 11 },
-                    { name: 'Jason Morris', position: 'Designated Hitter', number: 30 }
-                ],
-                'Mets': [
-                    { name: 'David Rogers', position: 'Pitcher', number: 17 },
-                    { name: 'Robert Reed', position: 'Catcher', number: 6 },
-                    { name: 'Michael Cook', position: 'First Base', number: 21 },
-                    { name: 'William Morgan', position: 'Second Base', number: 3 },
-                    { name: 'Richard Bell', position: 'Third Base', number: 18 },
-                    { name: 'Joseph Murphy', position: 'Shortstop', number: 9 },
-                    { name: 'Thomas Bailey', position: 'Left Field', number: 24 },
-                    { name: 'Charles Rivera', position: 'Center Field', number: 2 },
-                    { name: 'Daniel Cooper', position: 'Right Field', number: 15 },
-                    { name: 'Matthew Richardson', position: 'Designated Hitter', number: 27 }
-                ],
-                'White Sox': [
-                    { name: 'Christopher Cox', position: 'Pitcher', number: 31 },
-                    { name: 'Joseph Howard', position: 'Catcher', number: 12 },
-                    { name: 'Brian Ward', position: 'First Base', number: 5 },
-                    { name: 'Kevin Torres', position: 'Second Base', number: 19 },
-                    { name: 'Jason Peterson', position: 'Third Base', number: 8 },
-                    { name: 'Timothy Gray', position: 'Shortstop', number: 23 },
-                    { name: 'Ryan Ramirez', position: 'Left Field', number: 16 },
-                    { name: 'Jacob James', position: 'Center Field', number: 4 },
-                    { name: 'Gary Watson', position: 'Right Field', number: 28 },
-                    { name: 'Nicholas Brooks', position: 'Designated Hitter', number: 11 }
-                ]
-            };
+            try {
+                // Get players from database using team name directly
+                const players = await dbManager.getTeamPlayers(teamName);
 
-            // Use generic roster if specific team roster not found
-            const roster = sampleRosters[teamName] || [
-                { name: 'Player 1', position: 'Pitcher', number: 1 },
-                { name: 'Player 2', position: 'Catcher', number: 2 },
-                { name: 'Player 3', position: 'First Base', number: 3 },
-                { name: 'Player 4', position: 'Second Base', number: 4 },
-                { name: 'Player 5', position: 'Third Base', number: 5 },
-                { name: 'Player 6', position: 'Shortstop', number: 6 },
-                { name: 'Player 7', position: 'Left Field', number: 7 },
-                { name: 'Player 8', position: 'Center Field', number: 8 },
-                { name: 'Player 9', position: 'Right Field', number: 9 },
-                { name: 'Player 10', position: 'Designated Hitter', number: 10 }
-            ];
+                if (players.length === 0) {
+                    rosterView.innerHTML = '<div class="no-results">No players found for this team.</div>';
+                    return;
+                }
 
-            // Display each player
-            roster.forEach(player => {
-                const playerCard = document.createElement('div');
-                playerCard.className = 'player-card';
-                playerCard.innerHTML = `
-                    <div class="player-number">${player.number}</div>
-                    <div class="player-name">${player.name}</div>
-                    <div class="player-position">${player.position}</div>
-                `;
-                rosterView.appendChild(playerCard);
-            });
+                // Display each player
+                players.forEach((player, index) => {
+                    const playerCard = document.createElement('div');
+                    playerCard.className = 'player-card';
+
+                    // Generate a player number based on index (since database doesn't have jersey numbers)
+                    const playerNumber = (index + 1) % 100; // Ensure reasonable jersey numbers
+
+                    playerCard.innerHTML = `
+                        <div class="player-number">${playerNumber}</div>
+                        <div class="player-name">${player.first_name} ${player.last_name}</div>
+                        <div class="player-position">${player.age} years old, ${player.tournaments_played} tournaments</div>
+                        <div class="player-position">${player.hometown}</div>
+                    `;
+                    rosterView.appendChild(playerCard);
+                });
+            } catch (error) {
+                console.error('Error displaying roster view:', error);
+                rosterView.innerHTML = `<div class="no-results">Error loading roster: ${error.message}</div>`;
+            }
         }
 
         // Function to switch tabs
