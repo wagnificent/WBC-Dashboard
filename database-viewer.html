@@ -168,14 +168,12 @@
                     <table id="teams-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Wins</th>
                                 <th>Losses</th>
                                 <th>Runs Scored</th>
                                 <th>Runs Allowed</th>
                                 <th>Players Count</th>
-                                <th>Created At</th>
                             </tr>
                         </thead>
                         <tbody id="teams-data">
@@ -192,14 +190,12 @@
                     <table id="players-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Age</th>
                                 <th>Hometown</th>
-                                <th>Team ID</th>
+                                <th>Team Name</th>
                                 <th>Tournaments Played</th>
-                                <th>Created At</th>
                             </tr>
                         </thead>
                         <tbody id="players-data">
@@ -216,16 +212,13 @@
                     <table id="games-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Day of Week</th>
                                 <th>Time</th>
                                 <th>Stadium</th>
-                                <th>Home Team ID</th>
-                                <th>Visiting Team ID</th>
+                                <th>Home Team</th>
+                                <th>Visiting Team</th>
                                 <th>Home Score</th>
                                 <th>Visiting Score</th>
-                                <th>Complete</th>
-                                <th>Created At</th>
                             </tr>
                         </thead>
                         <tbody id="games-data">
@@ -310,7 +303,7 @@
 
             if (teams.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="8" class="no-data">No teams found in the database.</td>';
+                row.innerHTML = '<td colspan="6" class="no-data">No teams found in the database.</td>';
                 tableBody.appendChild(row);
                 return;
             }
@@ -318,14 +311,12 @@
             teams.forEach(team => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${team.id}</td>
                     <td>${team.name || ''}</td>
                     <td>${team.wins || 0}</td>
                     <td>${team.losses || 0}</td>
                     <td>${team.runs_scored || 0}</td>
                     <td>${team.runs_allowed || 0}</td>
                     <td>${team.players_count || 0}</td>
-                    <td>${team.created_at || ''}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -338,7 +329,7 @@
 
             if (players.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="8" class="no-data">No players found in the database.</td>';
+                row.innerHTML = '<td colspan="6" class="no-data">No players found in the database.</td>';
                 tableBody.appendChild(row);
                 return;
             }
@@ -346,14 +337,12 @@
             players.forEach(player => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${player.id}</td>
                     <td>${player.first_name || ''}</td>
                     <td>${player.last_name || ''}</td>
                     <td>${player.age || ''}</td>
                     <td>${player.hometown || ''}</td>
-                    <td>${player.team_id || ''}</td>
+                    <td>${player.team_name || ''}</td>
                     <td>${player.tournaments_played || 0}</td>
-                    <td>${player.created_at || ''}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -366,7 +355,7 @@
 
             if (games.length === 0) {
                 const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="10" class="no-data">No games found in the database.</td>';
+                row.innerHTML = '<td colspan="7" class="no-data">No games found in the database.</td>';
                 tableBody.appendChild(row);
                 return;
             }
@@ -374,16 +363,13 @@
             games.forEach(game => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${game.id}</td>
                     <td>${game.day_of_week || ''}</td>
                     <td>${game.time || ''}</td>
                     <td>${game.stadium_name || ''}</td>
-                    <td>${game.home_team_id || ''}</td>
-                    <td>${game.visiting_team_id || ''}</td>
+                    <td>${game.home_team_name || ''}</td>
+                    <td>${game.visiting_team_name || ''}</td>
                     <td>${game.home_score || ''}</td>
                     <td>${game.visiting_score || ''}</td>
-                    <td>${game.game_complete ? 'Yes' : 'No'}</td>
-                    <td>${game.created_at || ''}</td>
                 `;
                 tableBody.appendChild(row);
             });
