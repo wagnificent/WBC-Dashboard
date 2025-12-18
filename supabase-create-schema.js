@@ -134,14 +134,18 @@ async function createTableCreationFunctions() {
 
         console.log('✅ SQL functions created successfully');
 
-    } catch (error) {
-        console.error('❌ Error creating SQL functions:', error);
+        // Note: Triggers are now handled via Supabase CLI migrations
+        // See supabase/migrations/ directory for trigger setup
+        console.log('ℹ️  For trigger setup, use Supabase CLI: supabase db push');
 
-        // Fallback: Try creating tables directly if RPC fails
-        console.log('🔄 Trying direct table creation as fallback...');
-        await createTablesDirectly();
+        } catch (error) {
+            console.error('❌ Error creating SQL functions:', error);
+
+            // Fallback: Try creating tables directly if RPC fails
+            console.log('🔄 Trying direct table creation as fallback...');
+            await createTablesDirectly();
+        }
     }
-}
 
 /**
  * Fallback method to create tables directly

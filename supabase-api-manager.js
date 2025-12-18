@@ -40,6 +40,12 @@ class SupabaseManager {
             await this._createGamesTable();
             await this._importGamesData();
 
+            // 4. Create triggers for automatic statistics calculation
+            await this.createTeamStatsTriggers();
+
+            // 5. Calculate initial statistics for existing data
+            await this.calculateInitialTeamStats();
+
             console.log('🎉 Supabase database setup completed successfully!');
             console.log('📊 Your database is ready to use!');
             return { success: true };
@@ -279,6 +285,186 @@ class SupabaseManager {
             throw error;
         }
         console.log('✅ Games data imported');
+    }
+
+    /**
+     * Create team statistics triggers
+     */
+    async createTeamStatsTriggers() {
+        console.log('📊 Creating team statistics triggers...');
+
+        try {
+            // Create the trigger function
+            const createFunctionSQL = `
+                CREATE OR REPLACE FUNCTION update_team_stats_from_game()
+                RETURNS TRIGGER AS $$
+                DECLARE
+                    home_team_wins INTEGER;
+                    home_team_losses INTEGER;
+                    visiting_team_wins INTEGER;
+                    visiting_team_losses INTEGER;
+                    home_team_runs_scored INTEGER;
+                    home_team_runs_allowed INTEGER;
+                    visiting_team_runs_scored INTEGER;
+                    visiting_team_runs_allowed INTEGER;
+                BEGIN
+                    -- Only process if game is complete
+                    IF NEW.game_complete = TRUE THEN
+                        -- Calculate home team stats
+                        SELECT
+                            COUNT(*) FILTER (WHERE g.home_score > g.visiting_score) AS wins,
+                            COUNT(*) FILTER (WHERE g.home_score < g.visiting_score) AS losses,
+                            COALESCE(SUM(g.home_score), 0) AS runs_scored,
+                            COALESCE(SUM(g.visiting_score), 0) AS runs_allowed
+                        INTO
+                            home_team_wins, home_team_losses, home_team_runs_scored, home_team_runs_allowed
+                        FROM games g
+                        WHERE g.home_team_id = NEW.home_team_id AND g.game_complete = TRUE;
+
+                        -- Update home team
+                        UPDATE teams
+                        SET
+                            wins = home_team_wins,
+                            losses = home_team_losses,
+                            runs_scored = home_team_runs_scored,
+                            runs_allowed = home_team_runs_allowed
+                        WHERE id = NEW.home_team_id;
+
+                        -- Calculate visiting team stats
+                        SELECT
+                            COUNT(*) FILTER (WHERE g.visiting_score > g.home_score) AS wins,
+                            COUNT(*) FILTER (WHERE g.visiting_score < g.home_score) AS losses,
+                            COALESCE(SUM(g.visiting_score), 0) AS runs_scored,
+                            COALESCE(SUM(g.home_score), 0) AS runs_allowed
+                        INTO
+                            visiting_team_wins, visiting_team_losses, visiting_team_runs_scored, visiting_team_runs_allowed
+                        FROM games g
+                        WHERE g.visiting_team_id = NEW.visiting_team_id AND g.game_complete = TRUE;
+
+                        -- Update visiting team
+                        UPDATE teams
+                        SET
+                            wins = visiting_team_wins,
+                            losses = visiting_team_losses,
+                            runs_scored = visiting_team_runs_scored,
+                            runs_allowed = visiting_team_runs_allowed
+                        WHERE id = NEW.visiting_team_id;
+                    END IF;
+
+                    RETURN NEW;
+                END;
+                $$ LANGUAGE plpgsql;
+            `;
+
+            // Execute the function creation using direct SQL
+            const { error: functionError } = await supabase
+                .rpc('create_trigger_function', { sql: createFunctionSQL });
+
+            if (functionError) {
+                console.error('Error creating trigger function:', functionError);
+                throw functionError;
+            }
+
+            // Create the triggers using direct SQL
+            const createInsertTriggerSQL = `
+                CREATE TRIGGER update_team_stats_on_insert
+                AFTER INSERT ON games
+                FOR EACH ROW
+                EXECUTE FUNCTION update_team_stats_from_game();
+            `;
+
+            const createUpdateTriggerSQL = `
+                CREATE TRIGGER update_team_stats_on_update
+                AFTER UPDATE ON games
+                FOR EACH ROW
+                EXECUTE FUNCTION update_team_stats_from_game();
+            `;
+
+            const { error: insertTriggerError } = await supabase
+                .rpc('create_trigger', { sql: createInsertTriggerSQL });
+
+            const { error: updateTriggerError } = await supabase
+                .rpc('create_trigger', { sql: createUpdateTriggerSQL });
+
+            if (insertTriggerError || updateTriggerError) {
+                console.error('Error creating triggers:', insertTriggerError || updateTriggerError);
+                throw insertTriggerError || updateTriggerError;
+            }
+
+            console.log('✅ Team statistics triggers created successfully');
+
+        } catch (error) {
+            console.error('❌ Error creating team statistics triggers:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Calculate initial team statistics for existing data
+     */
+    async calculateInitialTeamStats() {
+        console.log('📊 Calculating initial team statistics...');
+
+        try {
+            const { data: teams, error: teamsError } = await supabase
+                .from('teams')
+                .select('id');
+
+            if (teamsError) {
+                console.error('Error fetching teams:', teamsError);
+                throw teamsError;
+            }
+
+            for (const team of teams) {
+                // Calculate wins
+                const { count: winsCount, error: winsError } = await supabase
+                    .from('games')
+                    .select('*', { count: 'exact', head: true })
+                    .or(`home_team_id.eq.${team.id}.and.home_score.gt.visiting_score,visiting_team_id.eq.${team.id}.and.visiting_score.gt.home_score`)
+                    .eq('game_complete', true);
+
+                // Calculate losses
+                const { count: lossesCount, error: lossesError } = await supabase
+                    .from('games')
+                    .select('*', { count: 'exact', head: true })
+                    .or(`home_team_id.eq.${team.id}.and.home_score.lt.visiting_score,visiting_team_id.eq.${team.id}.and.visiting_score.lt.home_score`)
+                    .eq('game_complete', true);
+
+                // Calculate runs scored
+                const { data: runsScoredData, error: runsScoredError } = await supabase
+                    .rpc('calculate_team_runs_scored', { team_id: team.id });
+
+                // Calculate runs allowed
+                const { data: runsAllowedData, error: runsAllowedError } = await supabase
+                    .rpc('calculate_team_runs_allowed', { team_id: team.id });
+
+                if (winsError || lossesError || runsScoredError || runsAllowedError) {
+                    console.error('Error calculating stats for team', team.id);
+                    continue;
+                }
+
+                // Update team statistics
+                const { error: updateError } = await supabase
+                    .from('teams')
+                    .update({
+                        wins: winsCount || 0,
+                        losses: lossesCount || 0,
+                        runs_scored: runsScoredData || 0,
+                        runs_allowed: runsAllowedData || 0
+                    })
+                    .eq('id', team.id);
+
+                if (updateError) {
+                    console.error('Error updating team stats:', updateError);
+                }
+            }
+
+            console.log('✅ Initial team statistics calculated');
+
+        } catch (error) {
+            console.error('❌ Error calculating initial team statistics:', error);
+            throw error;
+        }
     }
 
     /**
