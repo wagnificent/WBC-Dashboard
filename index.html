@@ -306,9 +306,9 @@
             content: "🏆 ";
         }
 
-        /* Rookie players don't get trophy emoji */
+        /* Rookie players get baseball emoji */
         .rookie::before {
-            content: "";
+            content: "⚾ ";
         }
 
         /* Age Group Color Coding */
@@ -612,7 +612,7 @@
                 row.innerHTML = `
                     <td>${team.name || ''}</td>
                     <td>${team.wins || 0}-${team.losses || 0}</td>
-                    <td>${team.runs_scored || 0}-${team.runs_allowed || 0}</td>
+                    <td>${team.runs_allowed || 0}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -648,6 +648,23 @@
             if (ageNum >= 68) return '68+';
 
             return '';
+        }
+
+        // Helper function to parse time string to minutes since midnight
+        function parseTimeToMinutes(timeString) {
+            if (!timeString) return 0;
+
+            const match = timeString.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+            if (!match) return 0;
+
+            let hours = parseInt(match[1]);
+            const minutes = parseInt(match[2]);
+            const ampm = match[3].toUpperCase();
+
+            if (ampm === 'PM' && hours !== 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+
+            return hours * 60 + minutes;
         }
 
         // Display players data as cards
@@ -705,7 +722,7 @@
                 if (player.hometown) {
                     const hometownRow = document.createElement('div');
                     hometownRow.className = 'player-detail-row';
-                    hometownRow.textContent = `Hometown: ${player.hometown}`;
+                    hometownRow.textContent = `${player.hometown}`;
                     playerDetails.appendChild(hometownRow);
                 }
 
@@ -716,7 +733,7 @@
                     tournamentsBadge.textContent = 'Rookie';
                 } else {
                     tournamentsBadge.className = 'player-tournaments';
-                    tournamentsBadge.textContent = `${player.tournaments_played || 0} tournaments played`;
+                    tournamentsBadge.textContent = `Year ${player.tournaments_played || 0}`;
                 }
 
                 // Assemble the player card
@@ -769,6 +786,15 @@
                 return dayOrder.indexOf(a) - dayOrder.indexOf(b);
             });
 
+            // Sort games within each day by time
+            allDays.forEach(day => {
+                if (gamesByDay[day]) {
+                    gamesByDay[day].sort((a, b) => {
+                        return parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time);
+                    });
+                }
+            });
+
             // Create day sections for all days that have games
             allDays.forEach(day => {
                 if (gamesByDay[day] && gamesByDay[day].length > 0) {
@@ -804,7 +830,11 @@
 
                         const gameScore = document.createElement('div');
                         gameScore.className = 'game-score';
-                        gameScore.textContent = `${game.home_score} - ${game.visiting_score}`;
+                        if (game.home_score == null || game.visiting_score == null || game.game_complete === false) {
+                            gameScore.textContent = '';
+                        } else {
+                            gameScore.textContent = `${game.home_score} - ${game.visiting_score}`;
+                        }
 
                         gameCard.appendChild(gameTime);
                         gameCard.appendChild(gameMatchup);
