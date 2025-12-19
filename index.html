@@ -595,7 +595,7 @@
             });
         }
 
-        // Display teams data
+        // Display teams data with ranking
         function displayTeams(teams) {
             const tableBody = document.getElementById('teams-data');
             tableBody.innerHTML = '';
@@ -607,7 +607,19 @@
                 return;
             }
 
-            teams.forEach(team => {
+            // Calculate win rate and sort teams
+            const teamsWithRank = teams.map(team => ({
+                ...team,
+                winRate: (team.wins + team.losses) > 0 ? team.wins / (team.wins + team.losses) : 0
+            })).sort((a, b) => {
+                // Sort by win rate descending, then by runs allowed ascending
+                if (b.winRate !== a.winRate) {
+                    return b.winRate - a.winRate;
+                }
+                return (a.runs_allowed || 0) - (b.runs_allowed || 0);
+            });
+
+            teamsWithRank.forEach((team, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${team.name || ''}</td>
