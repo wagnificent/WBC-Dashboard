@@ -1,0 +1,237 @@
+id,first_name,last_name,age,hometown,tournaments_played,created_at,team_name
+1,Paul,Perry,62,"Brooklyn, NY",1,,All Stars
+2,Paul,Lopez,61,"Glendale, NY",3,,All Stars
+3,Kenny,Aviles,61,"Brooklyn, NY",3,,All Stars
+4,Frank,Insera,59,"Buffalo, NY",3,,All Stars
+5,Rufino,Maldonado,56,"Hobart, IN",3,,Blue Jays
+6,John,Speidel,76,"Willoughby, OH",23,,Blue Jays
+7,Rick,Anderson,73,"Aurora, OH",26,,Buckeyes
+8,Scotter,James,51,"Murfreesboro, TN",5,,Buckeyes
+9,Jason,McClaflin,56,"Savannah, GA",3,,Buckeyes
+10,Steven,Kranz,61,"Seville, OH",1,,Buckeyes
+11,Scott,Jenkins,60,"Savannah, GA",6,,Buckeyes
+12,Darryl,Johnson,60,"Cleveland, OH",6,,Buckeyes
+13,Tom,Frey,62,"Brecksville, OH",4,,Buckeyes
+14,Dave,Deran,63,"Brecksville, OH",7,,Buckeyes
+15,Mike,Oriti,64,"Medina, OH",1,,Buckeyes
+16,Sam,Santabarbara,63,"Seven Hills, OH",8,,Buckeyes
+17,Rich,Armbruster,64,"Brecksville, OH",13,,Buckeyes
+18,Charlie,Petretti,68,"Medina, OH",6,,Buckeyes
+19,John,Erne,73,"Euclid, OH",20,,Buckeyes
+20,David,James,75,"Murfreesboro, TN",6,,Buckeyes
+21,Jerry,Degerness,79,"Woodbury, MN",7,,Cowboys
+22,Kevin,Kelly,74,"LaBelle, FL",12,,Cowboys
+23,Myron,Carlson,73,"Hugo, MN",5,,Cowboys
+24,Brian,Kelly,58,"Groveland, MA",11,,Cowboys
+25,Aaron,Sarfatti,47,"Huntersville, NC",8,,Cowboys
+26,Michael,Mabee,49,"Saugus, MA",2,,Cowboys
+27,Christopher,Rigazio,,"Atkinson, NH",2,,Cowboys
+28,Dan,Murray,52,"Hampstead, NH",2,,Cowboys
+29,Dale,Brownlee,75,"Burgettstown, PA",10,,Cowboys
+30,Mark,Karamol,66,"Delta, OH",8,,Cowboys
+31,Chris,Kenneday,58,"Libertyville, IL",10,,Cowboys
+32,Gene,Burnham,52,"Amesbury, MA",3,,Cowboys
+33,Dean,Leffler,73,"N. Fort Myers, FL",11,,Cowboys
+34,Robert,Bryson,75,"South Shore, KY",4,,Cowboys
+35,David,Popowich,54,"Naples, FL",6,,Cubs
+36,Jeff,Vitale,66,"Fort Myers, FL",7,,Cubs
+37,Cliff,Soukup,57,"Fort Myers, FL",8,,Cubs
+38,Erik,Reese,54,"Estero, FL",5,,Cubs
+39,Mike,Peter,61,"Fort Myers, FL",11,,Cubs
+40,Rob,Williams,53,"Naples, FL",12,,Cubs
+41,Glenn,Hoffmann,71,"Fort Myers, FL",29,,Cubs
+42,Bob,Henault,66,"Cape Coral, FL",2,,Cubs
+43,Daniel,Cugini,67,"Naples, FL",2,,Cubs
+44,Douglas,Klemme,66,"Collins, IA",2,,FA
+45,Sean,O'Sullivan,63,"The Villages, FL",1,,FA
+46,Donald,O'Connor,78,"Chattanooga, TN",18,,FA
+47,Noel,Vazquez,79,"Fernandina Bch., FL",1,,FA
+48,Lynn,Bracey,65,"Sarasota, FL",1,,FA
+49,Thomas,Spradling,42,"Freeland, WA",1,,FA
+50,Steve,Spradling,74,"Freeland, WA",5,,FA
+51,Owen,Smith,69,"Bedford, NJ",3,,Firefighters
+52,Paul,Holzhueter,73,"Mankato, MN",23,,Firefighters
+53,Galen,Holzhueter,35,"Mankato, MN",4,,Firefighters
+54,Lazaro,Aleman,32,"Lehigh Acres, FL",1,,Firefighters
+55,Tim,Holzhueter,56,"Shakopee, MN",4,,Firefighters
+56,Cliff,Archer,69,"Levittown, NY",9,,Firefighters
+57,Brian,Pearson,65,"Williamsville, NY",3,,Firefighters
+58,George,Snow,62,"East Taunton, MA",1,,Firefighters
+59,Kevin,Heffernan,59,"Millis, MA",2,,Firefighters
+60,Joshua,Pritchard,46,"Swampscott, MA",3,,Firefighters
+61,Tom,Hannan,67,"Streetsboro, OH",1,,Firefighters
+62,Dan,Bolton,50,"Cambridge, MA",2,,Firefighters
+63,Ray,Myers,69,"Hagerstown, MD",2,,Firefighters
+64,Guillermo,Brown,42,"Johnston, RI",1,,Firefighters
+65,Philip,Herbst,59,"Cape Coral, FL",2,,Firefighters
+66,Jason,Phillips,43,"Elyria, OH",1,,Firefighters
+67,David,Cahill,50,"Boston, MA",1,,Firefighters
+68,Joe,Nemeth,,", OH",1,,Firefighters
+69,Ray,Fantozzi,70,"Macedonia, OH",2,,Firefighters
+70,Steve,Parker,74,"Egg Harbor Twp, NJ",3,,Hurricanes
+71,Tom,Wittland,55,"Clermont, FL",6,,Hurricanes
+72,Scott,Parker,51,"Egg Harbor Twp, NJ",2,,Hurricanes
+73,Mark,Woods,53,"Cape Coral, FL",1,,Jets
+74,Michael,Dacanay,53,"Punta Gorda, FL",1,,Jets
+75,Don,Donakowski,54,"Cape Coral, FL",6,,Jets
+76,Ryan,Rodina,51,"Fort Myers, FL",5,,Jets
+77,Wayne,Manolescu,60,"Cape Coral, FL",5,,Jets
+78,Barry,Jackson,57,"Cape Coral, FL",2,,Jets
+79,Joseph,Nitti,60,"Frankfurt, NY",2,,Jets
+80,Lee,Cosentino,55,"Fort Myers, FL",7,,Jets
+81,Stu,Pepper,77,"Cape Coral, FL",17,,Jets
+82,Kevin,Ferry,58,"Cape Coral, FL",2,,Jets
+83,JayKay,McGreens,60,"Fort Myers, FL",5,,Jets
+84,Eric,Morrissey,44,"Clear Lake, WI",1,,Jets
+85,Ron,Obermeier,56,"Moorstown, NJ",2,,Jets
+86,Shaun,Miley,58,"Cape Coral, FL",2,,Jets
+87,Bryan,McGovern,40,"Fort Myers, FL",3,,Legends
+88,Michael,Jacobson,73,"Tuscaloosa, AL",3,,Legends
+89,Mike,Vonnahmen,74,"Sanibel, FL",8,,Legends
+90,Joe,DeRosa,77,"Punta Gorda, FL",1,,Legends
+91,Terry,McGovern,68,"The Villages, FL",6,,Legends
+92,Chris,Holling,55,"Granby, CT",4,,Legends
+93,Daniel,Mahoney,72,"Fort Myers, FL",2,,Legends
+94,Kris,Boucher,73,"Englewood, FL",6,,Legends
+95,Bill,Ritter,78,"Punta Gorda, FL",14,,Legends
+96,Jeremy,Jacobson,,", ",3,,Legends
+97,Greg,McEachern,66,"Fort Myers, FL",4,,Maineiacs
+98,Jeff,Mosher,53,"Belfast, ME",1,,Maineiacs
+99,Butch,Hall,69,"East Machias, ME",20,,Maineiacs
+100,Chris,Vaught,49,"Milford, OH",2,,Mudhens
+101,Tom,Brown,63,"Milford, OH",7,,Mudhens
+102,Jeff,Brokamp,66,"Cincinnati, OH",6,,Mudhens
+103,Michael,Hertel,41,"Batavia, OH",6,,Mudhens
+104,Marty,Heckard,60,"Amelia, OH",21,,Mudhens
+105,Shawn,Shelton,41,"Batavia, OH",1,,Mudhens
+106,William,McDonald,71,"Amelia, OH",2,,Mudhens
+107,Brian,Koury,67,"Cincinnati, OH",5,,Mudhens
+108,Bryan,Hertel,53,"Punta Gorda, FL",9,,Mudhens
+109,Omar,Taveras,44,"Naples, FL",8,,Mudhens
+110,A J,Bush,39,"Troy, OH",5,,Mudhens
+111,Joe,Durle,60,"Fishers, IN",5,,Mudhens
+112,Darren,George,62,"Carmel, IN",15,,Mudhens
+113,Matt,Hitt,37,"Chandler, AZ",2,,Mudhens
+114,Thomas,Smith,65,"Boca Raton, FL",5,,Pirates
+115,Kurt,Yockey,71,"Naples, FL",17,,Pirates
+116,Adrian,Rosati,78,"Linden, VA",14,,Pirates
+117,John,Lazarich,69,"Celina, OH",11,,Pirates
+118,Jack,Prendeville,73,"Loudon, NH",13,,Pirates
+119,Gerald,Camhy,76,"Valley Cottage, NY",8,,Pirates
+120,Joe,Fioroni,73,"Rochester Hills, MI",22,,Pirates
+121,Kyle,Hensley,52,"Monroe, OH",3,,Rays
+122,Stephen,Green,40,"Cincinnati, OH",5,,Rays
+123,Brian,Biggs,56,"Cincinnati, OH",17,,Rays
+124,Mark,Ober,69,"Fort Myers, FL",15,,Rays
+125,Jaime,Nagel,35,"Melbourne, KY",1,,Rays
+126,Mark,Nagel,54,"Florence, KY",4,,Rays
+127,Hank,Nagel,56,"Alexandria, KY",3,,Rays
+128,Scott,Klimkowski,,", ",1,,Rays
+129,Joseph,Schubert,63,"Springboro, OH",3,,Rays
+130,Ryan,Hicks,42,"Cincinnati, OH",4,,Rays
+131,Joseph,Arnold,61,"Florence, KY",16,,Rays
+132,Sean,Arnold,36,"Florence, KY",7,,Rays
+133,Jonathan,Macaluso,42,"Milford, OH",3,,Rays
+134,Pete,Delois,66,"Milford, OH",15,,Rays
+135,Tony,Basile,73,"Fort Myers, FL",14,,Red Sox
+136,Mike,McCarthy,67,"Fort Myers, FL",1,,Red Sox
+137,John,Torniero,77,"Fort Myers, FL",18,,Red Sox
+138,Shawn,Mason,62,"Tampa, FL",3,,Red Sox
+139,Kevin,Marden,80,"Waltham, MA",16,,Red Sox
+140,Janet,Miller,62,"Wakefield, MA",16,,Red Sox
+141,Eddie,Munoz,56,"Point Pleasant, NJ",3,,Red Sox
+142,Hector,Munoz,59,"Elizabeth, NJ",3,,Red Sox
+143,Phil,Chartier,41,"Valdosta, GA",1,,Red Sox
+144,Seth,Jackson,46,"Galloway, OH",1,,Red Sox
+145,James,DeRoche,61,"Hudson, OH",3,,Reds
+146,Ron,Beck,59,"Cheraw, SC",7,,Reds
+147,Matt,Baker,44,"Mansfield, OH",1,,Reds
+148,Curt,Zimmerman,62,"Mechanicsburg, PA",8,,Reds
+149,Mark,Breining,71,"Miamisburg, OH",1,,Reds
+150,David,Milburn,74,"Whitinsville, MA",9,,Reds
+151,Bill,Schwecke,68,"South Lebanon, OH",7,,Reds
+152,Brad,Smith,71,"Bellville, OH",1,,Reds
+153,Derrick,Droge,47,"Cantrall, IL",14,,Reds
+154,Cory,Hudepohl,37,"Raleigh, NC",4,,Reds
+155,"David ""Doc""",Kaufman,69,"Woodbury, NY",3,,Reds
+156,Mike,Brown,63,"Bellville, OH",12,,Reds
+157,Matt,Haig,69,"Brentwood, NY",5,,Reds
+158,Reid,Stiefel,63,"Crystal Lake, IL",1,,Rock Hounds
+159,David,Gentile,,", ",15,,Rock Hounds
+160,Angel,Oviedo,58,"Highland Park, IL",11,,Rock Hounds
+161,Tom,Pruim,62,"Chicago, IL",11,,Rock Hounds
+162,Kevin,Kolb,57,"Long Grove, IL",5,,Rock Hounds
+163,Donald,Myczek,48,"Frankfort, IL",9,,Rock Hounds
+164,Scott,Pientka,57,"Copperhill, TN",13,,Rock Hounds
+165,Mark,Siler,60,"Cincinnati, OH",15,,Rock Hounds
+166,Rich,Gentile,70,"Gilbert, AZ",21,,Rock Hounds
+167,William,Dew,64,"Streamwood, IL",18,,Rock Hounds
+168,Rick,Schmidt,63,"Canton, MI",3,,Rockies
+169,John,Doersam,56,"Chillocothe, OH",6,,Rockies
+170,Tom,Daubenmire,70,"Loveland, OH",19,,Rockies
+171,Mike,Day,74,"Cincinnati, OH",16,,Rockies
+172,Kenny,Day,46,"Cincinnati, OH",12,,Rockies
+173,Mark,Johnson,63,"Cincinnati, OH",11,,Rockies
+174,Michael,Free,63,"Chillicothe, OH",5,,Rockies
+175,Chase,Zimmer,32,"Louisville, KY",1,,Rockies
+176,Joe,Jansen,59,"Santa Rosa Beach, FL",6,,Rockies
+177,Mitch,Katsuda,64,"New Hudson, MI",1,,Rockies
+178,Michael,Kimutis,67,"Onsted, MI",11,,Rockies
+179,Doug,Hauer,79,"Loveland, OH",28,,Rockies
+180,Michael,Ballard,37,"Cincinnati, OH",2,,Rockies
+181,Matt,Boulanger,58,"Shutesbury, MA",1,,Scouts
+182,Paul,Griswold,62,"Monson, MA",1,,Scouts
+183,Andy,Klepacki,61,"Hadley, MA",1,,Scouts
+184,Morriss,Partee,59,"Holyoke, MA",1,,Scouts
+185,Ken,Sloat,55,"Belchertown, MA",1,,Scouts
+186,Jeff,Whitehead,63,"East Longmeadow, MA",1,,Scouts
+187,Ron,Totten,59,"East Hartford, CT",1,,Scouts
+188,Paul,Kaplan,78,"Amherst, MA",1,,Scouts
+189,Todd,daCunha,43,"Tolland, CT",1,,Scouts
+190,Edward,Shumate,51,"Northampton, MA",1,,Scouts
+191,Jim,Fogarty,60,"Westfield, MA",1,,Scouts
+192,Gary,Webber,59,"Palmer, MA",1,,Scouts
+193,Colin,Hosley,56,"Amherst, MA",1,,Scouts
+194,Steven,Youngberg,56,"Wales, MA",1,,Scouts
+195,Tyrel,Nelson,47,"Richfield, MN",2,,Senators
+196,Randy,Roers,50,"Punta Gorda, FL",2,,Senators
+197,Albert,Linderman,71,"Apple Valley, MN",2,,Senators
+198,Jim,Roehl,62,"Maple Grove, MN",3,,Senators
+199,Roger,Kaufenberg,62,"Oakdale, MN",3,,Senators
+200,Pete,Kostichka,55,"Cottage Grove, MN",3,,Senators
+201,Timothy,Bottger,51,"Brooklyn Park, MN",2,,Senators
+202,Brett,Hughes,54,"Bonita Springs, FL",1,,Senators
+203,Terry,Knop,68,"Cottage Grove, MN",1,,Senators
+204,Daniel,Stock,44,"St. Paul, MN",1,,Senators
+205,Casey,Howell,62,"Roberts, WI",2,,Senators
+206,Tim,Doboszenski,63,"Rockford, MN",1,,Senators
+207,Lee,Linderman,40,"Minneapolis, MN",3,,Senators
+208,Doug,Breitkerutz,54,"Alexandria, MN",3,,Senators
+209,Jeff,Swanson,57,"Rochester, MN",1,,Senators
+210,Frank,Esposito,63,"East Setauket, NY",2,,Sun Rays
+211,Dave,Kracht,62,"St. Clair Shores, MI",12,,Sun Rays
+212,David,Kracht,32,"Detroit, MI",3,,Sun Rays
+213,Sam,Romeo,60,"Hobart, IN",4,,Sun Rays
+214,Brett,Graves,63,"Decatur, AL",2,,Sun Rays
+215,Patrick,Noonan,56,"London, Ontario",1,,Sun Rays
+216,Chris,Devlin,51,"London, Ontario",1,,Sun Rays
+217,David,Paupin,40,"Arichat, Nova Sco",1,,Sun Rays
+218,Brad,Hodgson,70,"Lakeland, FL",9,,Sun Rays
+219,A J,Hickman,53,"Fayetteville, NC",1,,Travelers
+220,Dave,Dow,,", ",5,,Travelers
+221,Kirt,Bennett,60,"Punta Gorda, FL",8,,Travelers
+222,Bill,Steele,61,"Florida, NY",2,,Travelers
+223,Bob,Ladimir,54,"Matlacha, FL",8,,Travelers
+224,Paul,Kratoska,67,"Brooklyn Park, MN",3,,Twins
+225,R C,Peters,80,"Fort Myers, FL",2,,Twins
+226,Bill,Harris,73,"Cape Coral, FL",1,,Twins
+227,Kirby Jr,Puckett,34,"Fort Myers, FL",3,,Twins
+228,Mark,Wolfe,66,"Fargo, ND",3,,Twins
+229,Dave,Hinnenkamp,64,"Fort Myers, FL",10,,Twins
+230,John,Green,63,"Bushnell, FL",3,,Twins
+231,Kevin,Ulrich,63,"Savage, MN",1,,Twins
+232,Scott,Morris,59,"St. Michael, MN",3,,Twins
+233,Paul,Bennett,52,"Tucson, AZ",1,,Twins
+234,Steve,Kluvers,52,"West Fargo, ND",3,,Twins
+235,Dustin,Hinnenkamp,39,"Saint Cloud, MN",3,,Twins
+236,Rick,Bruce,69,"Estero, FL",3,,Twins
