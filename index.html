@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wooden Bat Classic database viewer - View team standings, player rosters, and game schedules for the WBC tournament.">
     <title>WBC Database Viewer</title>
     <style>
         body {
@@ -154,9 +155,9 @@
             gap: 10px;
         }
 
-        .day-header::before {
-            content: "📅";
+        .day-header .calendar-icon {
             font-size: 20px;
+            aria-hidden: "true";
         }
 
         .games-grid {
@@ -447,6 +448,49 @@
             border-color: #4CAF50;
         }
 
+        /* Skip link styles */
+        .skip-link {
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 1000;
+            border-radius: 4px;
+        }
+
+        .skip-link:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            overflow: visible;
+        }
+
+        /* Focus styles for better keyboard navigation */
+        .tab-button:focus {
+            outline: 2px solid #4CAF50;
+            outline-offset: 2px;
+        }
+
+        .team-filter-select:focus {
+            outline: 2px solid #4CAF50;
+            outline-offset: 2px;
+        }
+
+        .player-card:focus {
+            outline: 2px solid #4CAF50;
+            outline-offset: 2px;
+        }
+
+        .game-card:focus {
+            outline: 2px solid #4CAF50;
+            outline-offset: 2px;
+        }
+
         @media (max-width: 768px) {
             .games-grid {
                 grid-template-columns: 1fr;
@@ -467,67 +511,70 @@
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h1>Wooden Bat Classic</h1>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <main id="main-content">
+        <div class="dashboard-container">
+            <h1>Wooden Bat Classic</h1>
 
-        <!-- Team Filter -->
-        <div class="team-filter-container">
-            <label class="team-filter-label">Filter by Team:</label>
-            <select id="team-filter" class="team-filter-select">
-                <option value="all">All Teams</option>
-                <!-- Team options will be populated dynamically -->
-            </select>
-        </div>
-
-        <div id="error-container" class="error-message" style="display: none;">
-            Failed to connect to the database. Please check your connection and try again.
-        </div>
-
-        <div id="loading-container" class="loading-message">
-            Loading data from database...
-        </div>
-
-        <div id="data-container" style="display: none;">
-            <!-- Tab Navigation -->
-            <div class="tab-navigation">
-                <button class="tab-button active" data-tab="teams">Standings</button>
-                <button class="tab-button" data-tab="players">Roster</button>
-                <button class="tab-button" data-tab="schedule">Schedule</button>
+            <!-- Team Filter -->
+            <div class="team-filter-container">
+                <label class="team-filter-label">Filter by Team:</label>
+                <select id="team-filter" class="team-filter-select">
+                    <option value="all">All Teams</option>
+                    <!-- Team options will be populated dynamically -->
+                </select>
             </div>
 
-            <!-- Teams Tab Content -->
-            <div id="teams-tab" class="tab-content active">
-                <div class="data-panel">
-                    <table id="teams-table">
-                        <thead>
-                            <tr>
-                                <th>Team</th>
-                                <th>W-L</th>
-                                <th>RA</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teams-data">
-                            <!-- Teams data will be populated here -->
-                        </tbody>
-                    </table>
+            <div id="error-container" class="error-message" style="display: none;">
+                Failed to connect to the database. Please check your connection and try again.
+            </div>
+
+            <div id="loading-container" class="loading-message">
+                Loading data from database...
+            </div>
+
+            <div id="data-container" style="display: none;">
+                <!-- Tab Navigation -->
+                <div class="tab-navigation" role="tablist">
+                    <button class="tab-button active" role="tab" aria-selected="true" aria-controls="teams-tab" id="teams-tab-btn" data-tab="teams">Standings</button>
+                    <button class="tab-button" role="tab" aria-selected="false" aria-controls="players-tab" id="players-tab-btn" data-tab="players">Roster</button>
+                    <button class="tab-button" role="tab" aria-selected="false" aria-controls="schedule-tab" id="schedule-tab-btn" data-tab="schedule">Schedule</button>
                 </div>
-            </div>
 
-            <!-- Players Tab Content -->
-            <div id="players-tab" class="tab-content">
+                <!-- Teams Tab Content -->
+                <div id="teams-tab" class="tab-content active" role="tabpanel" aria-labelledby="teams-tab-btn">
+                    <section class="data-panel">
+                        <table id="teams-table">
+                            <thead>
+                                <tr>
+                                    <th>Team</th>
+                                    <th>W-L</th>
+                                    <th>RA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teams-data">
+                                <!-- Teams data will be populated here -->
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <!-- Players Tab Content -->
+                <div id="players-tab" class="tab-content" role="tabpanel" aria-labelledby="players-tab-btn">
                     <div id="players-grid" class="players-grid">
                         <!-- Player cards will be populated here -->
                     </div>
-            </div>
+                </div>
 
-            <!-- Schedule Tab Content -->
-            <div id="schedule-tab" class="tab-content">
-                <div id="schedule-container" class="schedule-container">
-                    <!-- Schedule content will be populated here -->
+                <!-- Schedule Tab Content -->
+                <div id="schedule-tab" class="tab-content" role="tabpanel" aria-labelledby="schedule-tab-btn">
+                    <div id="schedule-container" class="schedule-container">
+                        <!-- Schedule content will be populated here -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -583,12 +630,16 @@
 
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    // Remove active class from all buttons and contents
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    // Remove active class and aria-selected from all buttons and contents
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
                     tabContents.forEach(content => content.classList.remove('active'));
 
-                    // Add active class to clicked button and corresponding content
+                    // Add active class and aria-selected to clicked button and corresponding content
                     button.classList.add('active');
+                    button.setAttribute('aria-selected', 'true');
                     const tabId = button.getAttribute('data-tab');
                     document.getElementById(`${tabId}-tab`).classList.add('active');
                 });
@@ -817,7 +868,12 @@
                     // Create day header
                     const dayHeader = document.createElement('div');
                     dayHeader.className = 'day-header';
-                    dayHeader.textContent = day;
+                    const calendarIcon = document.createElement('span');
+                    calendarIcon.className = 'calendar-icon';
+                    calendarIcon.textContent = '📅';
+                    calendarIcon.setAttribute('aria-hidden', 'true');
+                    dayHeader.appendChild(calendarIcon);
+                    dayHeader.appendChild(document.createTextNode(day));
 
                     // Create games grid
                     const gamesGrid = document.createElement('div');
