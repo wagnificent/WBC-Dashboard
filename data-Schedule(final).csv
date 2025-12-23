@@ -1,0 +1,67 @@
+id,day_of_week,time,stadium_name,home_team_name,visiting_team_name
+1,Monday,1:30 PM,Stadium,Mudhens,Rays
+2,Monday,1:30 PM,TP2,Cubs,Blue Jays
+3,Monday,1:30 PM,TP3,Legends,Reds
+4,Monday,1:30 PM,TP4,Maineiacs,Gamecocks
+5,Monday,4:00 PM,Stadium,Senators,Jets
+6,Monday,4:00 PM,TP2,Rock Hounds,Twins
+7,Monday,4:00 PM,TP3,Red Sox,Sun Rays
+8,Monday,4:00 PM,TP4,Hurricanes,Cowboys
+9,Monday,6:30 PM,Stadium,Travelers,Rockies
+10,Monday,6:30 PM,TP2,Placeholders,Scouts
+11,Monday,6:30 PM,TP3,Firefighters,Buckeyes
+12,Tuesday,9:30 AM,Stadium,Buckeyes,Maineiacs
+13,Tuesday,9:30 AM,TP2,Reds,Gamecocks
+14,Tuesday,9:30 AM,TP3,Legends,Buckeyes
+15,Tuesday,12:00 PM,Stadium,Maineiacs,Legends
+16,Tuesday,12:00 PM,TP2,Gamecocks,Reds
+17,Tuesday,12:00 PM,TP3,Rays,Mudhens
+18,Tuesday,12:00 PM,TP4,Blue Jays,Cubs
+19,Tuesday,2:30 PM,Stadium,Cubs,Rays
+20,Tuesday,2:30 PM,TP2,Mudhens,Blue Jays
+21,Tuesday,2:30 PM,TP3,Travelers,Senators
+22,Tuesday,2:30 PM,TP4,Rockies,Placeholders
+23,Tuesday,2:30 PM,PDC1,Twins,Rock Hounds
+24,Tuesday,2:30 PM,PDC2,Cowboys,Hurricanes
+25,Tuesday,2:30 PM,PDC3,Scouts,Red Sox
+26,Tuesday,5:00 PM,Stadium,Senators,Travelers
+27,Tuesday,5:00 PM,TP2,Placeholders,Rockies
+28,Tuesday,5:00 PM,TP3,Rock Hounds,Twins
+29,Tuesday,5:00 PM,TP4,Hurricanes,Cowboys
+30,Tuesday,5:00 PM,PDC1,Red Sox,Scouts
+31,Tuesday,5:00 PM,PDC2,Sun Rays,Jets
+32,Tuesday,5:00 PM,PDC3,Jets,Sun Rays
+33,Tuesday,5:00 PM,PDC3,Firefighters,Maineiacs
+34,Wednesday,9:30 AM,Stadium,Placeholders,Firefighters
+35,Wednesday,9:30 AM,TP2,Rockies,Buckeyes
+36,Wednesday,9:30 AM,TP3,Scouts,Cowboys
+37,Wednesday,9:30 AM,TP4,Maineiacs,Reds
+38,Wednesday,12:00 PM,Stadium,Firefighters,Placeholders
+39,Wednesday,12:00 PM,TP2,Buckeyes,Scouts
+40,Wednesday,12:00 PM,TP3,Cowboys,Rockies
+41,Wednesday,12:00 PM,TP4,Reds,Maineiacs
+42,Wednesday,2:30 PM,Stadium,Rays,Travelers
+43,Wednesday,2:30 PM,TP2,Blue Jays,Mudhens
+44,Wednesday,2:30 PM,TP3,Mudhens,Rays
+45,Wednesday,2:30 PM,TP4,Travelers,Blue Jays
+46,Wednesday,2:30 PM,PDC1,Senators,Twins
+47,Wednesday,2:30 PM,PDC2,Rock Hounds,Jets
+48,Wednesday,2:30 PM,PDC3,Sun Rays,Red Sox
+49,Wednesday,5:00 PM,Stadium,Blue Jays,Cubs
+50,Wednesday,5:00 PM,TP2,Twins,Senators
+51,Wednesday,5:00 PM,TP3,Jets,Rock Hounds
+52,Wednesday,5:00 PM,TP4,Red Sox,Sun Rays
+53,Wednesday,5:00 PM,PDC1,Hurricanes,Cowboys
+54,Wednesday,5:00 PM,PDC2,Cowboys,Hurricanes
+55,Wednesday,5:00 PM,PDC3,Gamecocks,Legends
+56,Thursday,9:30 AM,Stadium,Legends,Gamecocks
+57,Thursday,9:30 AM,TP2,Gamecocks,Buckeyes
+58,Thursday,9:30 AM,TP3,Firefighters,Rockies
+59,Thursday,9:30 AM,TP4,Cowboys,Placeholders
+60,Thursday,12:00 PM,Stadium,Red Sox,Hurricanes
+61,Thursday,12:00 PM,TP2,Sun Rays,Jets
+62,Thursday,12:00 PM,TP3,Twins,Rock Hounds
+63,Thursday,12:00 PM,TP4,Scouts,Firefighters
+64,Thursday,2:30 PM,Stadium,Rock Hounds,Senators
+65,Thursday,2:30 PM,TP2,Twins,Sun Rays
+66,Thursday,2:30 PM,TP3,Reds,Maineiacs

@@ -118,6 +118,7 @@
         /* Tab Navigation Styles */
         .tab-navigation {
             display: flex;
+            gap: 8px;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             border-radius: 12px;
             padding: 6px;
@@ -128,8 +129,8 @@
 
         .tab-button {
             padding: 14px 28px;
-            background: transparent;
-            border: none;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(30, 58, 138, 0.2);
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
@@ -139,6 +140,9 @@
             border-radius: 8px;
             position: relative;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .tab-button:hover {
@@ -158,6 +162,11 @@
         .tab-button:focus {
             outline: 3px solid #2563eb;
             outline-offset: 2px;
+        }
+
+        .tab-icon {
+            font-size: 18px;
+            line-height: 1;
         }
 
         .tab-content {
@@ -718,9 +727,9 @@
             <div id="data-container" style="display: none;">
                 <!-- Tab Navigation -->
                 <div class="tab-navigation" role="tablist">
-                    <button class="tab-button active" role="tab" aria-selected="true" aria-controls="teams-tab" id="teams-tab-btn" data-tab="teams">Standings</button>
-                    <button class="tab-button" role="tab" aria-selected="false" aria-controls="players-tab" id="players-tab-btn" data-tab="players">Roster</button>
-                    <button class="tab-button" role="tab" aria-selected="false" aria-controls="schedule-tab" id="schedule-tab-btn" data-tab="schedule">Schedule</button>
+                    <button class="tab-button active" role="tab" aria-selected="true" aria-controls="teams-tab" id="teams-tab-btn" data-tab="teams"><span class="tab-icon">📊</span> Standings</button>
+                    <button class="tab-button" role="tab" aria-selected="false" aria-controls="players-tab" id="players-tab-btn" data-tab="players"><span class="tab-icon">👥</span> Roster</button>
+                    <button class="tab-button" role="tab" aria-selected="false" aria-controls="schedule-tab" id="schedule-tab-btn" data-tab="schedule"><span class="tab-icon">📅</span> Schedule</button>
                 </div>
 
                 <!-- Teams Tab Content -->
