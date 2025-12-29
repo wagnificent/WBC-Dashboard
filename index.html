@@ -329,17 +329,33 @@
             opacity: 1;
         }
 
-        /* Time-of-Day Color Coding for Game Cards */
-        .game-morning {
-            background: linear-gradient(145deg, #fef7cd 0%, #fde68a 100%);
+        /* Time-of-Day Color Coding for Game Cards - Specific Time Slots */
+        .game-930am {
+            background: linear-gradient(145deg, #fef7cd 0%, #fde68a 100%); /* Yellow - 9:30 AM */
         }
 
-        .game-afternoon {
-            background: linear-gradient(145deg, #e0f2fe 0%, #bae6fd 100%);
+        .game-1200pm {
+            background: linear-gradient(145deg, #e0f2fe 0%, #bae6fd 100%); /* Blue - 12:00 PM */
         }
 
-        .game-evening {
-            background: linear-gradient(145deg, #f3e8ff 0%, #e9d5ff 100%);
+        .game-130pm {
+            background: linear-gradient(145deg, #e0f2fe 0%, #bae6fd 100%); /* Blue - 1:30 PM */
+        }
+
+        .game-230pm {
+            background: linear-gradient(145deg, #fff7ed 0%, #fed7aa 100%); /* Orange - 2:30 PM */
+        }
+
+        .game-400pm {
+            background: linear-gradient(145deg, #fff7ed 0%, #fed7aa 100%); /* Orange - 4:00 PM */
+        }
+
+        .game-500pm {
+            background: linear-gradient(145deg, #faf5ff 0%, #f3e8ff 100%); /* Purple - 5:00 PM */
+        }
+
+        .game-630pm {
+            background: linear-gradient(145deg, #faf5ff 0%, #f3e8ff 100%); /* Purple - 6:30 PM */
         }
 
         .game-time {
@@ -382,9 +398,9 @@
         .game-score {
             font-size: 14px;
             font-weight: 600;
-            color: #059669;
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            border: 1px solid #a7f3d0;
+            color: #000000;
+            background: transparent;
+            border: 1px solid rgba(0,0,0,0.15);
             padding: 8px 12px;
             border-radius: 6px;
             display: inline-block;
@@ -1075,14 +1091,22 @@
                         const gameCard = document.createElement('div');
                         gameCard.className = 'game-card';
 
-                        // Add time-of-day class based on game time
+                        // Add time-of-day class based on specific game time
                         const gameMinutes = parseTimeToMinutes(game.time);
-                        if (gameMinutes < 720) {
-                            gameCard.classList.add('game-morning');
-                        } else if (gameMinutes < 960) {
-                            gameCard.classList.add('game-afternoon');
-                        } else {
-                            gameCard.classList.add('game-evening');
+                        if (gameMinutes === 570) { // 9:30 AM
+                            gameCard.classList.add('game-930am');
+                        } else if (gameMinutes === 720) { // 12:00 PM
+                            gameCard.classList.add('game-1200pm');
+                        } else if (gameMinutes === 810) { // 1:30 PM
+                            gameCard.classList.add('game-130pm');
+                        } else if (gameMinutes === 870) { // 2:30 PM
+                            gameCard.classList.add('game-230pm');
+                        } else if (gameMinutes === 960) { // 4:00 PM
+                            gameCard.classList.add('game-400pm');
+                        } else if (gameMinutes === 1020) { // 5:00 PM
+                            gameCard.classList.add('game-500pm');
+                        } else if (gameMinutes === 1110) { // 6:30 PM
+                            gameCard.classList.add('game-630pm');
                         }
 
                         const gameTime = document.createElement('div');
