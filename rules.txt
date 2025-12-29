@@ -1,0 +1,114 @@
+# Rules of the Game
+
+## Team Roster Requirements
+1. Age requirements are defined by "birth year", not birth date. For example: a player born on any date in 1996 is considered a 30-year old in January 2026.
+2. Players under 30 years old are not allowed to play. Players eligible to play in 2026 must have been born during or before the year 1996.
+3. A maximum of two former professional baseball players are allowed on a team's roster. This includes MLB, MiLB, and professional independent league players.
+4. Each team must have a **minimum** of **one** player who is at least 68 years old.
+5. Each team must have a **minimum** of **three** players who are at least 60 years old.
+6. Each team must have a **minimum** of **three** players who are at least 50 years old.
+7. Each team is allowed a **maximum** of **three** players who are under 40 years old, but it is not a requirement to carry any players who are under 40 years old.
+8. Players under 40 years of age **are not** allowed to pitch.
+9. To complete a team's roster, players of any age can be carried as long as the seven age requirements in items 1, 2, and 3 above have been met.
+
+---
+
+## The Game
+The basic rules of baseball apply. Modifications to the rules are used in an effort to promote parity on the playing field and consider the wide range of player's ages.
+
+### Game Length
+1. The length of a game is 7 innings.
+2. The game is official after five innings where weather or darkness becomes a factor.
+3. If the score is tied after regulation, the MLB extra-innings rule will be implemented.
+    * **a.** The last batter (not necessarily the last out) from the previous inning is placed on 2nd base with no outs.
+    * The next batter in the order leads off the inning.
+    * The MLB extra-innings rule is used until a winner is determined.
+    * Games will not end in a tie.
+4. **Mercy Rule:** An inning is over when the team batting scores six runs before the 3rd out is made.
+    * **Note:** The mercy rule is "per inning".
+    * There is no mercy rule that shortens the game.
+    * **Exceptions:**
+        1. If a batter hits a home run (a ball hit over the wall or fence), his run and any runners on base score even if it results in more than six runs scoring in the inning.
+        2. There is no limit to the number of runs either team can score in the 7th inning of play or in extra innings.
+
+---
+
+## Baserunning
+1. Prior to the start of a game, managers must announce to the opposing team if any known substitute baserunners will be needed.
+    * **a.** After reaching base safely, the batter may request a substitute baserunner due to an injury.
+2. The last batted out or base running out or runner scored of the inning is eligible to become a substitute base runner for those who are injured, have physical limitations or are over 60 years of age.
+3. Any player 60 years of age or older, who has safely reached base, may request a substitute baserunner.
+    * This request is voluntary and does not come from the bench.
+4. A batter with physical limitations, who gets a "base hit" to the outfield (umpire's judgement), cannot be thrown out at first base by an outfielder, nor can an outfielder relay the ball to an infielder to throw the batter out at first.
+5. A substitute baserunner is not allowed for the batter from home plate, since the batter cannot be thrown out at first base on a base hit.
+6. The "speed up" rule for catchers will not be used at any time.
+7. A batter may not advance to first base on a dropped third strike.
+8. The stealing of a base, advancing on a wild pitch or on a passed ball is not allowed.
+9. If the catcher makes an errant throw back to the pitcher, the base runners may not advance.
+10. The catcher cannot attempt to "pick off" base runners.
+11. Lead-offs are limited to 12 feet and are usually marked with a chalk line on the field.
+    * **a.** A base runner exceeding the length of the lead-off beyond the allowed limit is subject to being called out.
+12. Base runners are allowed a walking or stationary lead-off.
+    * Running leads are not allowed.
+13. A base runner may begin advancing to the next base only after the pitched ball crosses home plate.
+    * **a.** With two outs, a three and two count and force out situations on the base paths, base runners may begin to advance upon the ball leaving the pitcher's hand.
+
+---
+
+## Pitching
+1. A pitcher may pitch from either the stretch or wind-up position at anytime.
+2. The pitcher cannot attempt to "pick off" base runners.
+3. If a pitcher hits two batters in the same inning, he is removed from the mound but can pitch the following inning or in any inning thereafter.
+4. If a pitcher hits three batters during a game, he is permanently removed from the mound for the game but can play other defensive positions.
+5. Former professional baseball players under the WBC age of 53 are not allowed to pitch in Wooden Bat Classic games.
+    * This includes MLB, MiLB, and professional independent league players.
+
+---
+
+## Bunting
+1. A batter cannot "show bunt" on a pitch and then swing at the same pitch.
+    * Doing so results in the batter being called out.
+2. Bunting is allowed at any time.
+
+---
+
+## Batting Order
+1. The batting order must contain all eligible roster players.
+2. A team's batting order can be changed after the first game.
+    * This allows the manager a chance to evaluate his players and establish a lineup to use for the rest of the tournament.
+    * **a.** Once the batting order for the team's second game has been established, no changes are allowed.
+3. The batting order for each team is "rubber banded" throughout the tournament, including the playoffs.
+    * The term "rubber banded" means the batter, who was on deck as a game ends, is the leadoff batter for the next game.
+    * This allows players to have the same number of plate appearances or within one plate appearance of their teammates by the end of the tournament.
+4. Line-share Batting can be used by teams with 14 or more players but these teams must have at least 13 positions in their batting order.
+    * Two players may share the same position in the batting order (essentially becoming a "single" player).
+    * Either player may bat in that position and alternating at bats is not required.
+    * If Line-sharing is used, it must be established by Game 2, is part of the rubber band lineup, and continues through the end of the tournament.
+5. Teams using Line-share batting positions must notify the opposing team prior to the game.
+
+---
+
+## Miscellaneous
+1. Hidden ball tricks are not allowed.
+2. Faking or "deaking" by a defensive player to make a baserunner alter his course or slide unnecessarily is not allowed.
+    * If in the umpire's judgment this occurs, the baserunner and all other current baserunners are awarded an extra base.
+3. Beyond applying the tag to a baserunner, a "no-contact" rule between the offensive and defensive players is in effect.
+4. Oversliding the base or "taking out" a defensive player is not allowed.
+    * If the baserunner violates the "no-contact" rule, the umpire may eject the baserunner from the game.
+5. If the catcher is blocking the plate and does not have control of the ball, the baserunner may go around the catcher and not touch home plate yet still be awarded the run if it was to avoid a collision.
+
+---
+
+## Playoff and Championship Games
+1. Upon completion of the scheduled games, seedings and multiple playoff brackets will be created based on win-loss records and other criteria.
+2. Seedings in playoff brackets where teams have the same win-loss record is determined by the following:
+    * **First criteria:** Head to head results (if applicable). If still tied.....
+    * **Second criteria:** Runs allowed. If still tied.....
+    * **Third criteria:** A coin flip.
+3. The higher seeded team for each playoff game is the designated home team.
+4. Playoffs are single elimination format.
+
+---
+
+## The Bob Wagner Rule
+It is perfectly legitimate for the game to make a fool of a player, but it is not legitimate for a player to make a fool of the game.
